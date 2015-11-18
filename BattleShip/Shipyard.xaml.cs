@@ -110,7 +110,7 @@ namespace BattleShip
                 // Invalid placement check
                 if (orientation.Equals(Orientation.Right))
                 {
-
+                    // Go through every button that will be chosen to see if it has already been chosen or not
                     for (int i = 0; i < size; i++)
                     {
                         if (buttons[index + i].Tag != null)
@@ -130,17 +130,16 @@ namespace BattleShip
                 }
                 else
                 {
-
                     // Go through every button that will be chosen to see if it has already been chosen or not
                     for (int i = 0; i < size * 10; i += 10)
                     {
-                        if (buttons[index + i].Tag != null)
+                        if (index + i > 99 || buttons[index + i].Tag != null)
                         {
                             isChosen = true;
                         }
                     }
-
-                    if ((((index + size) / 10) > 10 - size) || isChosen)
+                    Console.WriteLine((index + size) / 10.0);
+                    if (((index + size) / 10) > 10 - size || isChosen)
                     {
                         MessageBox.Show("Invalid placement", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
@@ -173,7 +172,6 @@ namespace BattleShip
                     // Reset variables
                     item.IsEnabled = false;
                     placed = false;
-                    item = null;
 
                     // Placed ship
                     switch (boatName)
@@ -217,22 +215,22 @@ namespace BattleShip
 
         private void buttonSubmit_Click(object sender, EventArgs e)
         {
-            //if (!(aircraftCarrier && battleship && submarine && cruiser && destroyer))
-            //{
-            //    MessageBox.Show("All ships must be placed before proceeding", "", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-            //else
-            //{
+            if (!(aircraftCarrier && battleship && submarine && cruiser && destroyer))
+            {
+                MessageBox.Show("All ships must be placed before proceeding", "", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
                 if (play != null)
                 {
                     play(this, e);
                 }
-            //}
+            }
         }
 
         private bool nullCheck()
         {
-            if (item == null)
+            if (!item.IsEnabled)
             {
                 MessageBox.Show("You must first select a ship", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

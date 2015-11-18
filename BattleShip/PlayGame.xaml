@@ -216,5 +216,7 @@
         <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="35" Margin="467,642,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="79"/>
         <TextBox x:Name="textBox_Copy" HorizontalAlignment="Left" Height="35" Margin="551,642,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="79"/>
         <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="511,682,0,0" VerticalAlignment="Top" Width="75" Height="40"/>
+        <Label x:Name="labelXAxis" Content="   A           B            C           D            E           F            G           H            I            J" HorizontalAlignment="Left" Margin="53,81,0,0" VerticalAlignment="Top" Width="444"/>
+        <Label x:Name="labelXAxisComp" Content="   A           B            C           D            E           F            G           H            I            J" HorizontalAlignment="Left" Margin="600,81,0,0" VerticalAlignment="Top" Width="444"/>
     </Grid>
 </UserControl>

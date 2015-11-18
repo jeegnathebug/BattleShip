@@ -140,5 +140,6 @@
         <Label x:Name="labelOrientation" Content="Orientation: Right" HorizontalAlignment="Left" Margin="101,512,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelSize" Content="" HorizontalAlignment="Left" Margin="101,538,0,0" VerticalAlignment="Top" Width="104"/>
         <Label x:Name="labelBoat" Content="" HorizontalAlignment="Left" Margin="101,564,0,0" VerticalAlignment="Top" Width="104"/>
+        <Label x:Name="labelXAxis" Content="   A           B            C           D            E           F            G           H            I            J" HorizontalAlignment="Left" Margin="316,37,0,0" VerticalAlignment="Top" Width="444"/>
     </Grid>
 </UserControl>
