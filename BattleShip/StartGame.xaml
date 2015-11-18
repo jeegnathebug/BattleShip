@@ -8,10 +8,12 @@
              d:DesignHeight="300" d:DesignWidth="210">
     <Grid>
         <Button x:Name="buttonStart" Content="Play" HorizontalAlignment="Center" Height="42" Margin="0,218,0,0" Click="buttonStart_Click" Width="95" VerticalAlignment="Top"/>
-        <Label x:Name="labelDifficulty" Content="Choose Difficulty" HorizontalAlignment="Center" Margin="0,77,0,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="radioButtonEasy" Content="Easy" GroupName="difficulty" Margin="65,108,0,0" VerticalAlignment="Top" IsChecked="True" HorizontalAlignment="Left" Width="39"/>
-        <RadioButton x:Name="radioButtonMedium" Content="Medium" GroupName="difficulty" Margin="65,129,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="60"/>
-        <RadioButton x:Name="radioButtonHard" Content="Hard" GroupName="difficulty" Margin="65,150,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
-        <Label x:Name="labelWelcome" Content="Welcome to Battleship" HorizontalAlignment="Center" Margin="0,30,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelDifficulty" Content="Choose Difficulty" HorizontalAlignment="Center" Margin="55,95,55,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="radioButtonEasy" Content="Easy" GroupName="difficulty" Margin="65,126,0,0" VerticalAlignment="Top" IsChecked="True" HorizontalAlignment="Left" Width="39"/>
+        <RadioButton x:Name="radioButtonMedium" Content="Medium" GroupName="difficulty" Margin="65,147,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="60"/>
+        <RadioButton x:Name="radioButtonHard" Content="Hard" GroupName="difficulty" Margin="65,168,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
+        <Label x:Name="labelWelcome" Content="Welcome to Battleship" HorizontalAlignment="Center" Margin="40,20,40,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelName" Content="Enter name" HorizontalAlignment="Left" Margin="58,46,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBoxName" HorizontalAlignment="Left" Height="23" Margin="55,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </UserControl>

@@ -5,9 +5,6 @@ using System.Windows.Controls;
 
 namespace BattleShip
 {
-    /// <summary>
-    /// Interaction logic for UserControl1.xaml
-    /// </summary>
     public partial class StartGame : UserControl
     {
         public event EventHandler play; 
@@ -19,9 +16,16 @@ namespace BattleShip
 
         private void buttonStart_Click(object sender, RoutedEventArgs e)
         {
-            if (play != null)
+            if (textBoxName.Text == "")
             {
-                play(this, e);
+                MessageBox.Show("You must enter a name", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                if (play != null)
+                {
+                    play(this, e);
+                }
             }
         }
     }

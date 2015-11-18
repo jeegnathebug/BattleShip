@@ -1,82 +1,105 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using static System.Windows.SystemParameters;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BattleShip
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    public enum Difficulty
+    {
+        Easy, Medium, Hard
+    }
+
     public partial class MainWindow : Window
     {
         StartGame startGame;
-        GameField gameFieldPlayerSetup;
-        GameField gameFieldPlayerAttack;
         Shipyard shipyard;
+        PlayGame playGame;
         Grid grid = new Grid();
+        Difficulty difficulty;
+        string name;
+
+        public Button[] buttons;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            this.Content = grid;
-
-            setup();
-            start();
+            initializeGame();
         }
 
-
-        private void setup()
+        private void initializeGame()
         {
-            // Initialize game components
+            // Initialize window
+            this.Content = grid;
+
+            // Initialize main menu
             startGame = new StartGame();
-            gameFieldPlayerSetup = new GameField();
-            gameFieldPlayerAttack = new GameField();
-            shipyard = new Shipyard();
+
 
             // Add start menu and event handler
             grid.Children.Add(startGame);
-            startGame.play += new EventHandler(onPlay);
+            startGame.buttonStart.IsDefault = true;
+
+            // Get name and difficulty
+            name = startGame.textBoxName.Text;
+            if (startGame.radioButtonEasy.IsChecked.Value)
+            {
+                difficulty = Difficulty.Easy;
+            }
+            if (startGame.radioButtonMedium.IsChecked.Value)
+            {
+                difficulty = Difficulty.Medium;
+            }
+            if (startGame.radioButtonHard.IsChecked.Value)
+            {
+                difficulty = Difficulty.Hard;
+            }
+
+            // Once start is pressed
+            startGame.play += new EventHandler(setup);
         }
 
-        private void onPlay(object sender, EventArgs e)
+        private void setup(object sender, EventArgs e)
         {
-            // Hide start menu
+            // Close start menu
             startGame.Visibility = Visibility.Hidden;
 
             // Resize window
-            this.ResizeMode = ResizeMode.CanResize;
-            this.MinHeight = 550;
-            this.MinWidth = SystemParameters.FullPrimaryScreenWidth;
-            this.WindowState = WindowState.Maximized;
+            this.MinHeight = 650;
+            this.MinWidth = 800;
+
+            // Initialize setup phase
+            shipyard = new Shipyard();
 
             // Add shipyard
             grid.Children.Add(shipyard);
+            shipyard.buttonSubmit.IsDefault = true;
             shipyard.HorizontalAlignment = HorizontalAlignment.Left;
-            shipyard.VerticalAlignment = VerticalAlignment.Center;
+            shipyard.VerticalAlignment = VerticalAlignment.Top;
 
-            // Add game field
-            grid.Children.Add(gameFieldPlayerSetup);
-            gameFieldPlayerSetup.HorizontalAlignment = HorizontalAlignment.Center;
-            grid.Children.Add(gameFieldPlayerAttack);
-            gameFieldPlayerAttack.HorizontalAlignment = HorizontalAlignment.Right;
+            // Once submit is pressed
+            shipyard.play += new EventHandler(start);
         }
 
-        private void start()
+        private void start(object sender, EventArgs e)
         {
+            // Save buttons
+            buttons = shipyard.buttons;
 
+            // Close set up
+            shipyard.Visibility = Visibility.Collapsed;
+
+            // Resize window
+            this.ResizeMode = ResizeMode.CanResize;
+            this.WindowState = WindowState.Maximized;
+
+            // Initialize game play phase
+            playGame = new PlayGame(this, difficulty);
+
+            // Add game field
+            grid.Children.Add(playGame);
+            playGame.HorizontalAlignment = HorizontalAlignment.Center;
+            playGame.VerticalAlignment = VerticalAlignment.Center;
         }
     }
 }
