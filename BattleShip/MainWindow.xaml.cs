@@ -23,7 +23,6 @@ namespace BattleShip
         public MainWindow()
         {
             InitializeComponent();
-
             initializeGame();
         }
 
@@ -73,7 +72,6 @@ namespace BattleShip
 
             // Add shipyard
             grid.Children.Add(shipyard);
-            shipyard.buttonSubmit.IsDefault = true;
             shipyard.HorizontalAlignment = HorizontalAlignment.Left;
             shipyard.VerticalAlignment = VerticalAlignment.Top;
 

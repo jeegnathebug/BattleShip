@@ -272,7 +272,7 @@ namespace BattleShip
                     {
                         index = random.Next(0, 100);
 
-                    } while (((index + size) / 10) > 10 - size || isChosen);
+                    } while ((index / 10) + (size * 10) > 100 || isChosen);
 
 
                     // Go through every button that will be chosen to see if it has already been chosen or not

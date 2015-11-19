@@ -139,7 +139,7 @@ namespace BattleShip
                         }
                     }
                     Console.WriteLine((index + size) / 10.0);
-                    if (((index + size) / 10) > 10 - size || isChosen)
+                    if ((index / 10) + (size * 10) > 100 || isChosen)
                     {
                         MessageBox.Show("Invalid placement", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
