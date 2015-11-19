@@ -7,11 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="210">
     <Grid>
-        <Button x:Name="buttonStart" Content="Play" HorizontalAlignment="Center" Height="42" Margin="0,218,0,0" Click="buttonStart_Click" Width="95" VerticalAlignment="Top"/>
-        <Label x:Name="labelDifficulty" Content="Choose Difficulty" HorizontalAlignment="Center" Margin="55,99,55,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="radioButtonEasy" Content="Easy" GroupName="difficulty" Margin="65,126,0,0" VerticalAlignment="Top" IsChecked="True" HorizontalAlignment="Left" Width="39"/>
-        <RadioButton x:Name="radioButtonMedium" Content="Medium" GroupName="difficulty" Margin="65,147,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="60"/>
-        <RadioButton x:Name="radioButtonHard" Content="Hard" GroupName="difficulty" Margin="65,168,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
+        <Button x:Name="buttonStart" Content="Play" HorizontalAlignment="Center" Height="42" Margin="0,218,0,0" Click="buttonStart_Click" Width="95" VerticalAlignment="Top" IsDefault="True"/>
+        <Label x:Name="labelDifficulty" Content="Choose Difficulty" HorizontalAlignment="Center" Margin="55,104,55,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="radioButtonEasy" Content="Easy" GroupName="difficulty" Margin="84,131,87,0" VerticalAlignment="Top" IsChecked="True" HorizontalAlignment="Center" Width="39"/>
+        <RadioButton x:Name="radioButtonHard" Content="Hard" GroupName="difficulty" Margin="0,152,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="42"/>
         <Label x:Name="labelWelcome" Content="Welcome to Battleship" HorizontalAlignment="Center" Margin="40,20,40,0" VerticalAlignment="Top"/>
         <Label x:Name="labelName" Content="Enter name" HorizontalAlignment="Center" Margin="0,46,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="textBoxName" HorizontalAlignment="Center" Height="23" Margin="55,69,55,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100"/>

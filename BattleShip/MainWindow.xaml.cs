@@ -6,19 +6,20 @@ namespace BattleShip
 {
     public enum Difficulty
     {
-        Easy, Medium, Hard
+        Easy, Hard
     }
 
     public partial class MainWindow : Window
     {
+        Grid grid = new Grid();
+
         StartGame startGame;
         Shipyard shipyard;
         PlayGame playGame;
-        Grid grid = new Grid();
-        Difficulty difficulty;
-        string name;
 
-        public Button[] buttons;
+        Difficulty difficulty;
+
+        string name;
 
         public MainWindow()
         {
@@ -34,20 +35,14 @@ namespace BattleShip
             // Initialize main menu
             startGame = new StartGame();
 
-
             // Add start menu and event handler
             grid.Children.Add(startGame);
-            startGame.buttonStart.IsDefault = true;
 
             // Get name and difficulty
-            name = startGame.textBoxName.Text;
+            name = startGame.textBoxName.Text.Trim();
             if (startGame.radioButtonEasy.IsChecked.Value)
             {
                 difficulty = Difficulty.Easy;
-            }
-            if (startGame.radioButtonMedium.IsChecked.Value)
-            {
-                difficulty = Difficulty.Medium;
             }
             if (startGame.radioButtonHard.IsChecked.Value)
             {
@@ -81,9 +76,6 @@ namespace BattleShip
 
         private void start(object sender, EventArgs e)
         {
-            // Save buttons
-            buttons = shipyard.buttons;
-
             // Close set up
             shipyard.Visibility = Visibility.Collapsed;
 
@@ -92,7 +84,7 @@ namespace BattleShip
             this.WindowState = WindowState.Maximized;
 
             // Initialize game play phase
-            playGame = new PlayGame(this, difficulty);
+            playGame = new PlayGame(difficulty, shipyard.buttons);
 
             // Add game field
             grid.Children.Add(playGame);

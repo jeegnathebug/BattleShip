@@ -31,6 +31,7 @@ namespace BattleShip
 
             buttons = new Button[100];
             gameField.Children.CopyTo(buttons, 0);
+            item = Aircraft_Carrier;
         }
 
         private void buttonReset_Click(object sender, EventArgs e)

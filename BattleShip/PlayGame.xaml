@@ -213,9 +213,9 @@
         </Grid>
         <Label x:Name="labelTitle" Content="Play" FontSize="26.667" Margin="53,26,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Label x:Name="labelInfo" Content="Choose a position to attack" HorizontalAlignment="Left" Margin="111,40,0,0" VerticalAlignment="Top" FontSize="13.333"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="35" Margin="511,642,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="35"/>
-        <TextBox x:Name="textBox_Copy" HorizontalAlignment="Left" Height="35" Margin="551,642,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="35"/>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="511,682,0,0" VerticalAlignment="Top" Width="75" Height="40"/>
+        <TextBox x:Name="textBoxXCoord" HorizontalAlignment="Left" Height="35" Margin="511,642,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35" ToolTip="Enter the X coordinate to attack" FontSize="21.333" MaxLines="1" MaxLength="1" CharacterCasing="Upper" KeyDown="textBoxXCoord_KeyDown"/>
+        <TextBox x:Name="textBoxYCoord" HorizontalAlignment="Left" Height="35" Margin="551,642,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35" ToolTip="Enter the Y coordinate to attack" CharacterCasing="Upper" MaxLines="1" MaxLength="2" FontSize="21.333" KeyDown="textBoxYCoord_KeyDown"/>
+        <Button x:Name="buttonAttack" Content="Attack" HorizontalAlignment="Left" Margin="511,682,0,0" VerticalAlignment="Top" Width="75" Height="40" IsDefault="True" Click="buttonAttack_Click"/>
         <Label x:Name="labelA" Content="A" HorizontalAlignment="Left" Margin="65,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelB" Content="B" HorizontalAlignment="Left" Margin="110,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelC" Content="C" HorizontalAlignment="Left" Margin="156,76,0,0" VerticalAlignment="Top"/>
@@ -256,5 +256,6 @@
         <Label x:Name="label8Comp" Content="8" HorizontalAlignment="Left" Margin="579,430,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label9Comp" Content="9" HorizontalAlignment="Left" Margin="579,476,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label10Comp" Content="10" HorizontalAlignment="Left" Margin="572,520,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelCoordinates" Content="Enter coordinates" HorizontalAlignment="Left" Margin="497,616,0,0" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

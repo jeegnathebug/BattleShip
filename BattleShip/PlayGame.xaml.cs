@@ -1,63 +1,58 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace BattleShip
 {
     public partial class PlayGame : UserControl
     {
+        // Player's ship field
         private Button[] buttonsPlayer;
+        // Computer's ship field
         private Button[] buttonsAttack;
+        // The difficulty
         private Difficulty difficulty;
 
+        // True if player turn
+        private bool turn = true;
+
+        // Indicates whether or not a winner has been chosen
         private bool winner = false;
 
         // Computer's ships
-        private bool aircraftCarrierComp = false;
-        private bool battleshipComp = false;
-        private bool submarineComp = false;
-        private bool cruiserComp = false;
-        private bool destroyerComp = false;
-
-        private int aircraftCarrierCounterComp = 0;
-        private int battleshipCounterComp = 0;
-        private int submarineCounterComp = 0;
-        private int cruiserCounterComp = 0;
-        private int destroyerCounterComp = 0;
+        private bool[] shipsComp = new bool[5];
+        private int[] shipsCounterComp = new int[5];
 
         // Human's ships
-        private bool aircraftCarrier = false;
-        private bool battleship = false;
-        private bool submarine = false;
-        private bool cruiser = false;
-        private bool destroyer = false;
+        private bool[] ships = new bool[5];
+        private int[] shipsCounter = new int[5];
 
-        private int aircraftCarrierCounter = 0;
-        private int battleshipCounter = 0;
-        private int submarineCounter = 0;
-        private int cruiserCounter = 0;
-        private int destroyerCounter = 0;
-
-        public PlayGame(MainWindow mainWindow, Difficulty difficulty)
+        public PlayGame(Difficulty difficulty, Button[] buttons)
         {
             InitializeComponent();
+            initializeGame(difficulty, buttons);
+        }
 
+        private void initializeGame(Difficulty difficulty, Button[] buttons)
+        {
             this.difficulty = difficulty;
 
+            // Set button field arrays
             buttonsPlayer = new Button[100];
             PlayerShips.Children.CopyTo(buttonsPlayer, 0);
+
+            buttonsAttack = new Button[100];
+            PlayerAttack.Children.CopyTo(buttonsAttack, 0);
 
             // Set player ships
             for (int i = 0; i < 100; i++)
             {
-                buttonsPlayer[i].Content = mainWindow.buttons[i].Content;
-                buttonsPlayer[i].Tag = mainWindow.buttons[i].Tag;
+                buttonsPlayer[i].Content = buttons[i].Content;
+                buttonsPlayer[i].Tag = buttons[i].Tag;
             }
 
             // Set computer ships
-            buttonsAttack = new Button[100];
-            PlayerAttack.Children.CopyTo(buttonsAttack, 0);
-
             setShip(5, "Aircraft_Carrier");
             setShip(4, "Battleship");
             setShip(3, "Submarine");
@@ -68,88 +63,45 @@ namespace BattleShip
         private void button_Clicked(object sender, EventArgs e)
         {
             Button chosen = (Button)sender;
+            playerTurn(chosen);
+        }
 
-            // Select button and mark it as hit or miss
-            chosen.IsEnabled = false;
-            if (chosen.Tag == null)
+        private void checkWinner(string message, string caption)
+        {
+            bool ships = true;
+
+            if (turn)
             {
-                chosen.Content = "o";
+                for (int index = 0; index < shipsComp.Length; index++)
+                {
+                    ships = ships && shipsComp[index];
+                }
             }
             else
             {
-                chosen.Content = "x";
-                string boatName = chosen.Tag.ToString();
-
-                switch (boatName)
+                for (int index = 0; index < this.ships.Length; index++)
                 {
-                    case "Aircraft_Carrier":
-                        aircraftCarrierCounterComp++;
-                        if (aircraftCarrierCounterComp == 5)
-                        {
-                            MessageBox.Show("You sunk my " + boatName, "Success");
-                            aircraftCarrierComp = true;
-                        }
-                        break;
-                    case "Battleship":
-                        battleshipCounterComp++;
-                        if (battleshipCounterComp == 4)
-                        {
-                            MessageBox.Show("You sunk my " + boatName, "Success");
-                            battleshipComp = true;
-                        }
-                        break;
-                    case "Submarine":
-                        submarineCounterComp++;
-                        if (submarineCounterComp == 3)
-                        {
-                            MessageBox.Show("You sunk my " + boatName, "Success");
-                            submarineComp = true;
-                        }
-                        break;
-                    case "Cruiser":
-                        cruiserCounterComp++;
-                        if (cruiserCounterComp == 3)
-                        {
-                            MessageBox.Show("You sunk my " + boatName, "Success");
-                            cruiserComp = true;
-                        }
-                        break;
-                    case "Destroyer":
-                        destroyerCounterComp++;
-                        if (destroyerCounterComp == 2)
-                        {
-                            MessageBox.Show("You sunk my " + boatName, "Success");
-                            destroyerComp = true;
-                        }
-                        break;
+                    ships = ships && this.ships[index];
                 }
             }
 
-            // Check for winner
-            if (aircraftCarrierComp && battleshipComp && submarineComp && cruiserComp && destroyerComp)
+            if (ships)
             {
                 // Disable all buttons
-                for (int i = 0; i < 100; i++)
-                {
-                    buttonsAttack[i].IsEnabled = false;
-                    buttonsPlayer[i].IsEnabled = false;
-                }
+                disableButtons();
 
-                MessageBox.Show("You sank all the ships!", "Winner!");
+                MessageBox.Show(message, caption);
                 winner = true;
-            }
-
-            // Computer move
-            if (!winner)
-            {
-                computerMove();
             }
         }
 
-        private void computerMove()
+
+        private void computerEasy()
         {
+            // Randomly select a button that has not been selected
             Random random = new Random();
             int index;
+
             do
             {
                 index = random.Next(0, 100);
@@ -159,69 +111,126 @@ namespace BattleShip
             Button chosen = buttonsPlayer[index];
 
             // Select button and mark it as hit or miss
+            markButton(chosen, ref shipsCounter, ref ships);
+        }
+
+        private void computerHard()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void computerTurn()
+        {
+            // Set computer turn
+            turn = false;
+
+            // Choose difficulty
+            if (difficulty == Difficulty.Easy)
+            {
+                computerEasy();
+            }
+            if (difficulty == Difficulty.Hard)
+            {
+                computerHard();
+            }
+
+            // Check for winner
+            checkWinner("All of your ships have been sunk!", "Loser");
+        }
+
+        private void disableButtons()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                buttonsAttack[i].IsEnabled = false;
+                buttonsPlayer[i].IsEnabled = false;
+            }
+
+            buttonAttack.IsEnabled = false;
+        }
+
+        private void markButton(Button chosen, ref int[] counter, ref bool[] ships)
+        {
+            // Select button
             chosen.IsEnabled = false;
+
             if (chosen.Tag == null)
             {
+                // Set button
                 chosen.Content = "o";
             }
             else
             {
-                chosen.Content = "x";
+                // Set messages to display
                 string boatName = chosen.Tag.ToString();
+                string message, caption;
+
+                // Player turn
+                if (turn)
+                {
+                    message = "You sunk my " + boatName;
+                    caption = "Success";
+                }
+                // Computer turn
+                else
+                {
+                    message = "You're " + boatName + " has been sunk!";
+                    caption = "Oh no!";
+                }
+
+                // Set button
+                chosen.Content = "x";
+                int index = -1;
 
                 switch (boatName)
                 {
                     case "Aircraft_Carrier":
-                        aircraftCarrierCounter++;
-                        if (aircraftCarrierCounter == 5)
-                        {
-                            MessageBox.Show("You're " + boatName + " has been sunk!", "Oh no!");
-                            aircraftCarrier = true;
-                        }
+                        index = 0;
                         break;
                     case "Battleship":
-                        battleshipCounter++;
-                        if (battleshipCounter == 4)
-                        {
-                            MessageBox.Show("You're " + boatName + " has been sunk!", "Oh no!");
-                            battleship = true;
-                        }
+                        index = 1;
                         break;
                     case "Submarine":
-                        submarineCounter++;
-                        if (submarineCounter == 3)
-                        {
-                            MessageBox.Show("You're " + boatName + " has been sunk!", "Oh no!");
-                            submarine = true;
-                        }
+                        index = 2;
                         break;
                     case "Cruiser":
-                        cruiserCounter++;
-                        if (cruiserCounter == 3)
-                        {
-                            MessageBox.Show("You're " + boatName + " has been sunk!", "Oh no!");
-                            cruiser = true;
-                        }
+                        index = 3;
                         break;
                     case "Destroyer":
-                        destroyerCounter++;
-                        if (destroyerCounter == 2)
-                        {
-                            MessageBox.Show("You're " + boatName + " has been sunk!", "Oh no!");
-                            destroyer = true;
-                        }
+                        index = 4;
                         break;
                 }
-            }
 
-            // Check for winner
-            if (aircraftCarrier && battleship && submarine && cruiser && destroyer)
-            {
-                MessageBox.Show("All of your ships have been sunk!", "Loser");
-                winner = true;
+                counter[index]++;
+
+                if (counter[0] == 5 || counter[1] == 4 || counter[2] == 3 || counter[3] == 3 || counter[4] == 2)
+                {
+                    MessageBox.Show(message, caption);
+                    ships[index] = true;
+
+                    // Reset counter so as to not have it true when being checked
+                    counter[index] = 0;
+                }
             }
         }
 
+        private void playerTurn(Button chosen)
+        {
+            // Set player turn
+            turn = true;
+
+            // Select button and mark it as hit or miss
+            markButton(chosen, ref shipsCounterComp, ref shipsComp);
+
+            // Check for winner
+            checkWinner("You sank all the ships!", "Winner!");
+
+            // Computer move
+            if (!winner)
+            {
+                computerTurn();
+            }
+        }
         private void setShip(int size, string boatName)
         {
             Random random = new Random();
@@ -242,11 +251,10 @@ namespace BattleShip
 
                     } while (((index + (size - 1)) % 10 < size - 1));
 
-
-                    // Go through every button that will be chosen to see if it has already been chosen or not
+                    // Check if every button to be selected is not already selected
                     for (int i = 0; i < size; i++)
                     {
-                        if (buttonsAttack[index + i].Tag != null)
+                        if (index + i > 99 || buttonsAttack[index + i].Tag != null)
                         {
                             isChosen = true;
                         }
@@ -254,7 +262,7 @@ namespace BattleShip
 
                 } while (isChosen);
 
-                // Disable buttons
+                // Set buttons
                 for (int i = 0; i < size; i++)
                 {
                     buttonsAttack[index + i].Content = boatName;
@@ -275,10 +283,10 @@ namespace BattleShip
                     } while ((index / 10) + (size * 10) > 100 || isChosen);
 
 
-                    // Go through every button that will be chosen to see if it has already been chosen or not
+                    // Check if every button to be selected is not already selected
                     for (int i = 0; i < size * 10; i += 10)
                     {
-                        if (buttonsAttack[index + i].Tag != null)
+                        if (index + i > 99 || buttonsAttack[index + i].Tag != null)
                         {
                             isChosen = true;
                         }
@@ -286,12 +294,43 @@ namespace BattleShip
 
                 } while (isChosen);
 
-                // Disable buttons
+                // Set buttons
                 for (int i = 0; i < size * 10; i += 10)
                 {
                     buttonsAttack[index + i].Content = boatName;
                     buttonsAttack[index + i].Tag = boatName;
                 }
+            }
+        }
+
+        private void textBoxXCoord_KeyDown(object sender, KeyEventArgs e)
+        {
+            // TODO only allow letters from A - J to be inputted
+        }
+
+        private void textBoxYCoord_KeyDown(object sender, KeyEventArgs e)
+        {
+            // TODO only allow numbers from 1 - 10 to be inputted
+        }
+
+        private void buttonAttack_Click(object sender, RoutedEventArgs e)
+        {
+            if (textBoxXCoord.Text == "" || textBoxYCoord.Text == "")
+            {
+                MessageBox.Show("You must enter coordinates first", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                int row = int.Parse(textBoxYCoord.Text) * 10;
+                // TODO
+                int column = 0;
+
+                // Play button
+                playerTurn(buttonsAttack[row + column]);
+
+                // Reset text boxes
+                textBoxXCoord.Text = "";
+                textBoxYCoord.Text = "";
             }
         }
     }

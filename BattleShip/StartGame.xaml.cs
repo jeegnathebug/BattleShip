@@ -16,7 +16,7 @@ namespace BattleShip
 
         private void buttonStart_Click(object sender, RoutedEventArgs e)
         {
-            if (textBoxName.Text == "")
+            if (textBoxName.Text.Trim() == "")
             {
                 MessageBox.Show("You must enter a name", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }

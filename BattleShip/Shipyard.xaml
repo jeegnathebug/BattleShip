@@ -32,7 +32,7 @@
             </ListBoxItem>
         </ListBox>
         <Button x:Name="buttonReset" Content="Reset" HorizontalAlignment="Left" Margin="435,545,0,0" VerticalAlignment="Top" Width="74" Height="40" Click="buttonReset_Click"/>
-        <Button x:Name="buttonSubmit" Content="Submit" HorizontalAlignment="Left" Margin="570,545,0,0" VerticalAlignment="Top" Width="76" Height="40" Click="buttonSubmit_Click"/>
+        <Button x:Name="buttonSubmit" Content="Submit" HorizontalAlignment="Left" Margin="570,545,0,0" VerticalAlignment="Top" Width="76" Height="40" Click="buttonSubmit_Click" IsDefault="True"/>
         <Button x:Name="buttonRotate" Content="Change Orientation
                 " HorizontalAlignment="Left" Margin="101,485,0,0" VerticalAlignment="Top" Width="113" Click="buttonRotate_Click"/>
         <Grid x:Name="gameField" Margin="316,61,40,143">
