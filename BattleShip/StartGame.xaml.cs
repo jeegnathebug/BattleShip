@@ -7,7 +7,7 @@ namespace BattleShip
 {
     public partial class StartGame : UserControl
     {
-        public event EventHandler play; 
+        public event EventHandler play;
 
         public StartGame()
         {
@@ -16,7 +16,8 @@ namespace BattleShip
 
         private void buttonStart_Click(object sender, RoutedEventArgs e)
         {
-            if (textBoxName.Text.Trim() == "")
+            string name = textBoxName.Text.Trim();
+            if (name == "")
             {
                 MessageBox.Show("You must enter a name", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }

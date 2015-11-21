@@ -30,12 +30,12 @@ namespace BattleShip
         private void initializeGame()
         {
             // Initialize window
-            this.Content = grid;
+            Content = grid;
 
             // Initialize main menu
             startGame = new StartGame();
 
-            // Add start menu and event handler
+            // Add start menu
             grid.Children.Add(startGame);
 
             // Get name and difficulty
@@ -49,7 +49,7 @@ namespace BattleShip
                 difficulty = Difficulty.Hard;
             }
 
-            // Once start is pressed
+            // Add event handler
             startGame.play += new EventHandler(setup);
         }
 

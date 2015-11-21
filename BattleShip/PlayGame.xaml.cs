@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -66,6 +67,86 @@ namespace BattleShip
             playerTurn(chosen);
         }
 
+        private void buttonAttack_Click(object sender, RoutedEventArgs e)
+        {
+            string xCoord = textBoxXCoord.Text.Trim();
+            string yCoord = textBoxYCoord.Text.Trim();
+            int row;
+            int column = 99;
+
+            if (xCoord == "" || yCoord == "")
+            {
+                MessageBox.Show("You must enter coordinates first", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                // Set row
+                row = (int.Parse(yCoord) - 1) * 10;
+
+                // Set column
+                switch (xCoord)
+                {
+                    case "A":
+                        column = 0;
+                        break;
+                    case "B":
+                        column = 1;
+                        break;
+                    case "C":
+                        column = 2;
+                        break;
+                    case "D":
+                        column = 3;
+                        break;
+                    case "E":
+                        column = 4;
+                        break;
+                    case "F":
+                        column = 5;
+                        break;
+                    case "G":
+                        column = 6;
+                        break;
+                    case "H":
+                        column = 7;
+                        break;
+                    case "I":
+                        column = 8;
+                        break;
+                    case "J":
+                        column = 9;
+                        break;
+                }
+
+                // If button has already been chosen
+                if (!buttonsAttack[row + column].IsEnabled)
+                {
+                    MessageBox.Show("You've already shot there", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    // Play button
+                    playerTurn(buttonsAttack[row + column]);
+                }
+
+                // Reset text boxes
+                textBoxXCoord.Text = "";
+                textBoxYCoord.Text = "";
+            }
+        }
+
+        private void buttonXCoordinate_Clicked(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            textBoxXCoord.Text = button.Content.ToString();
+        }
+
+        private void buttonYCoordinate_Clicked(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            textBoxYCoord.Text = button.Content.ToString();
+        }
+
         private void checkWinner(string message, string caption)
         {
             bool ships = true;
@@ -92,9 +173,10 @@ namespace BattleShip
 
                 MessageBox.Show(message, caption);
                 winner = true;
+
+                restart();
             }
         }
-
 
         private void computerEasy()
         {
@@ -303,35 +385,26 @@ namespace BattleShip
             }
         }
 
+        private void restart()
+        {
+            // TODO Restart game. Go back to main menu, and add wins to file
+        }
+
         private void textBoxXCoord_KeyDown(object sender, KeyEventArgs e)
         {
             // TODO only allow letters from A - J to be inputted
+            TextBox textBox = (TextBox)sender;
+            string text = textBox.Text;
+
         }
 
         private void textBoxYCoord_KeyDown(object sender, KeyEventArgs e)
         {
             // TODO only allow numbers from 1 - 10 to be inputted
-        }
+            TextBox textBox = (TextBox)sender;
+            string text = textBox.Text;
 
-        private void buttonAttack_Click(object sender, RoutedEventArgs e)
-        {
-            if (textBoxXCoord.Text == "" || textBoxYCoord.Text == "")
-            {
-                MessageBox.Show("You must enter coordinates first", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else
-            {
-                int row = int.Parse(textBoxYCoord.Text) * 10;
-                // TODO
-                int column = 0;
 
-                // Play button
-                playerTurn(buttonsAttack[row + column]);
-
-                // Reset text boxes
-                textBoxXCoord.Text = "";
-                textBoxYCoord.Text = "";
-            }
         }
     }
 }
