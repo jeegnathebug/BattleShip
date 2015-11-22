@@ -9,6 +9,8 @@ namespace BattleShip
     {
         public event EventHandler play;
 
+        public Difficulty difficulty;
+
         public StartGame()
         {
             InitializeComponent();
@@ -25,6 +27,15 @@ namespace BattleShip
             {
                 if (play != null)
                 {
+                    if (radioButtonEasy.IsChecked.Value)
+                    {
+                        difficulty = Difficulty.Easy;
+                    }
+                    else
+                    {
+                        difficulty = Difficulty.Hard;
+                    }
+
                     play(this, e);
                 }
             }

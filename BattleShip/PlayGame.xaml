@@ -213,9 +213,7 @@
         </Grid>
         <Label x:Name="labelTitle" Content="Play" FontSize="26.667" Margin="53,26,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Label x:Name="labelInfo" Content="Choose a position to attack" HorizontalAlignment="Left" Margin="111,40,0,0" VerticalAlignment="Top" FontSize="13.333"/>
-        <TextBox x:Name="textBoxXCoord" HorizontalAlignment="Left" Height="35" Margin="511,642,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35" ToolTip="Enter the X coordinate to attack" FontSize="21.333" MaxLines="1" MaxLength="1" CharacterCasing="Upper" IsReadOnly="True" IsUndoEnabled="True"/>
-        <TextBox x:Name="textBoxYCoord" HorizontalAlignment="Left" Height="35" Margin="551,642,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35" ToolTip="" CharacterCasing="Upper" MaxLines="1" MaxLength="2" FontSize="21.333" IsReadOnly="True" IsUndoEnabled="True"/>
-        <Button x:Name="buttonAttack" Content="Attack" HorizontalAlignment="Left" Margin="511,682,0,0" VerticalAlignment="Top" Width="75" Height="40" IsDefault="True" Click="buttonAttack_Click"/>
+
         <Label x:Name="labelA" Content="A" HorizontalAlignment="Left" Margin="65,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelB" Content="B" HorizontalAlignment="Left" Margin="110,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelC" Content="C" HorizontalAlignment="Left" Margin="156,76,0,0" VerticalAlignment="Top"/>
@@ -257,25 +255,33 @@
         <Label x:Name="label9Comp" Content="9" HorizontalAlignment="Left" Margin="579,476,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label10Comp" Content="10" HorizontalAlignment="Left" Margin="572,520,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelCoordinates" Content="Enter coordinates" HorizontalAlignment="Left" Margin="497,616,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="buttonA" Content="A" HorizontalAlignment="Left" Margin="111,647,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
-        <Button x:Name="buttonB" Content="B" HorizontalAlignment="Left" Margin="146,647,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
-        <Button x:Name="buttonC" Content="C" HorizontalAlignment="Left" Margin="181,647,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
-        <Button x:Name="buttonD" Content="D" HorizontalAlignment="Left" Margin="216,647,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
-        <Button x:Name="buttonE" Content="E" HorizontalAlignment="Left" Margin="251,647,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
-        <Button x:Name="buttonF" Content="F" HorizontalAlignment="Left" Margin="286,647,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
-        <Button x:Name="buttonG" Content="G" HorizontalAlignment="Left" Margin="321,647,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
-        <Button x:Name="buttonH" Content="H" HorizontalAlignment="Left" Margin="356,647,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
-        <Button x:Name="buttonI" Content="I" HorizontalAlignment="Left" Margin="391,647,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
-        <Button x:Name="buttonJ" Content="J" HorizontalAlignment="Left" Margin="426,647,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
-        <Button x:Name="button1" Content="1" HorizontalAlignment="Left" Margin="111,682,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
-        <Button x:Name="button2" Content="2" HorizontalAlignment="Left" Margin="146,682,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
-        <Button x:Name="button3" Content="3" HorizontalAlignment="Left" Margin="181,682,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
-        <Button x:Name="button4" Content="4" HorizontalAlignment="Left" Margin="216,682,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
-        <Button x:Name="button5" Content="5" HorizontalAlignment="Left" Margin="251,682,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
-        <Button x:Name="button6" Content="6" HorizontalAlignment="Left" Margin="286,682,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
-        <Button x:Name="button7" Content="7" HorizontalAlignment="Left" Margin="321,682,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
-        <Button x:Name="button8" Content="8" HorizontalAlignment="Left" Margin="356,682,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
-        <Button x:Name="button9" Content="9" HorizontalAlignment="Left" Margin="391,682,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
-        <Button x:Name="button10" Content="10" HorizontalAlignment="Left" Margin="426,682,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
+        <Grid x:Name="Coordinate" Margin="110,645,645,88">
+            <Button x:Name="buttonA" Content="A" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
+            <Button x:Name="buttonB" Content="B" HorizontalAlignment="Left" Margin="35,0,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
+            <Button x:Name="buttonC" Content="C" HorizontalAlignment="Left" Margin="70,0,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
+            <Button x:Name="buttonD" Content="D" HorizontalAlignment="Left" Margin="105,0,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
+            <Button x:Name="buttonE" Content="E" HorizontalAlignment="Left" Margin="140,0,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
+            <Button x:Name="buttonF" Content="F" HorizontalAlignment="Left" Margin="175,0,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
+            <Button x:Name="buttonG" Content="G" HorizontalAlignment="Left" Margin="210,0,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
+            <Button x:Name="buttonH" Content="H" HorizontalAlignment="Left" Margin="245,0,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
+            <Button x:Name="buttonI" Content="I" HorizontalAlignment="Left" Margin="280,0,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
+            <Button x:Name="buttonJ" Content="J" HorizontalAlignment="Left" Margin="315,0,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonXCoordinate_Clicked"/>
+            
+            <Button x:Name="button1" Content="1" HorizontalAlignment="Left" Margin="0,35,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked" />
+            <Button x:Name="button2" Content="2" HorizontalAlignment="Left" Margin="35,35,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
+            <Button x:Name="button3" Content="3" HorizontalAlignment="Left" Margin="70,35,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
+            <Button x:Name="button4" Content="4" HorizontalAlignment="Left" Margin="105,35,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
+            <Button x:Name="button5" Content="5" HorizontalAlignment="Left" Margin="140,35,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
+            <Button x:Name="button6" Content="6" HorizontalAlignment="Left" Margin="175,35,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
+            <Button x:Name="button7" Content="7" HorizontalAlignment="Left" Margin="210,35,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
+            <Button x:Name="button8" Content="8" HorizontalAlignment="Left" Margin="245,35,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
+            <Button x:Name="button9" Content="9" HorizontalAlignment="Left" Margin="280,35,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
+            <Button x:Name="button10" Content="10" HorizontalAlignment="Left" Margin="315,35,0,0" VerticalAlignment="Top" Width="30" Height="30" Click="buttonYCoordinate_Clicked"/>
+        </Grid>
+        <Button x:Name="buttonRestart" Content="Restart" HorizontalAlignment="Left" Margin="471,682,0,0" VerticalAlignment="Top" Width="75" Height="40" Visibility="Hidden" Click="buttonRestart_Clicked"/>
+        <Button x:Name="buttonExit" Content="Exit" HorizontalAlignment="Left" Margin="551,682,0,0" VerticalAlignment="Top" Width="75" Height="40" Visibility="Hidden" Click="buttonExit_Clicked"/>
+        <TextBox x:Name="textBoxXCoord" HorizontalAlignment="Left" Height="35" Margin="511,642,0,0" VerticalAlignment="Top" Width="35" FontSize="21.333" CharacterCasing="Upper" IsReadOnly="True"/>
+        <TextBox x:Name="textBoxYCoord" HorizontalAlignment="Left" Height="35" Margin="551,642,0,0" VerticalAlignment="Top" Width="35" FontSize="21.333" CharacterCasing="Upper" IsReadOnly="True"/>
+        <Button x:Name="buttonAttack" Content="Attack" HorizontalAlignment="Left" Margin="511,682,0,0" VerticalAlignment="Top" Width="75" Height="40" IsDefault="True" Click="buttonAttack_Clicked"/>
     </Grid>
 </UserControl>

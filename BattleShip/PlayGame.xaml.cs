@@ -8,14 +8,18 @@ namespace BattleShip
 {
     public partial class PlayGame : UserControl
     {
+
+        public event EventHandler restart;
+
         // Player's ship field
         private Button[] buttonsPlayer;
         // Computer's ship field
         private Button[] buttonsAttack;
-        // The difficulty
+
+        // Difficulty
         private Difficulty difficulty;
 
-        // True if player turn
+        // True if player's turn
         private bool turn = true;
 
         // Indicates whether or not a winner has been chosen
@@ -37,6 +41,7 @@ namespace BattleShip
 
         private void initializeGame(Difficulty difficulty, Button[] buttons)
         {
+            // Set difficulty
             this.difficulty = difficulty;
 
             // Set button field arrays
@@ -63,11 +68,14 @@ namespace BattleShip
 
         private void button_Clicked(object sender, EventArgs e)
         {
-            Button chosen = (Button)sender;
-            playerTurn(chosen);
+            // Reset textboxes
+            textBoxXCoord.Text = "";
+            textBoxYCoord.Text = "";
+
+            playerTurn((Button)sender);
         }
 
-        private void buttonAttack_Click(object sender, RoutedEventArgs e)
+        private void buttonAttack_Clicked(object sender, RoutedEventArgs e)
         {
             string xCoord = textBoxXCoord.Text.Trim();
             string yCoord = textBoxYCoord.Text.Trim();
@@ -135,46 +143,61 @@ namespace BattleShip
             }
         }
 
-        private void buttonXCoordinate_Clicked(object sender, RoutedEventArgs e)
+        private void buttonExit_Clicked(object sender, RoutedEventArgs e)
         {
+            Application.Current.Shutdown(0);
+        }
+
+        private void buttonRestart_Clicked(object sender, EventArgs e)
+        {
+            if (restart != null)
+            {
+                restart(this, e);
+            }
+        }
+
+        private void buttonXCoordinate_Clicked(object sender, EventArgs e)
+        {
+            // Set text box text
             Button button = (Button)sender;
             textBoxXCoord.Text = button.Content.ToString();
         }
 
-        private void buttonYCoordinate_Clicked(object sender, RoutedEventArgs e)
+        private void buttonYCoordinate_Clicked(object sender, EventArgs e)
         {
+            // Set text box text
             Button button = (Button)sender;
             textBoxYCoord.Text = button.Content.ToString();
         }
 
         private void checkWinner(string message, string caption)
         {
-            bool ships = true;
+            bool shipsSunk = true;
 
             if (turn)
             {
+                // Check if all computer ships have been sunk
                 for (int index = 0; index < shipsComp.Length; index++)
                 {
-                    ships = ships && shipsComp[index];
+                    shipsSunk = shipsSunk && shipsComp[index];
                 }
             }
             else
             {
+                // Check if all player ships have been sunk
                 for (int index = 0; index < this.ships.Length; index++)
                 {
-                    ships = ships && this.ships[index];
+                    shipsSunk = shipsSunk && this.ships[index];
                 }
             }
 
-            if (ships)
+            if (shipsSunk)
             {
                 // Disable all buttons
                 disableButtons();
 
                 MessageBox.Show(message, caption);
                 winner = true;
-
-                restart();
             }
         }
 
@@ -194,11 +217,12 @@ namespace BattleShip
 
             // Select button and mark it as hit or miss
             markButton(chosen, ref shipsCounter, ref ships);
+
         }
 
         private void computerHard()
         {
-            throw new NotImplementedException();
+            // TODO shoot diagonally
         }
 
         private void computerTurn()
@@ -207,11 +231,11 @@ namespace BattleShip
             turn = false;
 
             // Choose difficulty
-            if (difficulty == Difficulty.Easy)
+            if (difficulty.Equals(Difficulty.Easy))
             {
                 computerEasy();
             }
-            if (difficulty == Difficulty.Hard)
+            if (difficulty.Equals(Difficulty.Hard))
             {
                 computerHard();
             }
@@ -222,13 +246,29 @@ namespace BattleShip
 
         private void disableButtons()
         {
+            Button[] buttonsCoordinate = new Button[20];
+
+            Coordinate.Children.CopyTo(buttonsCoordinate, 0);
+
             for (int i = 0; i < 100; i++)
             {
                 buttonsAttack[i].IsEnabled = false;
                 buttonsPlayer[i].IsEnabled = false;
+
+                if (i < 20)
+                {
+                    buttonsCoordinate[i].IsEnabled = false;
+                }
             }
 
-            buttonAttack.IsEnabled = false;
+            buttonAttack.Visibility = Visibility.Collapsed;
+            buttonRestart.Visibility = Visibility.Visible;
+            buttonExit.Visibility = Visibility.Visible;
+        }
+
+        private void killerMode()
+        {
+            // TODO attack the player's ship, by shooting around the previous button
         }
 
         private void markButton(Button chosen, ref int[] counter, ref bool[] ships)
@@ -290,7 +330,7 @@ namespace BattleShip
                     MessageBox.Show(message, caption);
                     ships[index] = true;
 
-                    // Reset counter so as to not have it true when being checked
+                    // Reset counter so as to not have it true when being checked again
                     counter[index] = 0;
                 }
             }
@@ -347,8 +387,9 @@ namespace BattleShip
                 // Set buttons
                 for (int i = 0; i < size; i++)
                 {
-                    buttonsAttack[index + i].Content = boatName;
                     buttonsAttack[index + i].Tag = boatName;
+                    // FOR TESTING PURPOSES********************************
+                    buttonsAttack[index + i].Content = boatName;
                 }
             }
             // Orientation is vertical
@@ -379,32 +420,11 @@ namespace BattleShip
                 // Set buttons
                 for (int i = 0; i < size * 10; i += 10)
                 {
-                    buttonsAttack[index + i].Content = boatName;
                     buttonsAttack[index + i].Tag = boatName;
+                    // FOR TESTING PURPOSES********************************
+                    buttonsAttack[index + i].Content = boatName;
                 }
             }
-        }
-
-        private void restart()
-        {
-            // TODO Restart game. Go back to main menu, and add wins to file
-        }
-
-        private void textBoxXCoord_KeyDown(object sender, KeyEventArgs e)
-        {
-            // TODO only allow letters from A - J to be inputted
-            TextBox textBox = (TextBox)sender;
-            string text = textBox.Text;
-
-        }
-
-        private void textBoxYCoord_KeyDown(object sender, KeyEventArgs e)
-        {
-            // TODO only allow numbers from 1 - 10 to be inputted
-            TextBox textBox = (TextBox)sender;
-            string text = textBox.Text;
-
-
         }
     }
 }
