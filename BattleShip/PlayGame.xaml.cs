@@ -59,11 +59,11 @@ namespace BattleShip
             }
 
             // Set computer ships
-            setShip(5, "Aircraft_Carrier");
-            setShip(4, "Battleship");
-            setShip(3, "Submarine");
-            setShip(3, "Cruiser");
-            setShip(2, "Destroyer");
+            setShip(5, "Aircraft_Carrier", 1);
+            setShip(4, "Battleship", 2);
+            setShip(3, "Submarine", 3);
+            setShip(3, "Cruiser", 4);
+            setShip(2, "Destroyer", 5);
         }
 
         private void button_Clicked(object sender, EventArgs e)
@@ -355,9 +355,16 @@ namespace BattleShip
         }
         private void setShip(int size, string boatName)
         {
+            // Choose random number
             Random random = new Random();
-
-            int index = random.Next(10);
+            int index;
+            
+            do
+            {
+                index = random.Next(10);
+                number--;
+            } while (number != 0);
+            
             bool isChosen;
 
             // Orientation is horizontal
