@@ -353,7 +353,7 @@ namespace BattleShip
                 computerTurn();
             }
         }
-        private void setShip(int size, string boatName)
+        private void setShip(int size, string boatName, int number)
         {
             // Choose random number
             Random random = new Random();
