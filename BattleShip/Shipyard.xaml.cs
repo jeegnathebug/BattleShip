@@ -113,11 +113,23 @@ namespace BattleShip
                 if (orientation.Equals(Orientation.Right))
                 {
                     // Go through every button that will be chosen to see if it has already been chosen or not
+                    int counter = 1;
                     for (int i = 0; i < size; i++)
                     {
-                        if (index + i <= 99 && buttons[index + i].Tag != null)
+                        if (index + i <= 99)
                         {
-                            isChosen = true;
+                            if (buttons[index + i].Tag != null)
+                            {
+                                isChosen = true;
+                            }
+                        }
+                        else
+                        {
+                            if (buttons[index - counter].Tag != null)
+                            {
+                                isChosen = true;
+                            }
+                            counter++;
                         }
                     }
 
@@ -134,11 +146,23 @@ namespace BattleShip
                 else
                 {
                     // Go through every button that will be chosen to see if it has already been chosen or not
+                    int counter = 10;
                     for (int i = 0; i < size * 10; i += 10)
                     {
-                        if (index + i <= 99 && buttons[index + i].Tag != null)
+                        if (index + i <= 99)
                         {
-                            isChosen = true;
+                            if (buttons[index + i].Tag != null)
+                            {
+                                isChosen = true;
+                            }
+                        }
+                        else
+                        {
+                            if (buttons[index - counter].Tag != null)
+                            {
+                                isChosen = true;
+                            }
+                            counter+=10;
                         }
                     }
                     if (isChosen)
@@ -255,26 +279,23 @@ namespace BattleShip
 
         private void buttonRotate_Click(object sender, EventArgs e)
         {
-            if (nullCheck())
+            if (orientation == Orientation.Right)
             {
-                if (orientation == Orientation.Right)
-                {
-                    orientation = Orientation.Down;
-                }
-                else
-                {
-                    orientation = Orientation.Right;
-                }
-
-                labelOrientation.Content = "Orientation: " + orientation;
+                orientation = Orientation.Down;
             }
+            else
+            {
+                orientation = Orientation.Right;
+            }
+
+            labelOrientation.Content = "Orientation: " + orientation;
         }
 
         private void buttonSubmit_Click(object sender, EventArgs e)
         {
             if (!(aircraftCarrier && battleship && submarine && cruiser && destroyer))
             {
-                MessageBox.Show("All ships must be placed before proceeding", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("All ships must be placed before proceeding", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -289,7 +310,7 @@ namespace BattleShip
         {
             if (!item.IsEnabled)
             {
-                MessageBox.Show("You must first select a ship", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("You must first select a ship", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             else
