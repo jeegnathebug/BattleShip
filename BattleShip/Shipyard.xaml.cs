@@ -109,18 +109,19 @@ namespace BattleShip
                 bool isChosen = false;
 
                 // Invalid placement check
+                // Orientation is horizontal
                 if (orientation.Equals(Orientation.Right))
                 {
                     // Go through every button that will be chosen to see if it has already been chosen or not
                     for (int i = 0; i < size; i++)
                     {
-                        if (buttons[index + i].Tag != null)
+                        if (index + i <= 99 && buttons[index + i].Tag != null)
                         {
                             isChosen = true;
                         }
                     }
 
-                    if (((index + (size - 1)) % 10 < size - 1) || isChosen)
+                    if (isChosen)
                     {
                         MessageBox.Show("Invalid placement", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
@@ -129,18 +130,18 @@ namespace BattleShip
                         placed = true;
                     }
                 }
+                // Orientation is vertical
                 else
                 {
                     // Go through every button that will be chosen to see if it has already been chosen or not
                     for (int i = 0; i < size * 10; i += 10)
                     {
-                        if (index + i > 99 || buttons[index + i].Tag != null)
+                        if (index + i <= 99 && buttons[index + i].Tag != null)
                         {
                             isChosen = true;
                         }
                     }
-                    Console.WriteLine((index + size) / 10.0);
-                    if ((index / 10) + (size * 10) > 100 || isChosen)
+                    if (isChosen)
                     {
                         MessageBox.Show("Invalid placement", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
@@ -150,23 +151,78 @@ namespace BattleShip
                     }
                 }
 
+                Button[] chosenButtons = new Button[size];
                 // Disable chosen buttons
                 if (placed)
                 {
+                    // Orientation is horizontal
                     if (orientation.Equals(Orientation.Right))
                     {
+                        // If placed in two rows
+                        if (((index + (size - 1)) % 10 < size - 1))
+                        {
+                            int counter = 0, reverseCounter = 1;
+
+                            while ((index + counter) % 10 > 1)
+                            {
+                                Console.WriteLine((index + counter) % 10);
+                                chosenButtons[counter] = buttons[index + counter];
+                                counter++;
+                            }
+                            for (int i = counter; i < size; i++)
+                            {
+                                chosenButtons[i] = buttons[index - reverseCounter];
+                                reverseCounter++;
+                            }
+                        }
+                        // If placed in one row
+                        else
+                        {
+                            for (int i = 0; i < size; i++)
+                            {
+                                chosenButtons[i] = buttons[index + i];
+                            }
+                        }
+
                         for (int i = 0; i < size; i++)
                         {
-                            buttons[index + i].Content = boatName;
-                            buttons[index + i].Tag = boatName;
+                            chosenButtons[i].Content = boatName;
+                            chosenButtons[i].Tag = boatName;
                         }
                     }
+                    // Orientation is vertical
                     else
                     {
-                        for (int i = 0; i < size * 10; i += 10)
+                        // If placed in two columns
+                        if (index + (size * 10) > 100)
                         {
-                            buttons[index + i].Content = boatName;
-                            buttons[index + i].Tag = boatName;
+                            int counter = 0, reverseCounter = 10;
+                            while ((index / 10 + counter) % 100 < 10)
+                            {
+                                chosenButtons[counter] = buttons[index + counter * 10];
+                                counter++;
+                            }
+                            for (int i = counter; i < size; i++)
+                            {
+                                chosenButtons[i] = buttons[index - reverseCounter];
+                                reverseCounter += 10;
+                            }
+                        }
+                        // If placed in one column
+                        else
+                        {
+                            int counter = 0;
+                            for (int i = 0; i < size * 10; i += 10)
+                            {
+                                chosenButtons[counter] = buttons[index + i];
+                                counter++;
+                            }
+                        }
+
+                        for (int i = 0; i < size; i++)
+                        {
+                            chosenButtons[i].Content = boatName;
+                            chosenButtons[i].Tag = boatName;
                         }
                     }
 

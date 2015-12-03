@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,7 +11,7 @@ namespace BattleShip
     public partial class PlayGame : UserControl
     {
 
-        public event EventHandler restart;
+        public event EventHandler done;
 
         // Player's ship field
         private Button[] buttonsPlayer;
@@ -19,11 +21,11 @@ namespace BattleShip
         // Difficulty
         private Difficulty difficulty;
 
+        // Player name
+        private string name;
+
         // True if player's turn
         private bool turn = true;
-
-        // Indicates whether or not a winner has been chosen
-        private bool winner = false;
 
         // Computer's ships
         private bool[] shipsComp = new bool[5];
@@ -33,16 +35,23 @@ namespace BattleShip
         private bool[] ships = new bool[5];
         private int[] shipsCounter = new int[5];
 
-        public PlayGame(Difficulty difficulty, Button[] buttons)
+        public PlayGame()
         {
             InitializeComponent();
-            initializeGame(difficulty, buttons);
         }
 
-        private void initializeGame(Difficulty difficulty, Button[] buttons)
+        public PlayGame(Difficulty difficulty, Button[] buttons, string name)
+        {
+            InitializeComponent();
+            initializeGame(difficulty, buttons, name);
+        }
+
+        private void initializeGame(Difficulty difficulty, Button[] buttons, string name)
         {
             // Set difficulty
             this.difficulty = difficulty;
+            // Set name
+            this.name = name.ToLower().Replace(' ', '_');
 
             // Set button field arrays
             buttonsPlayer = new Button[100];
@@ -64,6 +73,32 @@ namespace BattleShip
             setShip(3, "Submarine", 3);
             setShip(3, "Cruiser", 4);
             setShip(2, "Destroyer", 5);
+        }
+
+        private int binarySearch(string[] players, string index)
+        {
+
+            int low = 0;
+            int high = players.Length - 1;
+
+            while (high >= low)
+            {
+                int middle = (low + high) / 2;
+
+                if (players[middle].CompareTo(index) == 0)
+                {
+                    return middle;
+                }
+                if (players[middle].CompareTo(index) < 0)
+                {
+                    low = middle + 1;
+                }
+                if (players[middle].CompareTo(index) > 0)
+                {
+                    high = middle - 1;
+                }
+            }
+            return -(low + 1);
         }
 
         private void button_Clicked(object sender, EventArgs e)
@@ -143,16 +178,16 @@ namespace BattleShip
             }
         }
 
-        private void buttonExit_Clicked(object sender, RoutedEventArgs e)
+        private void buttonExit_Clicked(object sender, EventArgs e)
         {
             Application.Current.Shutdown(0);
         }
 
         private void buttonRestart_Clicked(object sender, EventArgs e)
         {
-            if (restart != null)
+            if (done != null)
             {
-                restart(this, e);
+                done(this, e);
             }
         }
 
@@ -170,10 +205,11 @@ namespace BattleShip
             textBoxYCoord.Text = button.Content.ToString();
         }
 
-        private void checkWinner(string message, string caption)
+        private bool checkWinner(string message, string caption, string winnerName)
         {
             bool shipsSunk = true;
 
+            // Player turn
             if (turn)
             {
                 // Check if all computer ships have been sunk
@@ -182,6 +218,7 @@ namespace BattleShip
                     shipsSunk = shipsSunk && shipsComp[index];
                 }
             }
+            // Computer turn
             else
             {
                 // Check if all player ships have been sunk
@@ -197,8 +234,14 @@ namespace BattleShip
                 disableButtons();
 
                 MessageBox.Show(message, caption);
-                winner = true;
+
+                // Update file and show highscores
+                showHighScore(saveWins(winnerName));
+
+                return true;
             }
+
+            return false;
         }
 
         private void computerEasy()
@@ -230,7 +273,7 @@ namespace BattleShip
             // Set computer turn
             turn = false;
 
-            // Choose difficulty
+            // Choose difficulty and do turn
             if (difficulty.Equals(Difficulty.Easy))
             {
                 computerEasy();
@@ -241,7 +284,7 @@ namespace BattleShip
             }
 
             // Check for winner
-            checkWinner("All of your ships have been sunk!", "Loser");
+            checkWinner("All of your ships have been sunk!", "Loser", "computer");
         }
 
         private void disableButtons()
@@ -290,13 +333,13 @@ namespace BattleShip
                 // Player turn
                 if (turn)
                 {
-                    message = "You sunk my " + boatName;
+                    message = "You sunk my " + boatName.Replace("_", " ");
                     caption = "Success";
                 }
                 // Computer turn
                 else
                 {
-                    message = "You're " + boatName + " has been sunk!";
+                    message = "You're " + boatName.Replace("_", " ") + " has been sunk!";
                     caption = "Oh no!";
                 }
 
@@ -345,26 +388,89 @@ namespace BattleShip
             markButton(chosen, ref shipsCounterComp, ref shipsComp);
 
             // Check for winner
-            checkWinner("You sank all the ships!", "Winner!");
+            bool win = checkWinner("You sank all the ships!", "Winner!", name);
 
             // Computer move
-            if (!winner)
+            if (!win)
             {
                 computerTurn();
             }
         }
+
+        private List<string> saveWins(string winnerName)
+        {
+            // Filename to save score
+            string path = @"score.txt";
+
+            // Create file if it does not exist
+            if (!File.Exists(path))
+            {
+                FileStream stream = File.Create(path);
+                stream.Close();
+            }
+
+            // Get all previous players
+            List<string> previousPlayers = new List<string>(File.ReadAllLines(path));
+            string[] previousPlayer = { name, "0", "0" };
+            string[] playerNames;
+            int index;
+
+            int wins = 0;
+            int losses = 0;
+
+            // Get name and index of previous player
+            playerNames = new string[previousPlayers.Count];
+
+            for (index = 0; index < previousPlayers.Count; index++)
+            {
+                playerNames[index] = previousPlayers[index].Split(' ')[0];
+            }
+
+            // Find index of player
+            index = binarySearch(playerNames, name);
+
+            // Player already exists
+            if (index > -1)
+            {
+                previousPlayer = previousPlayers[index].Split();
+                previousPlayers.RemoveAt(index);
+            }
+            else
+            {
+                index = -(index + 1);
+            }
+
+            // Set wins or losses
+            if (winnerName.Equals("computer"))
+            {
+                losses = int.Parse(previousPlayer[2]) + 1;
+            }
+            else
+            {
+                wins = int.Parse(previousPlayer[1]) + 1;
+            }
+
+            // Add to array
+            previousPlayers.Insert(index, name + " " + wins + " " + losses);
+
+            // Write back to file
+            File.WriteAllLines(path, previousPlayers);
+
+            return previousPlayers;
+        }
+
         private void setShip(int size, string boatName, int number)
         {
             // Choose random number
             Random random = new Random();
             int index;
-            
+
             do
             {
                 index = random.Next(10);
                 number--;
             } while (number != 0);
-            
+
             bool isChosen;
 
             // Orientation is horizontal
@@ -432,6 +538,13 @@ namespace BattleShip
                     buttonsAttack[index + i].Content = boatName;
                 }
             }
+        }
+
+        private void showHighScore(List<string> highScores)
+        {
+            HighScoreWindow highScoreWindow = new HighScoreWindow(highScores);
+
+            highScoreWindow.ShowDialog();
         }
     }
 }

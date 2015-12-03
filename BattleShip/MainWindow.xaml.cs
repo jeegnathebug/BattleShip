@@ -18,7 +18,6 @@ namespace BattleShip
         PlayGame playGame;
 
         public Difficulty difficulty;
-
         string name;
 
         public MainWindow()
@@ -77,7 +76,7 @@ namespace BattleShip
             WindowState = WindowState.Maximized;
 
             // Initialize game play phase
-            playGame = new PlayGame(difficulty, shipyard.buttons);
+            playGame = new PlayGame(difficulty, shipyard.buttons, name);
 
             // Add game field
             grid.Children.Add(playGame);
@@ -85,7 +84,7 @@ namespace BattleShip
             playGame.VerticalAlignment = VerticalAlignment.Center;
 
             // Once buttonRestart is clicked
-            playGame.restart += new EventHandler(restart);
+            playGame.done += new EventHandler(restart);
         }
 
         private void restart(object sender, EventArgs e)
