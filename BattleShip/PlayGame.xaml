@@ -6,6 +6,11 @@
              xmlns:local="clr-namespace:BattleShip"
              mc:Ignorable="d" 
              d:DesignHeight="800" Width="1250">
+    <UserControl.Resources>
+        <Style x:Key="style" TargetType="Button">
+            <Setter Property="Foreground" Value="BlueViolet"/>
+        </Style>
+    </UserControl.Resources>
     <Grid Margin="0,0,0,0">
         <Grid x:Name="PlayerShips" Margin="139,100,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="446" Height="446" ScrollViewer.VerticalScrollBarVisibility="Disabled">
             <Grid.RowDefinitions>
@@ -131,7 +136,7 @@
             <Button x:Name="buttonG10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Grid.Column="6" Grid.Row="9"/>
             <Button x:Name="buttonH10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Grid.Column="7" Grid.Row="9"/>
             <Button x:Name="buttonI10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Grid.Column="8" Grid.Row="9"/>
-            <Button x:Name="buttonJ10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Grid.Column="9" Grid.Row="9"/>
+            <Button x:Name="buttonJ10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Grid.Column="9" Grid.Row="9" Foreground="{x:Null}"/>
         </Grid>
         <Grid x:Name="PlayerAttack" Margin="677,100,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="446" Height="446" ScrollViewer.VerticalScrollBarVisibility="Disabled">
             <Grid.RowDefinitions>
@@ -262,13 +267,13 @@
         <Label x:Name="labelTitle" Content="Play" FontSize="26.667" Margin="30,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Label x:Name="labelInfo" Content="Choose a position to attack" HorizontalAlignment="Left" Margin="88,34,0,0" VerticalAlignment="Top" FontSize="13.333"/>
 
-        <Label x:Name="labelA" Content="A" HorizontalAlignment="Left" Margin="149,76,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelB" Content="B" HorizontalAlignment="Left" Margin="194,76,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelA" Content="A" HorizontalAlignment="Left" Margin="150,76,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelB" Content="B" HorizontalAlignment="Left" Margin="195,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelC" Content="C" HorizontalAlignment="Left" Margin="240,76,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelD" Content="D" HorizontalAlignment="Left" Margin="284,76,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelE" Content="E" HorizontalAlignment="Left" Margin="330,76,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelF" Content="F" HorizontalAlignment="Left" Margin="375,76,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelG" Content="G" HorizontalAlignment="Left" Margin="419,76,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelD" Content="D" HorizontalAlignment="Left" Margin="285,76,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelE" Content="E" HorizontalAlignment="Left" Margin="331,76,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelF" Content="F" HorizontalAlignment="Left" Margin="376,76,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelG" Content="G" HorizontalAlignment="Left" Margin="420,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelH" Content="H" HorizontalAlignment="Left" Margin="464,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelI" Content="I" HorizontalAlignment="Left" Margin="512,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelJ" Content="J" HorizontalAlignment="Left" Margin="557,76,0,0" VerticalAlignment="Top"/>
@@ -277,31 +282,31 @@
         <Label x:Name="labelCComp" Content="C" HorizontalAlignment="Left" Margin="778,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelDComp" Content="D" HorizontalAlignment="Left" Margin="823,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelEComp" Content="E" HorizontalAlignment="Left" Margin="869,76,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelFComp" Content="F" HorizontalAlignment="Left" Margin="913,76,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelGComp" Content="G" HorizontalAlignment="Left" Margin="957,76,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelFComp" Content="F" HorizontalAlignment="Left" Margin="914,76,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelGComp" Content="G" HorizontalAlignment="Left" Margin="958,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelHComp" Content="H" HorizontalAlignment="Left" Margin="1002,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelIComp" Content="I" HorizontalAlignment="Left" Margin="1050,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelJComp" Content="J" HorizontalAlignment="Left" Margin="1095,76,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label1" Content="1" HorizontalAlignment="Left" Margin="118,108,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label2" Content="2" HorizontalAlignment="Left" Margin="118,153,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label3" Content="3" HorizontalAlignment="Left" Margin="118,198,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label4" Content="4" HorizontalAlignment="Left" Margin="118,243,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label1" Content="1" HorizontalAlignment="Left" Margin="118,107,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label2" Content="2" HorizontalAlignment="Left" Margin="118,152,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label3" Content="3" HorizontalAlignment="Left" Margin="118,197,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label4" Content="4" HorizontalAlignment="Left" Margin="118,242,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label5" Content="5" HorizontalAlignment="Left" Margin="118,287,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label6" Content="6" HorizontalAlignment="Left" Margin="118,333,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label7" Content="7" HorizontalAlignment="Left" Margin="118,379,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label8" Content="8" HorizontalAlignment="Left" Margin="118,423,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label9" Content="9" HorizontalAlignment="Left" Margin="118,469,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label10" Content="10" HorizontalAlignment="Left" Margin="111,513,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label1Comp" Content="1" HorizontalAlignment="Left" Margin="656,108,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label2Comp" Content="2" HorizontalAlignment="Left" Margin="656,153,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label3Comp" Content="3" HorizontalAlignment="Left" Margin="656,198,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label4Comp" Content="4" HorizontalAlignment="Left" Margin="656,243,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label6" Content="6" HorizontalAlignment="Left" Margin="118,332,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label7" Content="7" HorizontalAlignment="Left" Margin="118,377,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label8" Content="8" HorizontalAlignment="Left" Margin="118,422,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label9" Content="9" HorizontalAlignment="Left" Margin="118,467,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label10" Content="10" HorizontalAlignment="Left" Margin="111,512,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label1Comp" Content="1" HorizontalAlignment="Left" Margin="656,107,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label2Comp" Content="2" HorizontalAlignment="Left" Margin="656,152,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label3Comp" Content="3" HorizontalAlignment="Left" Margin="656,197,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label4Comp" Content="4" HorizontalAlignment="Left" Margin="656,242,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label5Comp" Content="5" HorizontalAlignment="Left" Margin="656,287,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label6Comp" Content="6" HorizontalAlignment="Left" Margin="656,333,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label7Comp" Content="7" HorizontalAlignment="Left" Margin="656,379,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label8Comp" Content="8" HorizontalAlignment="Left" Margin="656,423,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label9Comp" Content="9" HorizontalAlignment="Left" Margin="656,469,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label10Comp" Content="10" HorizontalAlignment="Left" Margin="649,513,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label6Comp" Content="6" HorizontalAlignment="Left" Margin="656,332,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label7Comp" Content="7" HorizontalAlignment="Left" Margin="656,377,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label8Comp" Content="8" HorizontalAlignment="Left" Margin="656,422,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label9Comp" Content="9" HorizontalAlignment="Left" Margin="656,467,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label10Comp" Content="10" HorizontalAlignment="Left" Margin="649,512,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelCoordinates" Content="Enter coordinates" HorizontalAlignment="Left" Margin="581,616,0,0" VerticalAlignment="Top"/>
         <Grid x:Name="Coordinate" Margin="195,645,0,88" HorizontalAlignment="Left" Width="350">
             <Grid.RowDefinitions>

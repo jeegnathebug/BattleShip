@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace BattleShip
 {
@@ -13,10 +14,12 @@ namespace BattleShip
     {
         public readonly ShipName name;
         public readonly int size;
+        public Orientation orientation;
         public int hits = 0;
         public bool sunk = false;
+        public Image image;
 
-        public List<int> location;
+        public List<int> location = new List<int>();
         public bool placed = false;
 
         public Ship(ShipName name, int size)
@@ -31,7 +34,7 @@ namespace BattleShip
         Aircraft_Carrier, Battleship, Submarine, Cruiser, Destroyer
     }
 
-    enum Orientation
+    public enum Orientation
     {
         Vertical, Horizontal
     }
@@ -51,7 +54,7 @@ namespace BattleShip
 
         // Ships
         public Ship[] ships = new Ship[5];
-        private Ship aircraftCarrier = new Ship(ShipName.Aircraft_Carrier, 5);
+        private Ship aircraft_carrier = new Ship(ShipName.Aircraft_Carrier, 5);
         private Ship battleship = new Ship(ShipName.Battleship, 4);
         private Ship submarine = new Ship(ShipName.Submarine, 3);
         private Ship cruiser = new Ship(ShipName.Cruiser, 3);
@@ -69,15 +72,22 @@ namespace BattleShip
         {
             InitializeComponent();
 
+            // Set ship images
+            aircraft_carrier.image = aircraft_carrierImage;
+            battleship.image = battleshipImage;
+            submarine.image = submarineImage;
+            cruiser.image = cruiserImage;
+            destroyer.image = destroyerImage;
+
             // Set ListBoxItem's Tags
-            Aircraft_Carrier.Tag = aircraftCarrier;
+            Aircraft_Carrier.Tag = aircraft_carrier;
             Battleship.Tag = battleship;
             Submarine.Tag = submarine;
             Cruiser.Tag = cruiser;
             Destroyer.Tag = destroyer;
 
             // Initialize ship array
-            ships[0] = aircraftCarrier;
+            ships[0] = aircraft_carrier;
             ships[1] = battleship;
             ships[2] = submarine;
             ships[3] = cruiser;
@@ -85,7 +95,7 @@ namespace BattleShip
 
             buttons = new Button[100];
             gameField.Children.CopyTo(buttons, 0);
-            ship = aircraftCarrier;
+            ship = aircraft_carrier;
         }
 
         /// <summary>
@@ -116,7 +126,7 @@ namespace BattleShip
         {
             reset();
 
-            randomize(aircraftCarrier, randomOrientation(1));
+            randomize(aircraft_carrier, randomOrientation(1));
             randomize(battleship, randomOrientation(2));
             randomize(submarine, randomOrientation(3));
             randomize(cruiser, randomOrientation(4));
@@ -159,7 +169,7 @@ namespace BattleShip
         /// <param name="e">The Event</param>
         private void buttonSubmit_Click(object sender, EventArgs e)
         {
-            if (!(aircraftCarrier.placed && battleship.placed && submarine.placed && cruiser.placed && destroyer.placed))
+            if (!(aircraft_carrier.placed && battleship.placed && submarine.placed && cruiser.placed && destroyer.placed))
             {
                 MessageBox.Show("All ships must be placed before proceeding", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -184,13 +194,36 @@ namespace BattleShip
             // Reset chosen buttons
             for (int i = 0; i < ship.size; i++)
             {
-                buttons[ship.location[i]].Content = "";
+                buttons[ship.location[i]].Opacity = 100;
                 buttons[ship.location[i]].Tag = null;
+                buttons[ship.location[i]].IsEnabled = true;
             }
 
             // Reset ship
             ship.placed = false;
             ship.location = null;
+
+            // Reset image
+            gameField.Children.RemoveRange(gameField.Children.Count - 2, gameField.Children.Count - 1);
+
+            switch (ship.name)
+            {
+                case ShipName.Aircraft_Carrier:
+                    ship.image = aircraft_carrierImage;
+                    break;
+                case ShipName.Battleship:
+                    ship.image = battleshipImage;
+                    break;
+                case ShipName.Submarine:
+                    ship.image = submarineImage;
+                    break;
+                case ShipName.Cruiser:
+                    ship.image = cruiserImage;
+                    break;
+                case ShipName.Destroyer:
+                    ship.image = destroyerImage;
+                    break;
+            }
 
             // Reset ListItemBox
             ListBoxItem[] items = { Aircraft_Carrier, Battleship, Submarine, Cruiser, Destroyer };
@@ -284,7 +317,10 @@ namespace BattleShip
                 for (int i = 0; i < size; i++)
                 {
                     buttons[index + i].Tag = ship;
-                    buttons[index + i].Content = ship.name;
+                    buttons[index + i].Opacity = 0;
+                    buttons[index + i].IsEnabled = false;
+
+                    ship.location.Add(index + i);
                 }
             }
             // Orientation is vertical
@@ -313,10 +349,19 @@ namespace BattleShip
                 for (int i = 0; i < size * 10; i += 10)
                 {
                     buttons[index + i].Tag = ship;
-                    buttons[index + i].Content = ship.name;
+                    buttons[index + i].Opacity = 0;
+                    buttons[index + i].IsEnabled = false;
+
+                    ship.location.Add(index + i);
                 }
             }
 
+            // Set image
+            setImage(index, ship, orientation);
+            setImage(index, ship, orientation);
+
+            ship.location.Sort();
+            ship.orientation = orientation;
             update(ship, false);
         }
 
@@ -363,18 +408,80 @@ namespace BattleShip
             Destroyer.IsEnabled = true;
 
             // Unset placed ships
-            aircraftCarrier.placed = false;
+            aircraft_carrier.placed = false;
             battleship.placed = false;
             submarine.placed = false;
             cruiser.placed = false;
             destroyer.placed = false;
 
+            // Remove images from field
+            gameField.Children.RemoveRange(100, gameField.Children.Count - 100);
+
+            // Reset ship images
+            aircraft_carrier.image = aircraft_carrierImage;
+            battleship.image = battleshipImage;
+            submarine.image = submarineImage;
+            cruiser.image = cruiserImage;
+            destroyer.image = destroyerImage;
+
             // Enable all buttons
             foreach (Button b in buttons)
             {
-                b.Content = "";
                 b.Tag = null;
+                b.Opacity = 100;
+                b.IsEnabled = true;
             }
+        }
+
+        /// <summary>
+        /// Sets image of placed ship on button field
+        /// </summary>
+        /// <param name="index">The index of the first button chosen, where the front of the image will be placed</param>
+        /// <param name="ship">The ship to be placed</param>
+        /// <param name="orientation">The orientation of the ship</param>
+        private void setImage(int index, Ship ship, Orientation orientation)
+        {
+            // Copy image
+            Image image = new Image();
+            image.Source = ship.image.Source;
+            image.Stretch = ship.image.Stretch;
+
+            // Set properties
+            int span = ship.size;
+            int row = Grid.GetRow(buttons[index]);
+            int column = Grid.GetColumn(buttons[index]);
+            Grid.SetRow(image, row);
+            Grid.SetColumn(image, column);
+
+            if (orientation.Equals(Orientation.Vertical))
+            {
+                // Rotate image
+                image.LayoutTransform = new RotateTransform(90.0, 0, 0);
+                Grid.SetRowSpan(image, span);
+                image.Height = ship.image.Width;
+                image.Width = ship.image.Height;
+            }
+            else
+            {
+                Grid.SetColumnSpan(image, span);
+                image.Height = ship.image.Height;
+                image.Width = ship.image.Width;
+            }
+
+            // Add image to location
+            gameField.Children.Add(image);
+
+
+            ship.image = new Image();
+            ship.image.Stretch = image.Stretch;
+            ship.image.Source = image.Source;
+            ship.image.Height = image.Height;
+            ship.image.Width = image.Width;
+            ship.image.LayoutTransform = image.LayoutTransform;
+            Grid.SetRow(ship.image, row);
+            Grid.SetColumn(ship.image, column);
+            Grid.SetRowSpan(ship.image, Grid.GetRowSpan(image));
+            Grid.SetColumnSpan(ship.image, Grid.GetColumnSpan(image));
         }
 
         /// <summary>
@@ -518,16 +625,24 @@ namespace BattleShip
                     }
                 }
 
+                // Sort array
+                Array.Sort(chosenButtonIndexes);
+
+                // Set image
+                setImage(chosenButtonIndexes[0], ship, orientation);
+                setImage(chosenButtonIndexes[0], ship, orientation);
+
                 // Select buttons
                 ship.location = new List<int>(chosenButtonIndexes);
                 for (int i = 0; i < size; i++)
                 {
-                    buttons[chosenButtonIndexes[i]].Content = ship.name;
                     buttons[chosenButtonIndexes[i]].Tag = ship;
-
-                    ship.location.Add(i);
+                    buttons[chosenButtonIndexes[i]].Opacity = 0;
+                    buttons[chosenButtonIndexes[i]].IsEnabled = false;
                 }
 
+                ship.orientation = orientation;
+                ship.location.Sort();
                 update(ship, true);
             }
         }
@@ -559,7 +674,7 @@ namespace BattleShip
                 Cruiser.IsEnabled = false;
                 Destroyer.IsEnabled = false;
 
-                aircraftCarrier.placed = true;
+                aircraft_carrier.placed = true;
                 battleship.placed = true;
                 submarine.placed = true;
                 cruiser.placed = true;

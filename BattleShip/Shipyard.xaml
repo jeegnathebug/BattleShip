@@ -16,19 +16,19 @@
                 </Style>
             </ListBox.Resources>
             <ListBoxItem x:Name="Aircraft_Carrier" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image Source="aircraftCarrier.bmp" Width="220"/>
+                <Image x:Name="aircraft_carrierImage" Source="aircraft_carrier.png" Width="220"/>
             </ListBoxItem>
             <ListBoxItem x:Name="Battleship" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image Source="battleship.bmp" Width="175"/>
+                <Image x:Name="battleshipImage" Source="battleship.png" Width="175"/>
             </ListBoxItem>
             <ListBoxItem x:Name="Submarine" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image Source="submarine.bmp" Width="130"/>
+                <Image x:Name="submarineImage" Source="submarine.png" Width="130"/>
             </ListBoxItem>
             <ListBoxItem x:Name="Cruiser" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image Source="cruiser.bmp" Width="130"/>
+                <Image x:Name="cruiserImage" Source="cruiser.png" Width="130"/>
             </ListBoxItem>
             <ListBoxItem x:Name="Destroyer" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image Source="destroyer.bmp" Width="85"/>
+                <Image x:Name="destroyerImage" Source="destroyer.png" Width="85"/>
             </ListBoxItem>
         </ListBox>
         <Button x:Name="buttonReset" Content="Reset" HorizontalAlignment="Left" Margin="404,545,0,0" VerticalAlignment="Top" Width="74" Height="40" Click="buttonReset_Click"/>
@@ -120,7 +120,7 @@
             <Button x:Name="buttonF6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="5"/>
             <Button x:Name="buttonG6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="6"/>
             <Button x:Name="buttonH6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="7"/>
-            <Button x:Name="buttonI6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="7" Grid.ColumnSpan="2" Margin="43,0,0,0"/>
+            <Button x:Name="buttonI6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="8"/>
             <Button x:Name="buttonJ6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="9"/>
             <Button x:Name="buttonA7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.ColumnSpan="2"/>
             <Button x:Name="buttonB7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="1"/>
@@ -150,7 +150,7 @@
             <Button x:Name="buttonF9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="5"/>
             <Button x:Name="buttonG9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="6"/>
             <Button x:Name="buttonH9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="7"/>
-            <Button x:Name="buttonI9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="7" Grid.ColumnSpan="2" Margin="43,0,0,0"/>
+            <Button x:Name="buttonI9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="8"/>
             <Button x:Name="buttonJ9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="9"/>
             <Button x:Name="buttonA10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.ColumnSpan="2"/>
             <Button x:Name="buttonB10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="1"/>
@@ -166,25 +166,25 @@
         <Label x:Name="labelOrientation" Content="Orientation: Right" HorizontalAlignment="Left" Margin="101,512,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelSize" Content="" HorizontalAlignment="Left" Margin="101,538,0,0" VerticalAlignment="Top" Width="104"/>
         <Label x:Name="labelBoat" Content="" HorizontalAlignment="Left" Margin="101,564,0,0" VerticalAlignment="Top" Width="104"/>
-        <Label x:Name="label1" Content="1" HorizontalAlignment="Left" Margin="295,68,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label2" Content="2" HorizontalAlignment="Left" Margin="295,114,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label3" Content="3" HorizontalAlignment="Left" Margin="295,158,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label4" Content="4" HorizontalAlignment="Left" Margin="295,203,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label5" Content="5" HorizontalAlignment="Left" Margin="295,248,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label6" Content="6" HorizontalAlignment="Left" Margin="295,294,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label7" Content="7" HorizontalAlignment="Left" Margin="295,338,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label8" Content="8" HorizontalAlignment="Left" Margin="295,384,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label9" Content="9" HorizontalAlignment="Left" Margin="295,430,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label10" Content="10" HorizontalAlignment="Left" Margin="288,474,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelA" Content="A" HorizontalAlignment="Left" Margin="324,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelB" Content="B" HorizontalAlignment="Left" Margin="370,34,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label1" Content="1" HorizontalAlignment="Left" Margin="295,67,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label2" Content="2" HorizontalAlignment="Left" Margin="295,112,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label3" Content="3" HorizontalAlignment="Left" Margin="295,157,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label4" Content="4" HorizontalAlignment="Left" Margin="295,202,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label5" Content="5" HorizontalAlignment="Left" Margin="295,247,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label6" Content="6" HorizontalAlignment="Left" Margin="295,292,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label7" Content="7" HorizontalAlignment="Left" Margin="295,337,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label8" Content="8" HorizontalAlignment="Left" Margin="295,382,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label9" Content="9" HorizontalAlignment="Left" Margin="295,427,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label10" Content="10" HorizontalAlignment="Left" Margin="288,472,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelA" Content="A" HorizontalAlignment="Left" Margin="326,34,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelB" Content="B" HorizontalAlignment="Left" Margin="372,34,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelC" Content="C" HorizontalAlignment="Left" Margin="417,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelD" Content="D" HorizontalAlignment="Left" Margin="460,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelE" Content="E" HorizontalAlignment="Left" Margin="507,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelF" Content="F" HorizontalAlignment="Left" Margin="552,34,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelD" Content="D" HorizontalAlignment="Left" Margin="462,34,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelE" Content="E" HorizontalAlignment="Left" Margin="508,34,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelF" Content="F" HorizontalAlignment="Left" Margin="553,34,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelG" Content="G" HorizontalAlignment="Left" Margin="596,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelH" Content="H" HorizontalAlignment="Left" Margin="640,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelI" Content="I" HorizontalAlignment="Left" Margin="689,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelJ" Content="J" HorizontalAlignment="Left" Margin="732,34,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelH" Content="H" HorizontalAlignment="Left" Margin="641,34,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelI" Content="I" HorizontalAlignment="Left" Margin="690,34,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelJ" Content="J" HorizontalAlignment="Left" Margin="733,34,0,0" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

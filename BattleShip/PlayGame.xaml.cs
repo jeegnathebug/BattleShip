@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace BattleShip
 {
@@ -87,6 +89,13 @@ namespace BattleShip
             buttonsAttack = new Button[100];
             PlayerAttack.Children.CopyTo(buttonsAttack, 0);
 
+            // Set player buttons
+            for (int i = 0; i < 100; i++)
+            {
+                buttonsPlayer[i].Opacity = buttons[i].Opacity;
+                buttonsPlayer[i].Tag = buttons[i].Tag;
+            }
+
             // Set player ships
             aircraftCarrierPlayer = ships[0];
             battleshipPlayer = ships[1];
@@ -107,12 +116,17 @@ namespace BattleShip
             labelPlayerCruiser.Tag = cruiserPlayer;
             labelPlayerDestroyer.Tag = destroyerPlayer;
 
-            // Set player buttons
-            for (int i = 0; i < 100; i++)
-            {
-                buttonsPlayer[i].Content = buttons[i].Content;
-                buttonsPlayer[i].Tag = buttons[i].Tag;
-            }
+            // Add images
+            setImage(aircraftCarrierPlayer);
+            setImage(aircraftCarrierPlayer);
+            setImage(battleshipPlayer);
+            setImage(battleshipPlayer);
+            setImage(submarinePlayer);
+            setImage(submarinePlayer);
+            setImage(cruiserPlayer);
+            setImage(cruiserPlayer);
+            setImage(destroyerPlayer);
+            setImage(destroyerPlayer);
 
             // Set computer ships
             setShip(aircraftCarrierComputer, randomOrientation(1));
@@ -658,17 +672,27 @@ namespace BattleShip
         {
             // Select button
             chosen.IsEnabled = false;
+
             Ship ship = (Ship)chosen.Tag;
+            Image image = new Image();
 
             // Shot missed
             if (ship == null)
             {
+                Uri src = new Uri(@"miss.png", UriKind.Relative);
+                BitmapImage img = new BitmapImage(src);
+                image.Source = img;
+
                 // Set button
-                chosen.Content = "o";
+                setHit(chosen, image);
             }
             // Shot hit
             else
             {
+                Uri src = new Uri(@"hit.png", UriKind.Relative);
+                BitmapImage img = new BitmapImage(src);
+                image.Source = img;
+
                 // Set messages to display
                 string boatName = ship.name.ToString();
                 string message, caption;
@@ -699,7 +723,7 @@ namespace BattleShip
                 }
 
                 // Set button
-                chosen.Content = "x";
+                setHit(chosen, image);
 
                 ship.hits++;
 
@@ -830,6 +854,79 @@ namespace BattleShip
         }
 
         /// <summary>
+        /// Applies the given image to the given button to either one of the button fields depending on the turn
+        /// </summary>
+        private void setHit(Button button, Image image)
+        {
+            int row = Grid.GetRow(button);
+            int column = Grid.GetColumn(button);
+
+            Grid.SetRow(image, row);
+            Grid.SetColumn(image, column);
+
+            if (turn)
+            {
+                PlayerAttack.Children.Add(image);
+            }
+            else
+            {
+                PlayerShips.Children.Add(image);
+            }
+        }
+
+        /// <summary>
+        /// Sets image of placed ship on button field
+        /// </summary>
+        /// <param name="index">The index of the first button chosen, where the front of the image will be placed</param>
+        /// <param name="ship">The ship to be placed</param>
+        /// <param name="orientation">The orientation of the ship</param>
+        private void setImage(Ship ship)
+        {
+            // Copy image
+            Image image = new Image();
+            image.Source = ship.image.Source;
+            image.Stretch = ship.image.Stretch;
+            int index = ship.location[0];
+
+            // Set properties
+            int span = ship.size;
+            int row = Grid.GetRow(buttonsPlayer[index]);
+            int column = Grid.GetColumn(buttonsPlayer[index]);
+            Grid.SetRow(image, row);
+            Grid.SetColumn(image, column);
+
+            if (ship.orientation.Equals(Orientation.Vertical))
+            {
+                // Rotate image
+                image.LayoutTransform = new RotateTransform(90.0, 0, 0);
+                Grid.SetRowSpan(image, span);
+                image.Height = ship.image.Width;
+                image.Width = ship.image.Height;
+            }
+            else
+            {
+                Grid.SetColumnSpan(image, span);
+                image.Height = ship.image.Height;
+                image.Width = ship.image.Width;
+            }
+
+            // Add image to location
+            PlayerShips.Children.Add(image);
+
+
+            ship.image = new Image();
+            ship.image.Stretch = image.Stretch;
+            ship.image.Source = image.Source;
+            ship.image.Height = image.Height;
+            ship.image.Width = image.Width;
+            ship.image.LayoutTransform = image.LayoutTransform;
+            Grid.SetRow(ship.image, row);
+            Grid.SetColumn(ship.image, column);
+            Grid.SetRowSpan(ship.image, Grid.GetRowSpan(image));
+            Grid.SetColumnSpan(ship.image, Grid.GetColumnSpan(image));
+        }
+
+        /// <summary>
         /// Randomly places boat
         /// </summary>
         /// <param name="ship">The ship to be placed</param>
@@ -870,8 +967,6 @@ namespace BattleShip
                 for (int i = 0; i < size; i++)
                 {
                     buttonsAttack[index + i].Tag = ship;
-                    // FOR TESTING PURPOSES********************************
-                    //buttonsAttack[index + i].Content = ship.name;
                 }
             }
             // Orientation is vertical
@@ -903,8 +998,6 @@ namespace BattleShip
                 for (int i = 0; i < size * 10; i += 10)
                 {
                     buttonsAttack[index + i].Tag = ship;
-                    // FOR TESTING PURPOSES********************************
-                    //buttonsAttack[index + i].Content = ship.name;
                 }
             }
         }
