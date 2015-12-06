@@ -15,6 +15,6 @@
         <RadioButton x:Name="radioButtonLegendary" Content="Legendary" GroupName="difficulty" Margin="84,194,50,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="76"/>
         <Label x:Name="labelWelcome" Content="Welcome to Battleship" HorizontalAlignment="Center" Margin="40,20,40,0" VerticalAlignment="Top"/>
         <Label x:Name="labelName" Content="Enter name" HorizontalAlignment="Center" Margin="0,46,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBoxName" HorizontalAlignment="Center" Height="23" Margin="55,69,55,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100"/>
+        <TextBox x:Name="textBoxName" HorizontalAlignment="Center" Height="23" Margin="55,69,55,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" MaxLines="1" MaxLength="15"/>
     </Grid>
 </UserControl>

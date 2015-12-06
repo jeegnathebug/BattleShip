@@ -101,13 +101,7 @@ namespace BattleShip
                 int index = -1;
 
                 // Find index of chosen button in array
-                for (int i = 0; i < 100; i++)
-                {
-                    if (buttons[i].Name == chosen.Name)
-                    {
-                        index = i;
-                    }
-                }
+                index = Array.IndexOf(buttons, chosen);
 
                 setShip(ship, index);
             }

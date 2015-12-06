@@ -25,6 +25,10 @@ namespace BattleShip
         private List<int> computerMoves = new List<int>();
         // Computer's next possible moves
         private List<int> potentialAttacks = new List<int>();
+        // Index of last hit
+        private int lastHitIndex = -1;
+        // Boat hit
+        private Ship lastHitShip = new Ship(ShipName.Aircraft_Carrier, 99);
 
         // Player's ship field
         private Button[] buttonsPlayer;
@@ -119,7 +123,7 @@ namespace BattleShip
         }
 
         /// <summary>
-        /// Binary search fro player names
+        /// Binary search for player names
         /// </summary>
         /// <param name="players">A list of player names</param>
         /// <param name="index">The name for which to search</param>
@@ -526,12 +530,12 @@ namespace BattleShip
             else
             {
                 // Last move was a hit
-                //if (computerMoves.Count != 0 && lastBoatHit != null)
+                if (computerMoves.Count != 0 && lastHitIndex > -1)
                 {
-                    //    chosen = killerMode();
+                    chosen = killerMode();
                 }
                 // Go to default difficulty move
-                //else
+                if (chosen == null)
                 {
                     // Choose difficulty
                     if (difficulty.Equals(Difficulty.Easy))
@@ -547,6 +551,13 @@ namespace BattleShip
                         chosen = computerHard();
                     }
                 }
+            }
+
+            // If move was a hit
+            if (chosen.Tag != null)
+            {
+                lastHitIndex = Array.IndexOf(buttonsPlayer, chosen);
+                lastHitShip = (Ship)chosen.Tag;
             }
 
             markButton(chosen);
@@ -585,46 +596,55 @@ namespace BattleShip
         /// </summary>
         private Button killerMode()
         {
-            // Last played button, which was a hit
-            int index = computerMoves[computerMoves.Count - 1];
+            if (lastHitShip.sunk)
+            {
+                potentialAttacks.Clear();
+            }
 
             // Add to hit list
-            if (((index + 1) % 9 != 0) && buttonsPlayer[index + 1].IsEnabled)
+            if (((lastHitIndex + 1) % 9 != 0) && buttonsPlayer[lastHitIndex + 1].IsEnabled)
             {
-                potentialAttacks.Add(index + 1);
+                potentialAttacks.Add(lastHitIndex + 1);
             }
-            if (((index - 1) % 10 != 0) && buttonsPlayer[index - 1].IsEnabled)
+            if (((lastHitIndex - 1) % 10 != 0) && buttonsPlayer[lastHitIndex - 1].IsEnabled)
             {
-                potentialAttacks.Add(index - 1);
+                potentialAttacks.Add(lastHitIndex - 1);
             }
-            if (((index + 10) < 100) && buttonsPlayer[index + 10].IsEnabled)
+            if (((lastHitIndex + 10) <= 99) && buttonsPlayer[lastHitIndex + 10].IsEnabled)
             {
-                potentialAttacks.Add(index + 10);
+                potentialAttacks.Add(lastHitIndex + 10);
             }
-            if (((index - 10) >= 0) && buttonsPlayer[index - 10].IsEnabled)
+            if (((lastHitIndex - 10) >= 0) && buttonsPlayer[lastHitIndex - 10].IsEnabled)
             {
-                potentialAttacks.Add(index - 10);
+                potentialAttacks.Add(lastHitIndex - 10);
             }
 
             // Chose button from hit list
-            Random random = new Random();
+            int index;
 
-            do
+            if (potentialAttacks.Count != 0)
             {
-                index = random.Next(potentialAttacks.Count);
 
-            } while (!buttonsPlayer[potentialAttacks[index]].IsEnabled);
+                index = potentialAttacks[0];
 
-            Button chosen = buttonsPlayer[potentialAttacks[index]];
+                while (!buttonsPlayer[index].IsEnabled)
+                {
+                    potentialAttacks.RemoveAt(0);
+                    index = potentialAttacks[0];
+                }
 
-            computerMoves.Add(potentialAttacks[index]);
-            potentialAttacks.RemoveAt(index);
+                Button chosen = buttonsPlayer[index];
+                computerMoves.Add(index);
+                potentialAttacks.RemoveAt(0);
 
-            return chosen;
+                return chosen;
+            }
+
+            return null;
         }
 
         /// <summary>
-        /// Marks chosen button as a hit or miss
+        /// Marks chosen button as a hit or miss, and displays message if ship has been sunk
         /// </summary>
         /// <param name="chosen">The Button chosen as a shot</param>
         private void markButton(Button chosen)
@@ -633,11 +653,13 @@ namespace BattleShip
             chosen.IsEnabled = false;
             Ship ship = (Ship)chosen.Tag;
 
+            // Shot missed
             if (ship == null)
             {
                 // Set button
                 chosen.Content = "o";
             }
+            // Shot hit
             else
             {
                 // Set messages to display
@@ -673,6 +695,8 @@ namespace BattleShip
                 chosen.Content = "x";
 
                 ship.hits++;
+
+                // Ship has been sunk
                 if (ship.hits == ship.size)
                 {
                     ship.sunk = true;
