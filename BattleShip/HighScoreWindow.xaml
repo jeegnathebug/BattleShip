@@ -8,10 +8,10 @@
         Title="High Scores" Width="325" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ScrollViewer.VerticalScrollBarVisibility="Disabled">
     <Grid Width="299" Margin="10">
         <Label x:Name="labelTitle" Content="High Scores" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="26.667"/>
-        <TextBlock x:Name="textBlockNames" HorizontalAlignment="Left" Margin="30,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" ScrollViewer.VerticalScrollBarVisibility="Auto" Text="Name" Height="350"/>
+        <TextBlock x:Name="textBlockNames" HorizontalAlignment="Left" Margin="30,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Text="Name" Height="350" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         <TextBlock x:Name="textBlockWins" HorizontalAlignment="Center" Margin="165,70,88,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="46" ScrollViewer.VerticalScrollBarVisibility="Auto" IsHitTestVisible="False" Text="Wins" TextAlignment="Right" Height="350"/>
         <TextBlock x:Name="textBlockLosses" HorizontalAlignment="Center" Margin="216,70,38,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" ScrollViewer.VerticalScrollBarVisibility="Auto" IsHitTestVisible="False" Text="Losses" TextAlignment="Right" Height="350"/>
         <Button x:Name="buttonDone" Content="Done" HorizontalAlignment="Center" Height="25" Margin="50,0,153,15" VerticalAlignment="Bottom" Width="96" Click="buttonDone_Click" IsDefault="True"/>
-        <Button x:Name="buttonClear" Content="Clear" HorizontalAlignment="Center" Height="25" Margin="101,0,0,15" VerticalAlignment="Bottom" Width="96" Click="buttonClear_Click" IsDefault="True"/>
+        <Button x:Name="buttonClear" Content="Clear" HorizontalAlignment="Center" Height="25" Margin="101,0,0,15" VerticalAlignment="Bottom" Width="96" Click="buttonClear_Click"/>
     </Grid>
 </Window>
