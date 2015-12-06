@@ -629,8 +629,11 @@ namespace BattleShip
 
                 while (!buttonsPlayer[index].IsEnabled)
                 {
-                    potentialAttacks.RemoveAt(0);
-                    index = potentialAttacks[0];
+                    if (potentialAttacks.Count != 0)
+                    {
+                        potentialAttacks.RemoveAt(0);
+                        index = potentialAttacks[0];
+                    }
                 }
 
                 Button chosen = buttonsPlayer[index];
