@@ -596,18 +596,20 @@ namespace BattleShip
         /// </summary>
         private Button killerMode()
         {
+            // If ship being attacked has sunk
             if (lastHitShip.sunk)
             {
                 lastHitIndex = -1;
+                potentialAttacks.Clear();
                 return null;
             }
 
             // Add to hit list
-            if (((lastHitIndex + 1) % 9 != 0) && buttonsPlayer[lastHitIndex + 1].IsEnabled)
+            if ((lastHitIndex % 9 != 0) && buttonsPlayer[lastHitIndex + 1].IsEnabled)
             {
                 potentialAttacks.Add(lastHitIndex + 1);
             }
-            if (((lastHitIndex - 1) % 10 != 0) && buttonsPlayer[lastHitIndex - 1].IsEnabled)
+            if ((lastHitIndex % 10 != 0) && buttonsPlayer[lastHitIndex - 1].IsEnabled)
             {
                 potentialAttacks.Add(lastHitIndex - 1);
             }
@@ -625,7 +627,6 @@ namespace BattleShip
 
             if (potentialAttacks.Count != 0)
             {
-
                 index = potentialAttacks[0];
 
                 while (!buttonsPlayer[index].IsEnabled)
@@ -637,17 +638,15 @@ namespace BattleShip
                     }
                     else
                     {
-                        break;
+                        return null;
                     }
                 }
-
                 Button chosen = buttonsPlayer[index];
                 computerMoves.Add(index);
                 potentialAttacks.RemoveAt(0);
 
                 return chosen;
             }
-
             return null;
         }
 
