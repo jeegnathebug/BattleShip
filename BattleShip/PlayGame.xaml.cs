@@ -598,7 +598,8 @@ namespace BattleShip
         {
             if (lastHitShip.sunk)
             {
-                potentialAttacks.Clear();
+                lastHitIndex = -1;
+                return null;
             }
 
             // Add to hit list
@@ -629,10 +630,14 @@ namespace BattleShip
 
                 while (!buttonsPlayer[index].IsEnabled)
                 {
+                    potentialAttacks.RemoveAt(0);
                     if (potentialAttacks.Count != 0)
                     {
-                        potentialAttacks.RemoveAt(0);
                         index = potentialAttacks[0];
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
 
