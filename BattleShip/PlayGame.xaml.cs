@@ -30,7 +30,7 @@ namespace BattleShip
         // Index of last hit
         private int lastHitIndex = -1;
         // Boat hit
-        private Ship lastHitShip = new Ship(ShipName.Aircraft_Carrier, 99);
+        private Ship lastHitShip = new Ship(ShipName.AIRCRAFT_CARRIER, 99);
 
         // Player's ship field
         private Button[] buttonsPlayer;
@@ -45,11 +45,11 @@ namespace BattleShip
         private Ship destroyerPlayer;
 
         // Computer ships
-        private Ship aircraftCarrierComputer = new Ship(ShipName.Aircraft_Carrier, 5);
-        private Ship battleshipComputer = new Ship(ShipName.Battleship, 4);
-        private Ship submarineComputer = new Ship(ShipName.Submarine, 3);
-        private Ship cruiserComputer = new Ship(ShipName.Cruiser, 3);
-        private Ship destroyerComputer = new Ship(ShipName.Destroyer, 2);
+        private Ship aircraftCarrierComputer = new Ship(ShipName.AIRCRAFT_CARRIER, 5);
+        private Ship battleshipComputer = new Ship(ShipName.BATTLESHIP, 4);
+        private Ship submarineComputer = new Ship(ShipName.SUBMARINE, 3);
+        private Ship cruiserComputer = new Ship(ShipName.CRUISER, 3);
+        private Ship destroyerComputer = new Ship(ShipName.DESTROYER, 2);
 
         /// <summary>
         /// Initializes gameplay phase
@@ -103,37 +103,27 @@ namespace BattleShip
             cruiserPlayer = ships[3];
             destroyerPlayer = ships[4];
 
-            // Set labels
-            labelComputerAircraftCarrier.Tag = aircraftCarrierComputer;
-            labelComputerBattleship.Tag = battleshipComputer;
-            labelComputerSubmarine.Tag = submarineComputer;
-            labelComputerCruiser.Tag = cruiserComputer;
-            labelComputerDestroyer.Tag = destroyerComputer;
+            Ship[] shipsComputer = new Ship[] { aircraftCarrierComputer, battleshipComputer, submarineComputer, cruiserComputer, destroyerComputer };
+            Label[] labels = new Label[] { labelPlayerAircraftCarrier, labelPlayerBattleship, labelPlayerSubmarine, labelPlayerCruiser, labelPlayerDestroyer };
+            Label[] labelsComputer = new Label[] { labelComputerAircraftCarrier, labelComputerBattleship, labelComputerSubmarine, labelComputerCruiser, labelComputerDestroyer };
 
-            labelPlayerAircraftCarrier.Tag = aircraftCarrierPlayer;
-            labelPlayerBattleship.Tag = battleshipPlayer;
-            labelPlayerSubmarine.Tag = submarinePlayer;
-            labelPlayerCruiser.Tag = cruiserPlayer;
-            labelPlayerDestroyer.Tag = destroyerPlayer;
+            for (int i = 0; i < ships.Length; i++)
+            {
 
-            // Add images
-            setImage(aircraftCarrierPlayer);
-            setImage(aircraftCarrierPlayer);
-            setImage(battleshipPlayer);
-            setImage(battleshipPlayer);
-            setImage(submarinePlayer);
-            setImage(submarinePlayer);
-            setImage(cruiserPlayer);
-            setImage(cruiserPlayer);
-            setImage(destroyerPlayer);
-            setImage(destroyerPlayer);
+                // Add images
+                setImage(ships[i], PlayerShips, buttonsPlayer, true);
+                setImage(ships[i], PlayerShips, buttonsPlayer, true);
 
-            // Set computer ships
-            setShip(aircraftCarrierComputer, randomOrientation(1));
-            setShip(battleshipComputer, randomOrientation(2));
-            setShip(submarineComputer, randomOrientation(3));
-            setShip(cruiserComputer, randomOrientation(4));
-            setShip(destroyerComputer, randomOrientation(5));
+                // Set computer ship images
+                shipsComputer[i].image = ships[i].image;
+
+                // Set labels
+                labelsComputer[i].Tag = shipsComputer[i];
+                labels[i].Tag = ships[i];
+
+                // Set computer ships
+                setShip(shipsComputer[i], randomOrientation(i + 1));
+            }
         }
 
         /// <summary>
@@ -581,7 +571,7 @@ namespace BattleShip
         }
 
         /// <summary>
-        /// Disables all buttons and allows player to choose whether to restart or exit the game
+        /// Makes all buttons opaque and allows player to choose whether to restart or exit the game
         /// </summary>
         private void disableButtons()
         {
@@ -596,13 +586,12 @@ namespace BattleShip
 
                 if (i < 20)
                 {
-                    buttonsCoordinate[i].IsEnabled = false;
+                    buttonsCoordinate[i].Opacity = 0;
                 }
             }
 
             buttonAttack.Visibility = Visibility.Collapsed;
-            buttonRestart.Visibility = Visibility.Visible;
-            buttonExit.Visibility = Visibility.Visible;
+            buttonsEnd.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -747,7 +736,19 @@ namespace BattleShip
             turn = true;
 
             // Select button and mark it as hit or miss
+            chosen.Opacity = 0;
             markButton(chosen);
+
+            // Show ship image once it has been sunk
+            object tag = chosen.Tag;
+            if (tag != null)
+            {
+                Ship ship = (Ship)tag;
+                if (ship.sunk)
+                {
+                    PlayerAttack.Children.Insert(0, ship.image);
+                }
+            }
 
             // Check for winner
             bool win = checkWinner("You sank all the ships!", "Winner!", name);
@@ -778,11 +779,11 @@ namespace BattleShip
 
             if (index % 2 == 0)
             {
-                return Orientation.Horizontal;
+                return Orientation.HORIZONTAL;
             }
             else
             {
-                return Orientation.Vertical;
+                return Orientation.VERTICAL;
             }
         }
 
@@ -794,7 +795,7 @@ namespace BattleShip
         private List<string> saveWins(string winnerName)
         {
             // Filename to save score
-            string path = @"score.txt";
+            string path = @"../../score.txt";
 
             // Create file if it does not exist
             if (!File.Exists(path))
@@ -877,10 +878,10 @@ namespace BattleShip
         /// <summary>
         /// Sets image of placed ship on button field
         /// </summary>
-        /// <param name="index">The index of the first button chosen, where the front of the image will be placed</param>
         /// <param name="ship">The ship to be placed</param>
-        /// <param name="orientation">The orientation of the ship</param>
-        private void setImage(Ship ship)
+        /// <param name="grid">The grid to set the images on</param>
+        /// <param name="buttons">The array of buttons to use</param>
+        private void setImage(Ship ship, Grid grid, Button[] buttons, bool show)
         {
             // Copy image
             Image image = new Image();
@@ -890,12 +891,12 @@ namespace BattleShip
 
             // Set properties
             int span = ship.size;
-            int row = Grid.GetRow(buttonsPlayer[index]);
-            int column = Grid.GetColumn(buttonsPlayer[index]);
+            int row = Grid.GetRow(buttons[index]);
+            int column = Grid.GetColumn(buttons[index]);
             Grid.SetRow(image, row);
             Grid.SetColumn(image, column);
 
-            if (ship.orientation.Equals(Orientation.Vertical))
+            if (ship.orientation.Equals(Orientation.VERTICAL))
             {
                 // Rotate image
                 image.LayoutTransform = new RotateTransform(90.0, 0, 0);
@@ -910,9 +911,11 @@ namespace BattleShip
                 image.Width = ship.image.Width;
             }
 
-            // Add image to location
-            PlayerShips.Children.Add(image);
-
+            if (show)
+            {
+                // Add image to location
+                grid.Children.Add(image);
+            }
 
             ship.image = new Image();
             ship.image.Stretch = image.Stretch;
@@ -924,6 +927,7 @@ namespace BattleShip
             Grid.SetColumn(ship.image, column);
             Grid.SetRowSpan(ship.image, Grid.GetRowSpan(image));
             Grid.SetColumnSpan(ship.image, Grid.GetColumnSpan(image));
+
         }
 
         /// <summary>
@@ -940,7 +944,7 @@ namespace BattleShip
             bool isChosen;
 
             // Orientation is horizontal
-            if (orientation.Equals(Orientation.Horizontal))
+            if (orientation.Equals(Orientation.HORIZONTAL))
             {
                 do
                 {
@@ -967,6 +971,7 @@ namespace BattleShip
                 for (int i = 0; i < size; i++)
                 {
                     buttonsAttack[index + i].Tag = ship;
+                    ship.location.Add(index + i);
                 }
             }
             // Orientation is vertical
@@ -998,8 +1003,15 @@ namespace BattleShip
                 for (int i = 0; i < size * 10; i += 10)
                 {
                     buttonsAttack[index + i].Tag = ship;
+                    ship.location.Add(index + i);
                 }
             }
+
+            ship.orientation = orientation;
+            ship.location.Sort();
+
+            setImage(ship, PlayerAttack, buttonsAttack, false);
+            setImage(ship, PlayerAttack, buttonsAttack, false);
         }
 
         /// <summary>

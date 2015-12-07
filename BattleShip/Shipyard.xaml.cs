@@ -31,12 +31,12 @@ namespace BattleShip
 
     public enum ShipName
     {
-        Aircraft_Carrier, Battleship, Submarine, Cruiser, Destroyer
+        AIRCRAFT_CARRIER, BATTLESHIP, SUBMARINE, CRUISER, DESTROYER
     }
 
     public enum Orientation
     {
-        Vertical, Horizontal
+        VERTICAL, HORIZONTAL
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ namespace BattleShip
     {
         public event EventHandler play;
 
-        private Orientation orientation = Orientation.Horizontal;
+        private Orientation orientation = Orientation.HORIZONTAL;
         public Button[] buttons;
 
         // List of players actions for undoing
@@ -54,11 +54,11 @@ namespace BattleShip
 
         // Ships
         public Ship[] ships = new Ship[5];
-        private Ship aircraft_carrier = new Ship(ShipName.Aircraft_Carrier, 5);
-        private Ship battleship = new Ship(ShipName.Battleship, 4);
-        private Ship submarine = new Ship(ShipName.Submarine, 3);
-        private Ship cruiser = new Ship(ShipName.Cruiser, 3);
-        private Ship destroyer = new Ship(ShipName.Destroyer, 2);
+        private Ship aircraft_carrier = new Ship(ShipName.AIRCRAFT_CARRIER, 5);
+        private Ship battleship = new Ship(ShipName.BATTLESHIP, 4);
+        private Ship submarine = new Ship(ShipName.SUBMARINE, 3);
+        private Ship cruiser = new Ship(ShipName.CRUISER, 3);
+        private Ship destroyer = new Ship(ShipName.DESTROYER, 2);
 
         // Selected ship
         private Ship ship;
@@ -150,16 +150,16 @@ namespace BattleShip
         /// <param name="e">The Event</param>
         private void buttonRotate_Click(object sender, EventArgs e)
         {
-            if (orientation == Orientation.Horizontal)
+            if (orientation == Orientation.HORIZONTAL)
             {
-                orientation = Orientation.Vertical;
+                orientation = Orientation.VERTICAL;
             }
             else
             {
-                orientation = Orientation.Horizontal;
+                orientation = Orientation.HORIZONTAL;
             }
 
-            labelOrientation.Content = "Orientation: " + orientation;
+            labelOrientation.Content = "ORIENTATION: " + orientation;
         }
 
         /// <summary>
@@ -208,19 +208,19 @@ namespace BattleShip
 
             switch (ship.name)
             {
-                case ShipName.Aircraft_Carrier:
+                case ShipName.AIRCRAFT_CARRIER:
                     ship.image = aircraft_carrierImage;
                     break;
-                case ShipName.Battleship:
+                case ShipName.BATTLESHIP:
                     ship.image = battleshipImage;
                     break;
-                case ShipName.Submarine:
+                case ShipName.SUBMARINE:
                     ship.image = submarineImage;
                     break;
-                case ShipName.Cruiser:
+                case ShipName.CRUISER:
                     ship.image = cruiserImage;
                     break;
-                case ShipName.Destroyer:
+                case ShipName.DESTROYER:
                     ship.image = destroyerImage;
                     break;
             }
@@ -241,7 +241,7 @@ namespace BattleShip
             // Disable undo button if no actions remain
             if (actions.Count == 0)
             {
-                buttonUndo.IsEnabled = false;
+                Undo.Visibility = Visibility.Hidden;
             }
         }
 
@@ -258,7 +258,7 @@ namespace BattleShip
             ship = (Ship)selected.Tag;
 
             // Change labels
-            labelSize.Content = "Size: " + ship.size;
+            labelSize.Content = "SIZE: " + ship.size;
             labelBoat.Content = ship.name;
         }
 
@@ -292,7 +292,7 @@ namespace BattleShip
             int size = ship.size;
 
             // Orientation is horizontal
-            if (orientation.Equals(Orientation.Horizontal))
+            if (orientation.Equals(Orientation.HORIZONTAL))
             {
                 do
                 {
@@ -384,11 +384,11 @@ namespace BattleShip
 
             if (index % 2 == 0)
             {
-                return Orientation.Horizontal;
+                return Orientation.HORIZONTAL;
             }
             else
             {
-                return Orientation.Vertical;
+                return Orientation.VERTICAL;
             }
         }
 
@@ -397,7 +397,7 @@ namespace BattleShip
         /// </summary>
         private void reset()
         {
-            buttonUndo.IsEnabled = false;
+            Undo.Visibility = Visibility.Hidden;
             actions.Clear();
 
             // Enable list box items
@@ -453,7 +453,7 @@ namespace BattleShip
             Grid.SetRow(image, row);
             Grid.SetColumn(image, column);
 
-            if (orientation.Equals(Orientation.Vertical))
+            if (orientation.Equals(Orientation.VERTICAL))
             {
                 // Rotate image
                 image.LayoutTransform = new RotateTransform(90.0, 0, 0);
@@ -470,7 +470,6 @@ namespace BattleShip
 
             // Add image to location
             gameField.Children.Add(image);
-
 
             ship.image = new Image();
             ship.image.Stretch = image.Stretch;
@@ -498,7 +497,7 @@ namespace BattleShip
 
             // Invalid placement check
             // Orientation is horizontal
-            if (orientation.Equals(Orientation.Horizontal))
+            if (orientation.Equals(Orientation.HORIZONTAL))
             {
                 // Go through every button that will be chosen to see if it has already been chosen or not
                 int counter = 1;
@@ -568,7 +567,7 @@ namespace BattleShip
             if (placed)
             {
                 // Orientation is horizontal
-                if (orientation.Equals(Orientation.Horizontal))
+                if (orientation.Equals(Orientation.HORIZONTAL))
                 {
                     // If placed in two rows
                     if (((index + (size - 1)) % 10 < size - 1))
@@ -663,7 +662,7 @@ namespace BattleShip
                 ship.placed = true;
 
                 actions.Add(ship);
-                buttonUndo.IsEnabled = true;
+                Undo.Visibility = Visibility.Visible;
             }
             // Randomized
             else

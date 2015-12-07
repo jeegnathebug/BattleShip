@@ -52,17 +52,11 @@ namespace BattleShip
             // Close start menu
             grid.Children.Clear();
 
-            // Resize window
-            MinHeight = 650;
-            MinWidth = 800;
-
             // Initialize setup phase
             shipyard = new Shipyard();
 
             // Add shipyard
             grid.Children.Add(shipyard);
-            shipyard.HorizontalAlignment = HorizontalAlignment.Left;
-            shipyard.VerticalAlignment = VerticalAlignment.Top;
 
             // Once buttonSubmit is clicked
             shipyard.play += new EventHandler(start);
@@ -78,17 +72,11 @@ namespace BattleShip
             // Close set up
             grid.Children.Clear();
 
-            // Resize window
-            ResizeMode = ResizeMode.CanResize;
-            WindowState = WindowState.Maximized;
-
             // Initialize game play phase
             playGame = new PlayGame(startGame.difficulty, shipyard.buttons, startGame.textBoxName.Text.Trim(), shipyard.ships);
 
             // Add game field
             grid.Children.Add(playGame);
-            playGame.HorizontalAlignment = HorizontalAlignment.Center;
-            playGame.VerticalAlignment = VerticalAlignment.Center;
 
             // Once buttonRestart is clicked
             playGame.done += new EventHandler(restart);

@@ -4,17 +4,68 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BattleShip"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="210">
+             mc:Ignorable="d" Width="525" Height="493.334">
+
+    <UserControl.Resources>
+        <Style x:Key="framework" TargetType="FrameworkElement">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <Style x:Key="label" TargetType="Label" BasedOn="{StaticResource framework}">
+            <Setter Property="Foreground" Value="#FF38FFD2"/>
+            <Setter Property="FontFamily" Value="Impact"/>
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="Width" Value="Auto"/>
+        </Style>
+
+        <Style x:Key="radiobutton" TargetType="RadioButton" BasedOn="{StaticResource framework}">
+            <Setter Property="Foreground" Value="#FF38FFD2"/>
+            <Setter Property="FontFamily" Value="Impact"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+
+        <Style x:Key="textbox" TargetType="TextBox" BasedOn="{StaticResource framework}">
+            <Setter Property="Foreground" Value="#FF38FFD2"/>
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="FontFamily" Value="Impact"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="MaxLines" Value="1"/>
+            <Setter Property="MaxLength" Value="15"/>
+            <Setter Property="CharacterCasing" Value="Upper"/>
+        </Style>
+
+        <Style x:Key="button" TargetType="ButtonBase" BasedOn="{StaticResource framework}">
+            <Setter Property="BorderBrush" Value="#FF112E2C"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FF112E2C"/>
+            <Setter Property="Foreground" Value="#FF38FFD2"/>
+            <Setter Property="FontFamily" Value="Impact"/>
+            <Setter Property="FontSize" Value="28"/>
+        </Style>
+
+        <Style x:Key="grid" TargetType="Grid" BasedOn="{StaticResource framework}">
+            <Setter Property="Background" Value="#FF38FFD2" />
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
-        <Button x:Name="buttonStart" Content="Play" HorizontalAlignment="Center" Height="42" Margin="58,230,58,0" Click="buttonStart_Click" Width="94" VerticalAlignment="Top" IsDefault="True"/>
-        <Label x:Name="labelDifficulty" Content="Choose Difficulty" HorizontalAlignment="Center" Margin="55,104,55,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="radioButtonEasy" Content="Easy" GroupName="difficulty" Margin="84,131,87,0" VerticalAlignment="Top" IsChecked="True" HorizontalAlignment="Center" Width="39"/>
-        <RadioButton x:Name="radioButtonMedium" Content="Medium" GroupName="difficulty" Margin="84,152,58,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="68"/>
-        <RadioButton x:Name="radioButtonHard" Content="Hard" GroupName="difficulty" Margin="84,173,84,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="42"/>
-        <RadioButton x:Name="radioButtonLegendary" Content="Legendary" GroupName="difficulty" Margin="84,194,50,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="76"/>
-        <Label x:Name="labelWelcome" Content="Welcome to Battleship" HorizontalAlignment="Center" Margin="40,20,40,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelName" Content="Enter name" HorizontalAlignment="Center" Margin="0,46,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBoxName" HorizontalAlignment="Center" Height="23" Margin="55,69,55,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" MaxLines="1" MaxLength="15"/>
+        <Grid Margin="11,0,10,10" Style="{StaticResource grid}" Height="116" VerticalAlignment="Bottom" Width="504" HorizontalAlignment="Center">
+            <Button x:Name="buttonStart" Content="PLAY" Click="buttonStart_Click" Style="{StaticResource button}" Margin="2,2" HorizontalAlignment="Stretch"/>
+        </Grid>
+        <StackPanel Margin="212,190,164,163" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label x:Name="labelDifficulty" Content="DIFFICULTY" Style="{StaticResource label}"/>
+            <RadioButton x:Name="radioButtonEasy" Content="EASY" GroupName="difficulty" IsChecked="True" Style="{StaticResource radiobutton}"/>
+            <RadioButton x:Name="radioButtonMedium" Content="MEDIUM" GroupName="difficulty" Style="{StaticResource radiobutton}"/>
+            <RadioButton x:Name="radioButtonHard" Content="HARD" GroupName="difficulty" Style="{StaticResource radiobutton}"/>
+            <RadioButton x:Name="radioButtonLegendary" Content="LEGENDARY" GroupName="difficulty" Style="{StaticResource radiobutton}"/>
+        </StackPanel>
+        <Label x:Name="labelWelcome" Content="WELCOME TO BATTLESHIP" HorizontalAlignment="Center" Margin="20,15,20,0" VerticalAlignment="Top" Style="{StaticResource ResourceKey=label}" FontSize="48"/>
+        <Label x:Name="labelName" Content="NAME" HorizontalAlignment="Center" Margin="49,139,405,310" VerticalAlignment="Center" Style="{StaticResource label}"/>
+        <TextBox x:Name="textBoxName" Margin="125,140,69,309" Style="{StaticResource textbox}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="29.333" Width="325.4"/>
     </Grid>
 </UserControl>

@@ -4,187 +4,222 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BattleShip"
-             mc:Ignorable="d" Width="800" Height="650">
+             mc:Ignorable="d" Width="900" Height="800">
+
+    <UserControl.Resources>
+        <Style x:Key="framework" TargetType="FrameworkElement">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <Style x:Key="label" TargetType="Label" BasedOn="{StaticResource framework}">
+            <Setter Property="Foreground" Value="#FF38FFD2"/>
+            <Setter Property="FontFamily" Value="Impact"/>
+            <Setter Property="FontSize" Value="28"/>
+        </Style>
+
+        <Style x:Key="button" TargetType="ButtonBase" BasedOn="{StaticResource framework}">
+            <Setter Property="BorderBrush" Value="#FF112E2C"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FF112E2C"/>
+            <Setter Property="Foreground" Value="#FF38FFD2"/>
+            <Setter Property="FontFamily" Value="Impact"/>
+            <Setter Property="FontSize" Value="28"/>
+        </Style>
+
+        <Style x:Key="grid" TargetType="Grid" BasedOn="{StaticResource framework}">
+            <Setter Property="Background" Value="#FF38FFD2" />
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
-        <Label x:Name="labelTitle" Content="Setup" FontSize="26.667" Margin="21,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Label x:Name="labelInfo" Content="Place your ships on the grid" HorizontalAlignment="Left" Margin="99,24,0,0" VerticalAlignment="Top" FontSize="13.333"/>
-        <Label x:Name="labelShipyard" Content="Shipyard" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18.667" Margin="37,72,0,0"/>
-        <ListBox Margin="37,114,528,186" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            <ListBox.Resources>
-                <Style TargetType="{x:Type Image}">
-                    <Setter Property="Height" Value="69"/>
-                </Style>
-            </ListBox.Resources>
+        <Label x:Name="labelTitle" Content="SETUP" FontSize="64" Margin="21,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelInfo" Content="PLACE YOUR SHIPS ON THE GRID" HorizontalAlignment="Left" Margin="187,46,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelShipyard" Content="SHIPYARD" HorizontalAlignment="Stretch" Margin="55,100,725,656" Style="{StaticResource label}"/>
+
+        <ListBox Margin="55,149,598,300" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="{x:Null}">
             <ListBoxItem x:Name="Aircraft_Carrier" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image x:Name="aircraft_carrierImage" Source="aircraft_carrier.png" Width="220"/>
+                <Image x:Name="aircraft_carrierImage" Source="aircraft_carrier.png" Width="220" Height="69"/>
             </ListBoxItem>
             <ListBoxItem x:Name="Battleship" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image x:Name="battleshipImage" Source="battleship.png" Width="175"/>
+                <Image x:Name="battleshipImage" Source="battleship.png" Width="175" Height="69"/>
             </ListBoxItem>
             <ListBoxItem x:Name="Submarine" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image x:Name="submarineImage" Source="submarine.png" Width="130"/>
+                <Image x:Name="submarineImage" Source="submarine.png" Width="130" Height="69"/>
             </ListBoxItem>
             <ListBoxItem x:Name="Cruiser" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image x:Name="cruiserImage" Source="cruiser.png" Width="130"/>
+                <Image x:Name="cruiserImage" Source="cruiser.png" Width="130" Height="69"/>
             </ListBoxItem>
             <ListBoxItem x:Name="Destroyer" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image x:Name="destroyerImage" Source="destroyer.png" Width="85"/>
+                <Image x:Name="destroyerImage" Source="destroyer.png" Width="85" Height="69"/>
             </ListBoxItem>
         </ListBox>
-        <Button x:Name="buttonReset" Content="Reset" HorizontalAlignment="Left" Margin="404,545,0,0" VerticalAlignment="Top" Width="74" Height="40" Click="buttonReset_Click"/>
-        <Button x:Name="buttonUndo" Content="Undo" HorizontalAlignment="Left" Margin="316,545,0,0" VerticalAlignment="Top" Width="74" Height="40" Click="buttonUndo_Click" IsEnabled="False"/>
-        <Button x:Name="buttonRandomize" Content="Randomize" HorizontalAlignment="Left" Margin="600,545,0,0" VerticalAlignment="Top" Width="74" Height="40" Click="buttonRandomize_Click"/>
-        <Button x:Name="buttonSubmit" Content="Submit" HorizontalAlignment="Left" Margin="685,545,0,0" VerticalAlignment="Top" Width="76" Height="40" Click="buttonSubmit_Click" IsDefault="True"/>
-        <Button x:Name="buttonRotate" Content="Change Orientation
-                " HorizontalAlignment="Left" Margin="101,485,0,0" VerticalAlignment="Top" Width="113" Click="buttonRotate_Click"/>
-        <Grid x:Name="gameField"  Height="445" Width="445" Margin="316,60,39,145">
+        <Grid x:Name="Undo" Margin="532,592,0,164" Style="{StaticResource grid}" Visibility="Hidden">
+            <Button x:Name="buttonUndo" Margin="2,2,0,2" Content="UNDO" HorizontalAlignment="Left" Click="buttonUndo_Click" Style="{StaticResource button}" BorderThickness="0" Width="100"/>
+        </Grid>
+        <Grid Margin="634,592,55,164" Style="{StaticResource grid}" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="104*"/>
+                <ColumnDefinition Width="107*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="buttonReset" Content="RESET" HorizontalAlignment="Stretch" Click="buttonReset_Click" Style="{StaticResource button}" Margin="2,2,2,2"/>
+            <Button x:Name="buttonRandomize" Content="RANDOM" HorizontalAlignment="Stretch" Click="buttonRandomize_Click" Style="{StaticResource button}" Margin="0,2,2,2" Grid.Column="1"/>
+        </Grid>
+        <Grid Margin="0,0,55,50" Style="{StaticResource grid}" HorizontalAlignment="Right" Width="175" Height="90" VerticalAlignment="Bottom">
+            <Button x:Name="buttonSubmit" Content="SUBMIT" Margin="2" HorizontalAlignment="Stretch" Click="buttonSubmit_Click" Style="{StaticResource button}"/>
+        </Grid>
+        <Grid Margin="55,525,0,203" Style="{StaticResource grid}">
+            <Button x:Name="buttonRotate" Margin="2,2,2,2"  Content="ORIENTATION" HorizontalAlignment="Stretch" Click="buttonRotate_Click" Style="{StaticResource button}"/>
+        </Grid>
+        <Grid x:Name="gameField" Margin="420,160,55,218" Style="{StaticResource grid}" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="44"/>
+                <ColumnDefinition Width="42"/>
+                <ColumnDefinition Width="42"/>
+                <ColumnDefinition Width="42"/>
+                <ColumnDefinition Width="42"/>
+                <ColumnDefinition Width="42"/>
+                <ColumnDefinition Width="42"/>
+                <ColumnDefinition Width="42"/>
+                <ColumnDefinition Width="42"/>
+                <ColumnDefinition Width="42"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="45"/>
-                <RowDefinition Height="45"/>
-                <RowDefinition Height="45"/>
-                <RowDefinition Height="45"/>
-                <RowDefinition Height="45"/>
-                <RowDefinition Height="45"/>
-                <RowDefinition Height="45"/>
-                <RowDefinition Height="45"/>
-                <RowDefinition Height="45"/>
-                <RowDefinition Height="45"/>
+                <RowDefinition Height="44"/>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="42"/>
             </Grid.RowDefinitions>
-            <Button x:Name="buttonA1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.ColumnSpan="2"/>
-            <Button x:Name="buttonB1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="1"/>
-            <Button x:Name="buttonC1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="2"/>
-            <Button x:Name="buttonD1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="3"/>
-            <Button x:Name="buttonE1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="4"/>
-            <Button x:Name="buttonF1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="5"/>
-            <Button x:Name="buttonG1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="6"/>
-            <Button x:Name="buttonH1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="7"/>
-            <Button x:Name="buttonI1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="8"/>
-            <Button x:Name="buttonJ1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="9"/>
-            <Button x:Name="buttonA2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.ColumnSpan="2"/>
-            <Button x:Name="buttonB2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="1"/>
-            <Button x:Name="buttonC2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="2"/>
-            <Button x:Name="buttonD2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="3"/>
-            <Button x:Name="buttonE2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="4"/>
-            <Button x:Name="buttonF2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="5"/>
-            <Button x:Name="buttonG2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="6"/>
-            <Button x:Name="buttonH2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="7"/>
-            <Button x:Name="buttonI2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="8"/>
-            <Button x:Name="buttonJ2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="9"/>
-            <Button x:Name="buttonA3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.ColumnSpan="2"/>
-            <Button x:Name="buttonB3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="1"/>
-            <Button x:Name="buttonC3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="2"/>
-            <Button x:Name="buttonD3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="3"/>
-            <Button x:Name="buttonE3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="4"/>
-            <Button x:Name="buttonF3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="5"/>
-            <Button x:Name="buttonG3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="6"/>
-            <Button x:Name="buttonH3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="7"/>
-            <Button x:Name="buttonI3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="8"/>
-            <Button x:Name="buttonJ3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="9"/>
-            <Button x:Name="buttonA4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.ColumnSpan="2"/>
-            <Button x:Name="buttonB4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="1"/>
-            <Button x:Name="buttonC4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="2"/>
-            <Button x:Name="buttonD4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="3"/>
-            <Button x:Name="buttonE4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="4"/>
-            <Button x:Name="buttonF4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="5"/>
-            <Button x:Name="buttonG4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="6"/>
-            <Button x:Name="buttonH4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="7"/>
-            <Button x:Name="buttonI4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="8"/>
-            <Button x:Name="buttonJ4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="9"/>
-            <Button x:Name="buttonA5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.ColumnSpan="2"/>
-            <Button x:Name="buttonB5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="1" />
-            <Button x:Name="buttonC5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="2" />
-            <Button x:Name="buttonD5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="3" />
-            <Button x:Name="buttonE5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="4" />
-            <Button x:Name="buttonF5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="5" />
-            <Button x:Name="buttonG5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="6" />
-            <Button x:Name="buttonH5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="7" />
-            <Button x:Name="buttonI5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="8" />
-            <Button x:Name="buttonJ5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="9" />
-            <Button x:Name="buttonA6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.ColumnSpan="2"/>
-            <Button x:Name="buttonB6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="1"/>
-            <Button x:Name="buttonC6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="2"/>
-            <Button x:Name="buttonD6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="3"/>
-            <Button x:Name="buttonE6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="4"/>
-            <Button x:Name="buttonF6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="5"/>
-            <Button x:Name="buttonG6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="6"/>
-            <Button x:Name="buttonH6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="7"/>
-            <Button x:Name="buttonI6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="8"/>
-            <Button x:Name="buttonJ6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="9"/>
-            <Button x:Name="buttonA7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.ColumnSpan="2"/>
-            <Button x:Name="buttonB7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="1"/>
-            <Button x:Name="buttonC7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="2"/>
-            <Button x:Name="buttonD7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="3"/>
-            <Button x:Name="buttonE7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="4"/>
-            <Button x:Name="buttonF7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="5"/>
-            <Button x:Name="buttonG7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="6"/>
-            <Button x:Name="buttonH7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="7"/>
-            <Button x:Name="buttonI7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="8"/>
-            <Button x:Name="buttonJ7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="9"/>
-            <Button x:Name="buttonA8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.ColumnSpan="2"/>
-            <Button x:Name="buttonB8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="1"/>
-            <Button x:Name="buttonC8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="2"/>
-            <Button x:Name="buttonD8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="3"/>
-            <Button x:Name="buttonE8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="4"/>
-            <Button x:Name="buttonF8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="5"/>
-            <Button x:Name="buttonG8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="6"/>
-            <Button x:Name="buttonH8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="7"/>
-            <Button x:Name="buttonI8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="8"/>
-            <Button x:Name="buttonJ8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="9"/>
-            <Button x:Name="buttonA9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8"/>
-            <Button x:Name="buttonB9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="1"/>
-            <Button x:Name="buttonC9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="2"/>
-            <Button x:Name="buttonD9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="3"/>
-            <Button x:Name="buttonE9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="4"/>
-            <Button x:Name="buttonF9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="5"/>
-            <Button x:Name="buttonG9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="6"/>
-            <Button x:Name="buttonH9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="7"/>
-            <Button x:Name="buttonI9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="8"/>
-            <Button x:Name="buttonJ9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="9"/>
-            <Button x:Name="buttonA10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.ColumnSpan="2"/>
-            <Button x:Name="buttonB10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="1"/>
-            <Button x:Name="buttonC10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="2"/>
-            <Button x:Name="buttonD10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="3"/>
-            <Button x:Name="buttonE10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="4"/>
-            <Button x:Name="buttonF10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="5"/>
-            <Button x:Name="buttonG10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="6"/>
-            <Button x:Name="buttonH10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="7"/>
-            <Button x:Name="buttonI10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="8"/>
-            <Button x:Name="buttonJ10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="9"/>
+            <Button x:Name="buttonA1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Style="{StaticResource button}" Margin="2,2,0,0"/>
+            <Button x:Name="buttonB1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="1" Style="{StaticResource button}" Margin="0,2,0,0"/>
+            <Button x:Name="buttonC1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="2" Style="{StaticResource button}" Margin="0,2,0,0"/>
+            <Button x:Name="buttonD1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="3" Style="{StaticResource button}" Margin="0,2,0,0"/>
+            <Button x:Name="buttonE1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="4" Style="{StaticResource button}" Margin="0,2,0,0"/>
+            <Button x:Name="buttonF1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="5" Style="{StaticResource button}" Margin="0,2,0,0"/>
+            <Button x:Name="buttonG1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="6" Style="{StaticResource button}" Margin="0,2,0,0"/>
+            <Button x:Name="buttonH1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="7" Style="{StaticResource button}" Margin="0,2,0,0"/>
+            <Button x:Name="buttonI1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="8" Style="{StaticResource button}" Margin="0,2,0,0"/>
+            <Button x:Name="buttonJ1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Column="9" Style="{StaticResource button}" Margin="0,2,0,0"/>
+            <Button x:Name="buttonA2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Style="{StaticResource button}" Margin="2,0,0,0"/>
+            <Button x:Name="buttonB2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="1" Style="{StaticResource button}"/>
+            <Button x:Name="buttonC2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="2" Style="{StaticResource button}"/>
+            <Button x:Name="buttonD2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="3" Style="{StaticResource button}"/>
+            <Button x:Name="buttonE2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="4" Style="{StaticResource button}"/>
+            <Button x:Name="buttonF2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="5" Style="{StaticResource button}"/>
+            <Button x:Name="buttonG2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="6" Style="{StaticResource button}"/>
+            <Button x:Name="buttonH2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="7" Style="{StaticResource button}"/>
+            <Button x:Name="buttonI2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="8" Style="{StaticResource button}"/>
+            <Button x:Name="buttonJ2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="1" Grid.Column="9" Style="{StaticResource button}"/>
+            <Button x:Name="buttonA3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2"  Style="{StaticResource button}" Margin="2,0,0,0"/>
+            <Button x:Name="buttonB3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="1" Style="{StaticResource button}"/>
+            <Button x:Name="buttonC3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="2" Style="{StaticResource button}"/>
+            <Button x:Name="buttonD3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="3" Style="{StaticResource button}"/>
+            <Button x:Name="buttonE3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="4" Style="{StaticResource button}"/>
+            <Button x:Name="buttonF3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="5" Style="{StaticResource button}"/>
+            <Button x:Name="buttonG3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="6" Style="{StaticResource button}"/>
+            <Button x:Name="buttonH3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="7" Style="{StaticResource button}"/>
+            <Button x:Name="buttonI3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="8" Style="{StaticResource button}"/>
+            <Button x:Name="buttonJ3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="2" Grid.Column="9" Style="{StaticResource button}"/>
+            <Button x:Name="buttonA4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Style="{StaticResource button}" Margin="2,0,0,0"/>
+            <Button x:Name="buttonB4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="1" Style="{StaticResource button}"/>
+            <Button x:Name="buttonC4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="2" Style="{StaticResource button}"/>
+            <Button x:Name="buttonD4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="3" Style="{StaticResource button}"/>
+            <Button x:Name="buttonE4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="4" Style="{StaticResource button}"/>
+            <Button x:Name="buttonF4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="5" Style="{StaticResource button}"/>
+            <Button x:Name="buttonG4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="6" Style="{StaticResource button}"/>
+            <Button x:Name="buttonH4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="7" Style="{StaticResource button}"/>
+            <Button x:Name="buttonI4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="8" Style="{StaticResource button}"/>
+            <Button x:Name="buttonJ4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="3" Grid.Column="9" Style="{StaticResource button}"/>
+            <Button x:Name="buttonA5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Style="{StaticResource button}" Margin="2,0,0,0"/>
+            <Button x:Name="buttonB5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="1" Style="{StaticResource button}"/>
+            <Button x:Name="buttonC5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="2" Style="{StaticResource button}"/>
+            <Button x:Name="buttonD5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="3" Style="{StaticResource button}"/>
+            <Button x:Name="buttonE5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="4" Style="{StaticResource button}"/>
+            <Button x:Name="buttonF5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="5" Style="{StaticResource button}"/>
+            <Button x:Name="buttonG5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="6" Style="{StaticResource button}"/>
+            <Button x:Name="buttonH5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="7" Style="{StaticResource button}"/>
+            <Button x:Name="buttonI5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="8" Style="{StaticResource button}"/>
+            <Button x:Name="buttonJ5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="4" Grid.Column="9" Style="{StaticResource button}"/>
+            <Button x:Name="buttonA6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Style="{StaticResource button}" Margin="2,0,0,0"/>
+            <Button x:Name="buttonB6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="1" Style="{StaticResource button}"/>
+            <Button x:Name="buttonC6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="2" Style="{StaticResource button}"/>
+            <Button x:Name="buttonD6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="3" Style="{StaticResource button}"/>
+            <Button x:Name="buttonE6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="4" Style="{StaticResource button}"/>
+            <Button x:Name="buttonF6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="5" Style="{StaticResource button}"/>
+            <Button x:Name="buttonG6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="6" Style="{StaticResource button}"/>
+            <Button x:Name="buttonH6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="7" Style="{StaticResource button}"/>
+            <Button x:Name="buttonI6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="8" Style="{StaticResource button}"/>
+            <Button x:Name="buttonJ6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="5" Grid.Column="9" Style="{StaticResource button}"/>
+            <Button x:Name="buttonA7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Style="{StaticResource button}" Margin="2,0,0,0"/>
+            <Button x:Name="buttonB7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="1" Style="{StaticResource button}"/>
+            <Button x:Name="buttonC7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="2" Style="{StaticResource button}"/>
+            <Button x:Name="buttonD7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="3" Style="{StaticResource button}"/>
+            <Button x:Name="buttonE7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="4" Style="{StaticResource button}"/>
+            <Button x:Name="buttonF7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="5" Style="{StaticResource button}"/>
+            <Button x:Name="buttonG7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="6" Style="{StaticResource button}"/>
+            <Button x:Name="buttonH7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="7" Style="{StaticResource button}"/>
+            <Button x:Name="buttonI7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="8" Style="{StaticResource button}"/>
+            <Button x:Name="buttonJ7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="6" Grid.Column="9" Style="{StaticResource button}"/>
+            <Button x:Name="buttonA8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Style="{StaticResource button}" Margin="2,0,0,0"/>
+            <Button x:Name="buttonB8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="1" Style="{StaticResource button}"/>
+            <Button x:Name="buttonC8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="2" Style="{StaticResource button}"/>
+            <Button x:Name="buttonD8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="3" Style="{StaticResource button}"/>
+            <Button x:Name="buttonE8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="4" Style="{StaticResource button}"/>
+            <Button x:Name="buttonF8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="5" Style="{StaticResource button}"/>
+            <Button x:Name="buttonG8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="6" Style="{StaticResource button}"/>
+            <Button x:Name="buttonH8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="7" Style="{StaticResource button}"/>
+            <Button x:Name="buttonI8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="8" Style="{StaticResource button}"/>
+            <Button x:Name="buttonJ8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="7" Grid.Column="9" Style="{StaticResource button}"/>
+            <Button x:Name="buttonA9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Style="{StaticResource button}" Margin="2,0,0,0"/>
+            <Button x:Name="buttonB9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="1" Style="{StaticResource button}"/>
+            <Button x:Name="buttonC9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="2" Style="{StaticResource button}"/>
+            <Button x:Name="buttonD9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="3" Style="{StaticResource button}"/>
+            <Button x:Name="buttonE9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="4" Style="{StaticResource button}"/>
+            <Button x:Name="buttonF9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="5" Style="{StaticResource button}"/>
+            <Button x:Name="buttonG9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="6" Style="{StaticResource button}"/>
+            <Button x:Name="buttonH9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="7" Style="{StaticResource button}"/>
+            <Button x:Name="buttonI9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="8" Style="{StaticResource button}"/>
+            <Button x:Name="buttonJ9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="8" Grid.Column="9" Style="{StaticResource button}"/>
+            <Button x:Name="buttonA10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Style="{StaticResource button}" Margin="2,0,0,0"/>
+            <Button x:Name="buttonB10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="1" Style="{StaticResource button}"/>
+            <Button x:Name="buttonC10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="2" Style="{StaticResource button}"/>
+            <Button x:Name="buttonD10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="3" Style="{StaticResource button}"/>
+            <Button x:Name="buttonE10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="4" Style="{StaticResource button}"/>
+            <Button x:Name="buttonF10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="5" Style="{StaticResource button}"/>
+            <Button x:Name="buttonG10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="6" Style="{StaticResource button}"/>
+            <Button x:Name="buttonH10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="7" Style="{StaticResource button}"/>
+            <Button x:Name="buttonI10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="8" Style="{StaticResource button}"/>
+            <Button x:Name="buttonJ10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" Height="40" Click="button_Clicked" Grid.Row="9" Grid.Column="9" Style="{StaticResource button}"/>
         </Grid>
-        <Label x:Name="labelOrientation" Content="Orientation: Right" HorizontalAlignment="Left" Margin="101,512,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelSize" Content="" HorizontalAlignment="Left" Margin="101,538,0,0" VerticalAlignment="Top" Width="104"/>
-        <Label x:Name="labelBoat" Content="" HorizontalAlignment="Left" Margin="101,564,0,0" VerticalAlignment="Top" Width="104"/>
-        <Label x:Name="label1" Content="1" HorizontalAlignment="Left" Margin="295,67,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label2" Content="2" HorizontalAlignment="Left" Margin="295,112,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label3" Content="3" HorizontalAlignment="Left" Margin="295,157,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label4" Content="4" HorizontalAlignment="Left" Margin="295,202,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label5" Content="5" HorizontalAlignment="Left" Margin="295,247,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label6" Content="6" HorizontalAlignment="Left" Margin="295,292,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label7" Content="7" HorizontalAlignment="Left" Margin="295,337,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label8" Content="8" HorizontalAlignment="Left" Margin="295,382,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label9" Content="9" HorizontalAlignment="Left" Margin="295,427,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label10" Content="10" HorizontalAlignment="Left" Margin="288,472,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelA" Content="A" HorizontalAlignment="Left" Margin="326,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelB" Content="B" HorizontalAlignment="Left" Margin="372,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelC" Content="C" HorizontalAlignment="Left" Margin="417,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelD" Content="D" HorizontalAlignment="Left" Margin="462,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelE" Content="E" HorizontalAlignment="Left" Margin="508,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelF" Content="F" HorizontalAlignment="Left" Margin="553,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelG" Content="G" HorizontalAlignment="Left" Margin="596,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelH" Content="H" HorizontalAlignment="Left" Margin="641,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelI" Content="I" HorizontalAlignment="Left" Margin="690,34,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelJ" Content="J" HorizontalAlignment="Left" Margin="733,34,0,0" VerticalAlignment="Top"/>
+        <Grid Margin="55,602,536,55">
+            <Label x:Name="labelOrientation" Content="ORIENTATION: HORIZONTAL" HorizontalAlignment="Left" Margin="2,0,0,0" VerticalAlignment="Top" Style="{StaticResource label}" Width="297"/>
+            <Label x:Name="labelSize" Content="" HorizontalAlignment="Left" Margin="2,49,0,0" VerticalAlignment="Top" Style="{StaticResource label}" Width="297"/>
+            <Label x:Name="labelBoat" Content="" HorizontalAlignment="Left" Margin="2,98,0,0" Style="{StaticResource label}" Width="297" Height="44" VerticalAlignment="Top"/>
+        </Grid>
+        <Label x:Name="label1" Content="1" HorizontalAlignment="Left" Margin="394,160,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="label2" Content="2" HorizontalAlignment="Left" Margin="391,201,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="label3" Content="3" HorizontalAlignment="Left" Margin="390,245,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="label4" Content="4" HorizontalAlignment="Left" Margin="391,286,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="label5" Content="5" HorizontalAlignment="Left" Margin="390,330,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="label6" Content="6" HorizontalAlignment="Left" Margin="390,370,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="label7" Content="7" HorizontalAlignment="Left" Margin="394,414,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="label8" Content="8" HorizontalAlignment="Left" Margin="390,454,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="label9" Content="9" HorizontalAlignment="Left" Margin="390,498,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="label10" Content="10" HorizontalAlignment="Left" Margin="379,538,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelA" Content="A" HorizontalAlignment="Left" Margin="431,111,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelB" Content="B" HorizontalAlignment="Left" Margin="472,111,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelC" Content="C" HorizontalAlignment="Left" Margin="514,111,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelD" Content="D" HorizontalAlignment="Left" Margin="556,111,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelE" Content="E" HorizontalAlignment="Left" Margin="599,111,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelF" Content="F" HorizontalAlignment="Left" Margin="642,111,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelG" Content="G" HorizontalAlignment="Left" Margin="682,111,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelH" Content="H" HorizontalAlignment="Left" Margin="724,111,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelI" Content="I" HorizontalAlignment="Left" Margin="768,111,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelJ" Content="J" HorizontalAlignment="Left" Margin="810,111,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
     </Grid>
 </UserControl>

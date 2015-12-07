@@ -5,13 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleShip"
         mc:Ignorable="d"
-        Title="High Scores" Width="325" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+        Title="High Scores" Width="325" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#FF112E2C">
+
+    <Window.Resources>
+        <Style x:Key="framework" TargetType="FrameworkElement">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <Style x:Key="label" TargetType="Label" BasedOn="{StaticResource framework}">
+            <Setter Property="Foreground" Value="#FF38FFD2"/>
+        </Style>
+
+        <Style x:Key="textblock" TargetType="TextBlock" BasedOn="{StaticResource framework}">
+            <Setter Property="Foreground" Value="#FF38FFD2"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Height" Value="350"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontFamily" Value="Impact"/>
+        </Style>
+
+        <Style x:Key="button" TargetType="ButtonBase" BasedOn="{StaticResource framework}">
+            <Setter Property="BorderBrush" Value="#FF112E2C"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FF112E2C"/>
+            <Setter Property="Foreground" Value="#FF38FFD2"/>
+            <Setter Property="FontFamily" Value="Impact"/>
+        </Style>
+
+        <Style x:Key="grid" TargetType="Grid" BasedOn="{StaticResource framework}">
+            <Setter Property="Background" Value="#FF38FFD2" />
+        </Style>
+    </Window.Resources>
+
     <Grid Width="299" Margin="10">
-        <Label x:Name="labelTitle" Content="High Scores" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="26.667"/>
-        <TextBlock x:Name="textBlockNames" HorizontalAlignment="Left" Margin="30,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Text="Name" Height="350" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-        <TextBlock x:Name="textBlockWins" HorizontalAlignment="Center" Margin="165,70,88,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="46" ScrollViewer.VerticalScrollBarVisibility="Auto" IsHitTestVisible="False" Text="Wins" TextAlignment="Right" Height="350"/>
-        <TextBlock x:Name="textBlockLosses" HorizontalAlignment="Center" Margin="216,70,38,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" ScrollViewer.VerticalScrollBarVisibility="Auto" IsHitTestVisible="False" Text="Losses" TextAlignment="Right" Height="350"/>
-        <Button x:Name="buttonDone" Content="Done" HorizontalAlignment="Center" Height="25" Margin="50,0,153,15" VerticalAlignment="Bottom" Width="96" Click="buttonDone_Click" IsDefault="True"/>
-        <Button x:Name="buttonClear" Content="Clear" HorizontalAlignment="Center" Height="25" Margin="101,0,0,15" VerticalAlignment="Bottom" Width="96" Click="buttonClear_Click"/>
+        <Label x:Name="labelTitle" Content="HIGH SCORES" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="26.667" Style="{StaticResource label}" FontFamily="Impact"/>
+        <TextBlock x:Name="textBlockNames" HorizontalAlignment="Left" Margin="30,70,0,0" Width="130" Text="NAME" Style="{StaticResource textblock}"/>
+        <TextBlock x:Name="textBlockWins" HorizontalAlignment="Center" Margin="165,70,88,0" Width="45" Text="WINS" TextAlignment="Right" Style="{StaticResource textblock}"/>
+        <TextBlock x:Name="textBlockLosses" HorizontalAlignment="Center" Margin="216,70,38,0" Width="45" Text="LOSSES" TextAlignment="Right" Style="{StaticResource textblock}"/>
+        <Grid Margin="48,443,53,15" HorizontalAlignment="Stretch" Style="{StaticResource grid}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="99"/>
+                <ColumnDefinition Width="97"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="buttonDone" Content="DONE" HorizontalAlignment="Center" Height="25" VerticalAlignment="Bottom" Width="96" Click="buttonDone_Click" IsDefault="True" Style="{StaticResource ResourceKey=button}" Margin="2,0,2,2"/>
+            <Button x:Name="buttonClear" Content="CLEAR" HorizontalAlignment="Center" Height="25" VerticalAlignment="Bottom" Width="94" Click="buttonClear_Click" Style="{StaticResource button}" Grid.Column="1" Margin="1,0,3,2"/>
+        </Grid>
     </Grid>
 </Window>
