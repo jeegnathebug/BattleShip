@@ -32,8 +32,8 @@
     </UserControl.Resources>
 
     <Grid>
-        <Label x:Name="labelTitle" Content="SETUP" FontSize="64" Margin="21,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource label}"/>
-        <Label x:Name="labelInfo" Content="PLACE YOUR SHIPS ON THE GRID" HorizontalAlignment="Left" Margin="187,46,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelTitle" Content="SETUP" FontSize="64" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource label}"/>
+        <Label x:Name="labelInfo" Content="PLACE YOUR SHIPS ON THE GRID" HorizontalAlignment="Left" Margin="181,46,0,0" VerticalAlignment="Top" Style="{StaticResource label}"/>
         <Label x:Name="labelShipyard" Content="SHIPYARD" HorizontalAlignment="Stretch" Margin="55,100,725,656" Style="{StaticResource label}"/>
 
         <ListBox Margin="55,149,598,300" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="{x:Null}">

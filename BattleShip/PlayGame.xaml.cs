@@ -577,20 +577,38 @@ namespace BattleShip
         {
             Button[] buttonsCoordinate = new Button[20];
 
+            // Set computer's non displayed ships
+            if (!aircraftCarrierComputer.sunk)
+            {
+                PlayerAttack.Children.Insert(0, aircraftCarrierComputer.image);
+            }
+            if (!battleshipComputer.sunk)
+            {
+                PlayerAttack.Children.Insert(0, battleshipComputer.image);
+            }
+            if (!submarineComputer.sunk)
+            {
+                PlayerAttack.Children.Insert(0, submarineComputer.image);
+            }
+            if (!cruiserComputer.sunk)
+            {
+                PlayerAttack.Children.Insert(0, cruiserComputer.image);
+            }
+            if (!destroyerComputer.sunk)
+            {
+                PlayerAttack.Children.Insert(0, destroyerComputer.image);
+            }
+
             Coordinate.Children.CopyTo(buttonsCoordinate, 0);
 
             for (int i = 0; i < 100; i++)
             {
-                buttonsAttack[i].IsEnabled = false;
-                buttonsPlayer[i].IsEnabled = false;
-
-                if (i < 20)
-                {
-                    buttonsCoordinate[i].Opacity = 0;
-                }
+                buttonsAttack[i].Opacity = 0;
+                buttonsPlayer[i].Opacity = 0;
             }
 
-            buttonAttack.Visibility = Visibility.Collapsed;
+            Coordinate.Visibility = Visibility.Collapsed;
+            Attack.Visibility = Visibility.Collapsed;
             buttonsEnd.Visibility = Visibility.Visible;
         }
 
@@ -660,6 +678,7 @@ namespace BattleShip
         private void markButton(Button chosen)
         {
             // Select button
+            chosen.Opacity = 0;
             chosen.IsEnabled = false;
 
             Ship ship = (Ship)chosen.Tag;
@@ -689,13 +708,13 @@ namespace BattleShip
                 // Player turn
                 if (turn)
                 {
-                    message = "You sunk my " + boatName.Replace("_", " ");
+                    message = "You sunk my " + boatName.ToLower().Replace("_", " ");
                     caption = "Success";
                 }
                 // Computer turn
                 else
                 {
-                    message = "You're " + boatName.Replace("_", " ") + " has been sunk!";
+                    message = "You're " + boatName.ToLower().Replace("_", " ") + " has been sunk!";
                     caption = "Oh no!";
                 }
 
@@ -927,7 +946,6 @@ namespace BattleShip
             Grid.SetColumn(ship.image, column);
             Grid.SetRowSpan(ship.image, Grid.GetRowSpan(image));
             Grid.SetColumnSpan(ship.image, Grid.GetColumnSpan(image));
-
         }
 
         /// <summary>

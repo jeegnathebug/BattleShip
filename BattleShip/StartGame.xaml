@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BattleShip"
-             mc:Ignorable="d" Width="525" Height="493.334">
+             mc:Ignorable="d" Width="523" Height="493.334">
 
     <UserControl.Resources>
         <Style x:Key="framework" TargetType="FrameworkElement">
@@ -24,7 +24,7 @@
             <Setter Property="FontFamily" Value="Impact"/>
             <Setter Property="Height" Value="Auto"/>
             <Setter Property="Width" Value="Auto"/>
-            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontSize" Value="22"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
         </Style>
 
@@ -45,7 +45,7 @@
             <Setter Property="Background" Value="#FF112E2C"/>
             <Setter Property="Foreground" Value="#FF38FFD2"/>
             <Setter Property="FontFamily" Value="Impact"/>
-            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontSize" Value="60"/>
         </Style>
 
         <Style x:Key="grid" TargetType="Grid" BasedOn="{StaticResource framework}">
@@ -54,18 +54,18 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid Margin="11,0,10,10" Style="{StaticResource grid}" Height="116" VerticalAlignment="Bottom" Width="504" HorizontalAlignment="Center">
-            <Button x:Name="buttonStart" Content="PLAY" Click="buttonStart_Click" Style="{StaticResource button}" Margin="2,2" HorizontalAlignment="Stretch"/>
+        <Grid Margin="10,0,10,10" Style="{StaticResource grid}" Height="116" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
+            <Button x:Name="buttonStart" Content="PLAY" Click="buttonStart_Click" Style="{StaticResource button}" Margin="2,2" HorizontalAlignment="Stretch" TabIndex="1"/>
         </Grid>
-        <StackPanel Margin="212,190,164,163" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Margin="196,193,195,148" Orientation="Vertical" VerticalAlignment="Center">
             <Label x:Name="labelDifficulty" Content="DIFFICULTY" Style="{StaticResource label}"/>
             <RadioButton x:Name="radioButtonEasy" Content="EASY" GroupName="difficulty" IsChecked="True" Style="{StaticResource radiobutton}"/>
             <RadioButton x:Name="radioButtonMedium" Content="MEDIUM" GroupName="difficulty" Style="{StaticResource radiobutton}"/>
             <RadioButton x:Name="radioButtonHard" Content="HARD" GroupName="difficulty" Style="{StaticResource radiobutton}"/>
             <RadioButton x:Name="radioButtonLegendary" Content="LEGENDARY" GroupName="difficulty" Style="{StaticResource radiobutton}"/>
         </StackPanel>
-        <Label x:Name="labelWelcome" Content="WELCOME TO BATTLESHIP" HorizontalAlignment="Center" Margin="20,15,20,0" VerticalAlignment="Top" Style="{StaticResource ResourceKey=label}" FontSize="48"/>
-        <Label x:Name="labelName" Content="NAME" HorizontalAlignment="Center" Margin="49,139,405,310" VerticalAlignment="Center" Style="{StaticResource label}"/>
-        <TextBox x:Name="textBoxName" Margin="125,140,69,309" Style="{StaticResource textbox}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="29.333" Width="325.4"/>
+        <Label x:Name="labelWelcome" Content="WELCOME TO BATTLESHIP" HorizontalAlignment="Stretch" Margin="22,15,21,0" VerticalAlignment="Top" Style="{StaticResource ResourceKey=label}" FontSize="48"/>
+        <Label x:Name="labelName" Content="NAME" HorizontalAlignment="Stretch" Margin="49,139,403,310" VerticalAlignment="Center" Style="{StaticResource label}"/>
+        <TextBox x:Name="textBoxName" Margin="127,141,71,310" Style="{StaticResource textbox}" VerticalAlignment="Center" HorizontalAlignment="Stretch" FontSize="29.333" TabIndex="0"/>
     </Grid>
 </UserControl>
