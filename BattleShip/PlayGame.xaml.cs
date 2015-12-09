@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 namespace BattleShip
 {
@@ -614,7 +613,7 @@ namespace BattleShip
         }
 
         /// <summary>
-        /// Once a sihp has been hit, the computer will target the buttons around it
+        /// Once a ship has been hit, the computer will target the buttons around it
         /// </summary>
         private Button killerMode()
         {
