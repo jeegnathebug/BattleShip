@@ -93,9 +93,12 @@ namespace BattleShip
             ships[3] = cruiser;
             ships[4] = destroyer;
 
+            // Initialize player button field
             buttons = new Button[100];
             gameField.Children.CopyTo(buttons, 0);
+
             ship = aircraft_carrier;
+            item = Aircraft_Carrier;
         }
 
         /// <summary>
