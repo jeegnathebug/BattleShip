@@ -4,6 +4,9 @@ using System.Windows.Controls;
 
 namespace BattleShip
 {
+    /// <summary>
+    /// Computer AI logic
+    /// </summary>
     public partial class ComputerAI
     {
         private PlayGame playGame;
@@ -215,7 +218,7 @@ namespace BattleShip
         /// <summary>
         /// The computer's turn, where the computer will act according to the difficulty chosen
         /// </summary>
-        public void computerTurn()
+        public Button computerTurn()
         {
             Button chosen = null;
 
@@ -257,10 +260,7 @@ namespace BattleShip
                 lastHitShip = (Ship)chosen.Tag;
             }
 
-            playGame.markButton(chosen);
-
-            // Check for winner
-            playGame.checkWinner("All of your ships have been sunk!", "Loser", "computer");
+            return chosen;
         }
 
         /// <summary>

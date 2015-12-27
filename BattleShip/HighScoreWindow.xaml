@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleShip"
         mc:Ignorable="d"
-        Title="High Scores" Width="325" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#FF112E2C">
+        Title="High Scores" Width="325" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#FF112E2C" Icon="icon.ico">
 
     <Window.Resources>
         <Style x:Key="framework" TargetType="FrameworkElement">

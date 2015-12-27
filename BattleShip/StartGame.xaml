@@ -57,12 +57,12 @@
         <Grid Margin="10,0,10,10" Style="{StaticResource grid}" Height="116" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
             <Button x:Name="buttonStart" Content="PLAY" Click="buttonStart_Click" Style="{StaticResource button}" Margin="2,2" HorizontalAlignment="Stretch" TabIndex="1"/>
         </Grid>
-        <StackPanel Margin="196,193,195,148" Orientation="Vertical" VerticalAlignment="Center">
+        <StackPanel x:Name="DifficultyPanel" Margin="196,193,195,148" Orientation="Vertical" VerticalAlignment="Center">
             <Label x:Name="labelDifficulty" Content="DIFFICULTY" Style="{StaticResource label}"/>
-            <RadioButton x:Name="radioButtonEasy" Content="EASY" GroupName="difficulty" IsChecked="True" Style="{StaticResource radiobutton}"/>
-            <RadioButton x:Name="radioButtonMedium" Content="MEDIUM" GroupName="difficulty" Style="{StaticResource radiobutton}"/>
-            <RadioButton x:Name="radioButtonHard" Content="HARD" GroupName="difficulty" Style="{StaticResource radiobutton}"/>
-            <RadioButton x:Name="radioButtonLegendary" Content="LEGENDARY" GroupName="difficulty" Style="{StaticResource radiobutton}"/>
+            <RadioButton x:Name="radioButtonEasy" Content="EASY" IsChecked="True" Style="{StaticResource radiobutton}" Tag="0"/>
+            <RadioButton x:Name="radioButtonMedium" Content="MEDIUM"  Style="{StaticResource radiobutton}" Tag="1"/>
+            <RadioButton x:Name="radioButtonHard" Content="HARD" Style="{StaticResource radiobutton}" Tag="2"/>
+            <RadioButton x:Name="radioButtonLegendary" Content="LEGENDARY" Style="{StaticResource radiobutton}" Tag="3"/>
         </StackPanel>
         <Label x:Name="labelWelcome" Content="WELCOME TO BATTLESHIP" HorizontalAlignment="Stretch" Margin="22,15,21,0" VerticalAlignment="Top" Style="{StaticResource ResourceKey=label}" FontSize="48"/>
         <Label x:Name="labelName" Content="NAME" HorizontalAlignment="Stretch" Margin="49,139,403,310" VerticalAlignment="Center" Style="{StaticResource label}"/>

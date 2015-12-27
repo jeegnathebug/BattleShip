@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace BattleShip
@@ -14,7 +11,10 @@ namespace BattleShip
     public partial class PlayGame : UserControl
     {
         public event EventHandler done;
-        private ComputerAI ComputerAI;
+        private ComputerAI computerAI;
+        private HighScoreWindow highScoreWindow;
+        private Common common;
+        private MainWindow main;
 
         // Player name
         private string name;
@@ -25,20 +25,12 @@ namespace BattleShip
         // Player's ship field
         public Button[] buttonsPlayer;
         // Computer's ship field
-        public Button[] buttonsAttack;
+        public Button[] buttonsComputer;
 
         // Player ships
-        private Ship aircraftCarrierPlayer;
-        private Ship battleshipPlayer;
-        private Ship submarinePlayer;
-        private Ship cruiserPlayer;
-        private Ship destroyerPlayer;
+        private Ship[] shipsPlayer;
         // Computer ships
-        public Ship aircraftCarrierComputer = new Ship(ShipName.AIRCRAFT_CARRIER, 5);
-        public Ship battleshipComputer = new Ship(ShipName.BATTLESHIP, 4);
-        public Ship submarineComputer = new Ship(ShipName.SUBMARINE, 3);
-        public Ship cruiserComputer = new Ship(ShipName.CRUISER, 3);
-        public Ship destroyerComputer = new Ship(ShipName.DESTROYER, 2);
+        private Ship[] shipsComputer;
 
         /// <summary>
         /// Initializes gameplay phase
@@ -54,30 +46,37 @@ namespace BattleShip
         /// <param name="difficulty">The chosen difficulty</param>
         /// <param name="buttons">The submitted placement of ships</param>
         /// <param name="name">The name of the player</param>
-        public PlayGame(Difficulty difficulty, Button[] buttons, string name, Ship[] ships)
+        public PlayGame(Difficulty difficulty, Button[] buttons, string name, Ship[] ships, MainWindow main)
         {
             InitializeComponent();
-            initializeGame(buttons, ships);
 
-            ComputerAI = new ComputerAI(this, difficulty);
-
-            // Set name
+            this.main = main;
+            // Set player name
             this.name = name.ToLower().Replace(' ', '_');
+
+            // Set player and computer's ships
+            shipsPlayer = ships;
+            shipsComputer = new Ship[] { new Ship(ShipName.AIRCRAFT_CARRIER, 5), new Ship(ShipName.BATTLESHIP, 4), new Ship(ShipName.SUBMARINE, 3), new Ship(ShipName.CRUISER, 3), new Ship(ShipName.DESTROYER, 2) };
+
+            // Set button field arrays
+            buttonsPlayer = new Button[100];
+            PlayerShips.Children.CopyTo(buttonsPlayer, 0);
+
+            buttonsComputer = new Button[100];
+            ComputerShips.Children.CopyTo(buttonsComputer, 0);
+
+            common = new Common(ComputerShips, buttonsComputer);
+            computerAI = new ComputerAI(this, difficulty);
+
+            initializeGame(buttons);
         }
 
         /// <summary>
         /// Initializes gameplay phase
         /// </summary>
         /// <param name="buttons">The submitted placement of ships</param>
-        private void initializeGame(Button[] buttons, Ship[] ships)
+        private void initializeGame(Button[] buttons)
         {
-            // Set button field arrays
-            buttonsPlayer = new Button[100];
-            PlayerShips.Children.CopyTo(buttonsPlayer, 0);
-
-            buttonsAttack = new Button[100];
-            PlayerAttack.Children.CopyTo(buttonsAttack, 0);
-
             // Set player buttons
             for (int i = 0; i < 100; i++)
             {
@@ -85,66 +84,27 @@ namespace BattleShip
                 buttonsPlayer[i].Tag = buttons[i].Tag;
             }
 
-            // Set player ships
-            aircraftCarrierPlayer = ships[0];
-            battleshipPlayer = ships[1];
-            submarinePlayer = ships[2];
-            cruiserPlayer = ships[3];
-            destroyerPlayer = ships[4];
-
-            Ship[] shipsComputer = new Ship[] { aircraftCarrierComputer, battleshipComputer, submarineComputer, cruiserComputer, destroyerComputer };
-            Label[] labels = new Label[] { labelPlayerAircraftCarrier, labelPlayerBattleship, labelPlayerSubmarine, labelPlayerCruiser, labelPlayerDestroyer };
+            Label[] labelsPlayer = new Label[] { labelPlayerAircraftCarrier, labelPlayerBattleship, labelPlayerSubmarine, labelPlayerCruiser, labelPlayerDestroyer };
             Label[] labelsComputer = new Label[] { labelComputerAircraftCarrier, labelComputerBattleship, labelComputerSubmarine, labelComputerCruiser, labelComputerDestroyer };
 
-            for (int i = 0; i < ships.Length; i++)
+            Random random = new Random();
+
+            for (int i = 0; i < shipsPlayer.Length; i++)
             {
-
-                // Add images
-                setImage(ships[i], PlayerShips, buttonsPlayer, true);
-                setImage(ships[i], PlayerShips, buttonsPlayer, true);
-
-                // Set computer ship images
-                shipsComputer[i].image = ships[i].image;
+                // Set ship images
+                shipsComputer[i].image = shipsPlayer[i].image;
+                PlayerShips.Children.Add(shipsPlayer[i].image);
 
                 // Set labels
                 labelsComputer[i].Tag = shipsComputer[i];
-                labels[i].Tag = ships[i];
+                labelsPlayer[i].Tag = shipsPlayer[i];
 
                 // Set computer ships
-                setShip(shipsComputer[i], randomOrientation(i + 1));
+                do
+                {
+                    common.setShip(shipsComputer[i], random.Next(0, 100), common.randomOrientation(i), true, true);
+                } while (!shipsComputer[i].placed);
             }
-        }
-
-        /// <summary>
-        /// Binary search for player names
-        /// </summary>
-        /// <param name="players">A list of player names</param>
-        /// <param name="index">The name for which to search</param>
-        /// <returns>The index of the name, or the negative index - 1 at where the name would occur</returns>
-        private int binarySearch(string[] players, string index)
-        {
-
-            int low = 0;
-            int high = players.Length - 1;
-
-            while (high >= low)
-            {
-                int middle = (low + high) / 2;
-
-                if (players[middle].CompareTo(index) == 0)
-                {
-                    return middle;
-                }
-                if (players[middle].CompareTo(index) < 0)
-                {
-                    low = middle + 1;
-                }
-                if (players[middle].CompareTo(index) > 0)
-                {
-                    high = middle - 1;
-                }
-            }
-            return -(low + 1);
         }
 
         /// <summary>
@@ -175,7 +135,8 @@ namespace BattleShip
 
             if (xCoord == "" || yCoord == "")
             {
-                MessageBox.Show("You must enter coordinates first", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Console.Beep(500, 250);
+                //MessageBox.Show("You must enter coordinates first", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -218,14 +179,14 @@ namespace BattleShip
                 }
 
                 // If button has already been chosen
-                if (!buttonsAttack[row + column].IsEnabled)
+                if (!buttonsComputer[row + column].IsEnabled)
                 {
                     MessageBox.Show("You've already shot there", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
                     // Play button
-                    playerTurn(buttonsAttack[row + column]);
+                    playerTurn(buttonsComputer[row + column]);
                 }
 
                 // Reset text boxes
@@ -296,13 +257,19 @@ namespace BattleShip
             if (turn)
             {
                 // Check if all computer ships have been sunk
-                sunk = aircraftCarrierComputer.sunk && battleshipComputer.sunk && submarineComputer.sunk && cruiserComputer.sunk && destroyerComputer.sunk;
+                for (int i = 0; i < shipsComputer.Length; i++)
+                {
+                    sunk &= shipsComputer[i].sunk;
+                }
             }
             // Computer turn
             else
             {
                 // Check if all player ships have been sunk
-                sunk = aircraftCarrierPlayer.sunk && battleshipPlayer.sunk && submarinePlayer.sunk && cruiserPlayer.sunk && destroyerPlayer.sunk;
+                for (int i = 0; i < shipsPlayer.Length; i++)
+                {
+                    sunk &= shipsPlayer[i].sunk;
+                }
             }
 
             if (sunk)
@@ -313,11 +280,12 @@ namespace BattleShip
                 MessageBox.Show(message, caption);
 
                 // Update file and show highscores
-                showHighScore(saveWins(winnerName));
+                highScoreWindow = new HighScoreWindow(name, winnerName);
+                highScoreWindow.Owner = main;
+                highScoreWindow.ShowDialog();
 
                 return true;
             }
-
             return false;
         }
 
@@ -329,32 +297,21 @@ namespace BattleShip
             Button[] buttonsCoordinate = new Button[20];
 
             // Set computer's non displayed ships
-            if (!aircraftCarrierComputer.sunk)
+            for (int i = 0; i < shipsComputer.Length; i++)
             {
-                PlayerAttack.Children.Insert(0, aircraftCarrierComputer.image);
-            }
-            if (!battleshipComputer.sunk)
-            {
-                PlayerAttack.Children.Insert(0, battleshipComputer.image);
-            }
-            if (!submarineComputer.sunk)
-            {
-                PlayerAttack.Children.Insert(0, submarineComputer.image);
-            }
-            if (!cruiserComputer.sunk)
-            {
-                PlayerAttack.Children.Insert(0, cruiserComputer.image);
-            }
-            if (!destroyerComputer.sunk)
-            {
-                PlayerAttack.Children.Insert(0, destroyerComputer.image);
+                if (!shipsComputer[i].sunk)
+                {
+                    ComputerShips.Children.Insert(0, shipsComputer[i].image);
+                }
             }
 
             Coordinate.Children.CopyTo(buttonsCoordinate, 0);
 
             for (int i = 0; i < 100; i++)
             {
-                buttonsAttack[i].Opacity = 0;
+                buttonsComputer[i].IsEnabled = false;
+                buttonsPlayer[i].IsEnabled = false;
+                buttonsComputer[i].Opacity = 0;
                 buttonsPlayer[i].Opacity = 0;
             }
 
@@ -406,7 +363,7 @@ namespace BattleShip
                 // Computer turn
                 else
                 {
-                    message = "You're " + boatName.ToLower().Replace("_", " ") + " has been sunk!";
+                    message = "Your " + boatName.ToLower().Replace("_", " ") + " has been sunk!";
                     caption = "Oh no!";
                 }
 
@@ -457,7 +414,7 @@ namespace BattleShip
                 Ship ship = (Ship)tag;
                 if (ship.sunk)
                 {
-                    PlayerAttack.Children.Insert(0, ship.image);
+                    ComputerShips.Children.Insert(0, ship.image);
                 }
             }
 
@@ -469,102 +426,11 @@ namespace BattleShip
             {
                 // Set computer turn
                 turn = false;
-                ComputerAI.computerTurn();
+                markButton(computerAI.computerTurn());
+
+                // Check for winner
+                checkWinner("All of your ships have been sunk!", "Loser", "");
             }
-        }
-
-        /// <summary>
-        /// Chooses a random orientation
-        /// </summary>
-        /// <param name="number">The seed</param>
-        /// <returns>A randomly chosen orientation</returns>
-        private Orientation randomOrientation(int number)
-        {
-            // Choose random number
-            Random random = new Random();
-            int index;
-
-            do
-            {
-                index = random.Next(10);
-                number--;
-            } while (number != 0);
-
-            if (index % 2 == 0)
-            {
-                return Orientation.HORIZONTAL;
-            }
-            else
-            {
-                return Orientation.VERTICAL;
-            }
-        }
-
-        /// <summary>
-        /// Once a winner is determined, the wins/loss counter for the current player will be updated
-        /// </summary>
-        /// <param name="winnerName"></param>
-        /// <returns></returns>
-        private List<string> saveWins(string winnerName)
-        {
-            // Filename to save score
-            string path = @"../../score.txt";
-
-            // Create file if it does not exist
-            if (!File.Exists(path))
-            {
-                FileStream stream = File.Create(path);
-                stream.Close();
-            }
-
-            // Get all previous players
-            List<string> previousPlayers = new List<string>(File.ReadAllLines(path));
-            string[] previousPlayer = { name, "0", "0" };
-            string[] playerNames;
-            int index;
-
-            int wins = 0;
-            int losses = 0;
-
-            // Get name and index of previous player
-            playerNames = new string[previousPlayers.Count];
-
-            for (index = 0; index < previousPlayers.Count; index++)
-            {
-                playerNames[index] = previousPlayers[index].Split(' ')[0];
-            }
-
-            // Find index of player
-            index = binarySearch(playerNames, name);
-
-            // Player already exists
-            if (index > -1)
-            {
-                previousPlayer = previousPlayers[index].Split();
-                previousPlayers.RemoveAt(index);
-            }
-            else
-            {
-                index = -(index + 1);
-            }
-
-            // Set wins or losses
-            if (winnerName.Equals("computer"))
-            {
-                losses = int.Parse(previousPlayer[2]) + 1;
-            }
-            else
-            {
-                wins = int.Parse(previousPlayer[1]) + 1;
-            }
-
-            // Add to array
-            previousPlayers.Insert(index, name + " " + wins + " " + losses);
-
-            // Write back to file
-            File.WriteAllLines(path, previousPlayers);
-
-            return previousPlayers;
         }
 
         /// <summary>
@@ -580,161 +446,12 @@ namespace BattleShip
 
             if (turn)
             {
-                PlayerAttack.Children.Add(image);
+                ComputerShips.Children.Add(image);
             }
             else
             {
                 PlayerShips.Children.Add(image);
             }
-        }
-
-        /// <summary>
-        /// Sets image of placed ship on button field
-        /// </summary>
-        /// <param name="ship">The ship to be placed</param>
-        /// <param name="grid">The grid to set the images on</param>
-        /// <param name="buttons">The array of buttons to use</param>
-        private void setImage(Ship ship, Grid grid, Button[] buttons, bool show)
-        {
-            // Copy image
-            Image image = new Image();
-            image.Source = ship.image.Source;
-            image.Stretch = ship.image.Stretch;
-            int index = ship.location[0];
-
-            // Set properties
-            int span = ship.size;
-            int row = Grid.GetRow(buttons[index]);
-            int column = Grid.GetColumn(buttons[index]);
-            Grid.SetRow(image, row);
-            Grid.SetColumn(image, column);
-
-            if (ship.orientation.Equals(Orientation.VERTICAL))
-            {
-                // Rotate image
-                image.LayoutTransform = new RotateTransform(90.0, 0, 0);
-                Grid.SetRowSpan(image, span);
-                image.Height = ship.image.Width;
-                image.Width = ship.image.Height;
-            }
-            else
-            {
-                Grid.SetColumnSpan(image, span);
-                image.Height = ship.image.Height;
-                image.Width = ship.image.Width;
-            }
-
-            if (show)
-            {
-                // Add image to location
-                grid.Children.Add(image);
-            }
-
-            ship.image = new Image();
-            ship.image.Stretch = image.Stretch;
-            ship.image.Source = image.Source;
-            ship.image.Height = image.Height;
-            ship.image.Width = image.Width;
-            ship.image.LayoutTransform = image.LayoutTransform;
-            Grid.SetRow(ship.image, row);
-            Grid.SetColumn(ship.image, column);
-            Grid.SetRowSpan(ship.image, Grid.GetRowSpan(image));
-            Grid.SetColumnSpan(ship.image, Grid.GetColumnSpan(image));
-        }
-
-        /// <summary>
-        /// Randomly places boat
-        /// </summary>
-        /// <param name="ship">The ship to be placed</param>
-        /// <param name="orientation">The orientation of the boat to be placed</param>
-        private void setShip(Ship ship, Orientation orientation)
-        {
-            Random random = new Random();
-            int index;
-            int size = ship.size;
-
-            bool isChosen;
-
-            // Orientation is horizontal
-            if (orientation.Equals(Orientation.HORIZONTAL))
-            {
-                do
-                {
-                    isChosen = false;
-
-                    do
-                    {
-                        index = random.Next(0, 100);
-
-                    } while (((index + (size - 1)) % 10 < size - 1));
-
-                    // Check if every button to be selected is not already selected
-                    for (int i = 0; i < size; i++)
-                    {
-                        if (index + i > 99 || buttonsAttack[index + i].Tag != null)
-                        {
-                            isChosen = true;
-                        }
-                    }
-
-                } while (isChosen);
-
-                // Set buttons
-                for (int i = 0; i < size; i++)
-                {
-                    buttonsAttack[index + i].Tag = ship;
-                    ship.location.Add(index + i);
-                }
-            }
-            // Orientation is vertical
-            else
-            {
-                do
-                {
-                    isChosen = false;
-
-                    do
-                    {
-                        index = random.Next(0, 100);
-
-                    } while ((index / 10) + (size * 10) > 100 || isChosen);
-
-
-                    // Check if every button to be selected is not already selected
-                    for (int i = 0; i < size * 10; i += 10)
-                    {
-                        if (index + i > 99 || buttonsAttack[index + i].Tag != null)
-                        {
-                            isChosen = true;
-                        }
-                    }
-
-                } while (isChosen);
-
-                // Set buttons
-                for (int i = 0; i < size * 10; i += 10)
-                {
-                    buttonsAttack[index + i].Tag = ship;
-                    ship.location.Add(index + i);
-                }
-            }
-
-            ship.orientation = orientation;
-            ship.location.Sort();
-
-            setImage(ship, PlayerAttack, buttonsAttack, false);
-            setImage(ship, PlayerAttack, buttonsAttack, false);
-        }
-
-        /// <summary>
-        /// Show the highScoreWindow once the game is completed
-        /// </summary>
-        /// <param name="highScores">A list containing all the players who have previously played</param>
-        private void showHighScore(List<string> highScores)
-        {
-            HighScoreWindow highScoreWindow = new HighScoreWindow(highScores);
-
-            highScoreWindow.ShowDialog();
         }
     }
 }

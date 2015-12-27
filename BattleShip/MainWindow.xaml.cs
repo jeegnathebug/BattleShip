@@ -73,7 +73,7 @@ namespace BattleShip
             grid.Children.Clear();
 
             // Initialize game play phase
-            playGame = new PlayGame(startGame.difficulty, shipyard.buttons, startGame.textBoxName.Text.Trim(), shipyard.ships);
+            playGame = new PlayGame(startGame.difficulty, shipyard.buttons, startGame.name, shipyard.ships, this);
 
             // Add game field
             grid.Children.Add(playGame);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -17,6 +18,7 @@ namespace BattleShip
         public event EventHandler play;
 
         public Difficulty difficulty;
+        public string name;
 
         /// <summary>
         /// Initialize startup phase
@@ -27,40 +29,25 @@ namespace BattleShip
         }
 
         /// <summary>
-        /// Submits name and difficulty. If no name is provided "anonymous" will be used
+        /// Submits name and difficulty. If no name is provided, "anonymous" will be used
         /// </summary>
         /// <param name="sender">The Button</param>
         /// <param name="e">The Event</param>
         private void buttonStart_Click(object sender, RoutedEventArgs e)
         {
-            string name = textBoxName.Text.Trim();
+            name = textBoxName.Text.Trim();
             if (name == "")
             {
-                MessageBox.Show("You must enter a name", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                name = "anonymous";
             }
-            else
-            {
-                if (play != null)
-                {
-                    if (radioButtonEasy.IsChecked.Value)
-                    {
-                        difficulty = Difficulty.Easy;
-                    }
-                    if (radioButtonMedium.IsChecked.Value)
-                    {
-                        difficulty = Difficulty.Medium;
-                    }
-                    if (radioButtonHard.IsChecked.Value)
-                    {
-                        difficulty = Difficulty.Hard;
-                    }
-                    if (radioButtonLegendary.IsChecked.Value)
-                    {
-                        difficulty = Difficulty.Legendary;
-                    }
 
-                    play(this, e);
-                }
+            if (play != null)
+            {
+                // Get difficulty
+                RadioButton checkedButton = DifficultyPanel.Children.OfType<RadioButton>().FirstOrDefault(r => r.IsChecked.Value);
+                difficulty = (Difficulty)int.Parse(checkedButton.Tag.ToString());
+
+                play(this, e);
             }
         }
     }

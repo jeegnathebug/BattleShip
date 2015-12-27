@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace BattleShip
 {
@@ -18,14 +17,17 @@ namespace BattleShip
         public int hits = 0;
         public bool sunk = false;
         public Image image;
+        public ListBoxItem item;
 
-        public List<int> location = new List<int>();
+        public List<int> location;
         public bool placed = false;
 
         public Ship(ShipName name, int size)
         {
             this.name = name;
             this.size = size;
+
+            location = new List<int>(size);
         }
     }
 
@@ -36,7 +38,7 @@ namespace BattleShip
 
     public enum Orientation
     {
-        VERTICAL, HORIZONTAL
+        HORIZONTAL, VERTICAL
     }
 
     /// <summary>
@@ -45,25 +47,24 @@ namespace BattleShip
     public partial class Shipyard : UserControl
     {
         public event EventHandler play;
+        private Common common;
 
         private Orientation orientation = Orientation.HORIZONTAL;
         public Button[] buttons;
 
-        // List of players actions for undoing
-        List<Ship> actions = new List<Ship>();
+        // List of players actions
+        List<Ship> actions = new List<Ship>(5);
 
         // Ships
-        public Ship[] ships = new Ship[5];
+        public Ship[] ships;
         private Ship aircraft_carrier = new Ship(ShipName.AIRCRAFT_CARRIER, 5);
         private Ship battleship = new Ship(ShipName.BATTLESHIP, 4);
         private Ship submarine = new Ship(ShipName.SUBMARINE, 3);
         private Ship cruiser = new Ship(ShipName.CRUISER, 3);
         private Ship destroyer = new Ship(ShipName.DESTROYER, 2);
 
-        // Selected ship
+        // Currently selected ship
         private Ship ship;
-        // Selected ListBoxItem
-        private ListBoxItem item;
 
         /// <summary>
         /// Initializes setup phase
@@ -72,33 +73,30 @@ namespace BattleShip
         {
             InitializeComponent();
 
-            // Set ship images
-            aircraft_carrier.image = aircraft_carrierImage;
-            battleship.image = battleshipImage;
-            submarine.image = submarineImage;
-            cruiser.image = cruiserImage;
-            destroyer.image = destroyerImage;
-
-            // Set ListBoxItem's Tags
-            Aircraft_Carrier.Tag = aircraft_carrier;
-            Battleship.Tag = battleship;
-            Submarine.Tag = submarine;
-            Cruiser.Tag = cruiser;
-            Destroyer.Tag = destroyer;
-
             // Initialize ship array
-            ships[0] = aircraft_carrier;
-            ships[1] = battleship;
-            ships[2] = submarine;
-            ships[3] = cruiser;
-            ships[4] = destroyer;
+            ships = new Ship[] { aircraft_carrier, battleship, submarine, cruiser, destroyer };
+
+            // Image array
+            Image[] images = { aircraft_carrierImage, battleshipImage, submarineImage, cruiserImage, destroyerImage };
+            // ListBoxItem array
+            ListBoxItem[] listBoxItems = { Aircraft_Carrier, Battleship, Submarine, Cruiser, Destroyer };
+
+            // Set ships' ListBoxItem's, images and ListBoxItems' Tags
+            for (int i = 0; i < ships.Length; i++)
+            {
+                ships[i].item = listBoxItems[i];
+                ships[i].image = images[i];
+                listBoxItems[i].Tag = ships[i];
+            }
 
             // Initialize player button field
             buttons = new Button[100];
             gameField.Children.CopyTo(buttons, 0);
 
+            common = new Common(gameField, buttons);
+
+            // Set currently selected ship
             ship = aircraft_carrier;
-            item = Aircraft_Carrier;
         }
 
         /// <summary>
@@ -116,7 +114,14 @@ namespace BattleShip
                 // Find index of chosen button in array
                 index = Array.IndexOf(buttons, chosen);
 
-                setShip(ship, index);
+                bool isPlaced = common.setShip(ship, index, orientation);
+
+                if (isPlaced)
+                {
+                    // Add to list of actions
+                    actions.Add(ship);
+                    Undo.Visibility = Visibility.Visible;
+                }
             }
         }
 
@@ -128,12 +133,15 @@ namespace BattleShip
         private void buttonRandomize_Click(object sender, EventArgs e)
         {
             reset();
+            Random random = new Random();
 
-            randomize(aircraft_carrier, randomOrientation(1));
-            randomize(battleship, randomOrientation(2));
-            randomize(submarine, randomOrientation(3));
-            randomize(cruiser, randomOrientation(4));
-            randomize(destroyer, randomOrientation(5));
+            for (int i = 0; i < ships.Length; i++)
+            {
+                do
+                {
+                    common.setShip(ships[i], random.Next(0, 100), common.randomOrientation(i), true);
+                } while (!ships[i].placed);
+            }
         }
 
         /// <summary>
@@ -147,22 +155,13 @@ namespace BattleShip
         }
 
         /// <summary>
-        /// Canges the orientation of the placement
+        /// Changes the orientation of the placement
         /// </summary>
         /// <param name="sender">The Button</param>
         /// <param name="e">The Event</param>
         private void buttonRotate_Click(object sender, EventArgs e)
         {
-            if (orientation == Orientation.HORIZONTAL)
-            {
-                orientation = Orientation.VERTICAL;
-            }
-            else
-            {
-                orientation = Orientation.HORIZONTAL;
-            }
-
-            labelOrientation.Content = "ORIENTATION: " + orientation;
+            changeOrientation();
         }
 
         /// <summary>
@@ -197,55 +196,42 @@ namespace BattleShip
             // Reset chosen buttons
             for (int i = 0; i < ship.size; i++)
             {
-                buttons[ship.location[i]].Opacity = 100;
                 buttons[ship.location[i]].Tag = null;
+                buttons[ship.location[i]].Opacity = 100;
                 buttons[ship.location[i]].IsEnabled = true;
             }
 
             // Reset ship
             ship.placed = false;
-            ship.location = null;
+            ship.location = new List<int>();
 
             // Reset image
             gameField.Children.RemoveRange(gameField.Children.Count - 2, gameField.Children.Count - 1);
 
-            switch (ship.name)
-            {
-                case ShipName.AIRCRAFT_CARRIER:
-                    ship.image = aircraft_carrierImage;
-                    break;
-                case ShipName.BATTLESHIP:
-                    ship.image = battleshipImage;
-                    break;
-                case ShipName.SUBMARINE:
-                    ship.image = submarineImage;
-                    break;
-                case ShipName.CRUISER:
-                    ship.image = cruiserImage;
-                    break;
-                case ShipName.DESTROYER:
-                    ship.image = destroyerImage;
-                    break;
-            }
-
             // Reset ListItemBox
-            ListBoxItem[] items = { Aircraft_Carrier, Battleship, Submarine, Cruiser, Destroyer };
-            for (int i = 0; i < 5; i++)
-            {
-                if (items[i].Tag.Equals(ship))
-                {
-                    items[i].IsEnabled = true;
-                }
-            }
+            ship.item.IsEnabled = true;
 
             // Remove action
             actions.RemoveAt(actions.Count - 1);
 
-            // Disable undo button if no actions remain
+            // Hide undo button if no actions remain
             if (actions.Count == 0)
             {
                 Undo.Visibility = Visibility.Hidden;
             }
+        }
+
+        /// <summary>
+        /// Changes orientation of ship placement
+        /// </summary>
+        private void changeOrientation()
+        {
+            int i = (int)orientation;
+            i++;
+            i %= 2;
+
+            orientation = (Orientation)i;
+            labelOrientation.Content = "ORIENTATION: " + orientation;
         }
 
         /// <summary>
@@ -257,21 +243,20 @@ namespace BattleShip
         {
             ListBoxItem selected = (ListBoxItem)sender;
 
-            item = selected;
             ship = (Ship)selected.Tag;
 
             // Change labels
             labelSize.Content = "SIZE: " + ship.size;
-            labelBoat.Content = ship.name;
+            labelBoat.Content = ship.name.ToString().Replace('_', ' ');
         }
 
         /// <summary>
-        /// Check if a ship has been selected from the list box
+        /// Checks if a ship has been selected from the list box
         /// </summary>
         /// <returns>True if a ship has been selected, false otherwise</returns>
         private bool nullCheck()
         {
-            if (!item.IsEnabled)
+            if (!ship.item.IsEnabled)
             {
                 MessageBox.Show("You must first select a ship", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
@@ -283,119 +268,6 @@ namespace BattleShip
         }
 
         /// <summary>
-        /// Randomly selects a placement for the boat
-        /// </summary>
-        /// <param name="ship">The ship to be placed</param>
-        /// <param name="orientation">The orientation chosen for the boat placement</param>
-        private void randomize(Ship ship, Orientation orientation)
-        {
-            Random random = new Random();
-            bool isChosen;
-            int index;
-            int size = ship.size;
-
-            // Orientation is horizontal
-            if (orientation.Equals(Orientation.HORIZONTAL))
-            {
-                do
-                {
-                    isChosen = false;
-                    do
-                    {
-                        index = random.Next(0, 100);
-
-                    } while (((index + (size - 1)) % 10 < size - 1));
-
-                    // Check if every button to be selected is not already selected
-                    for (int i = 0; i < size; i++)
-                    {
-                        if (index + i > 99 || buttons[index + i].Tag != null)
-                        {
-                            isChosen = true;
-                        }
-                    }
-                } while (isChosen);
-
-                // Set buttons
-                for (int i = 0; i < size; i++)
-                {
-                    buttons[index + i].Tag = ship;
-                    buttons[index + i].Opacity = 0;
-                    buttons[index + i].IsEnabled = false;
-
-                    ship.location.Add(index + i);
-                }
-            }
-            // Orientation is vertical
-            else
-            {
-                do
-                {
-                    isChosen = false;
-                    do
-                    {
-                        index = random.Next(0, 100);
-
-                    } while ((index / 10) + (size * 10) > 100 || isChosen);
-
-                    // Check if every button to be selected is not already selected
-                    for (int i = 0; i < size * 10; i += 10)
-                    {
-                        if (index + i > 99 || buttons[index + i].Tag != null)
-                        {
-                            isChosen = true;
-                        }
-                    }
-                } while (isChosen);
-
-                // Set buttons
-                for (int i = 0; i < size * 10; i += 10)
-                {
-                    buttons[index + i].Tag = ship;
-                    buttons[index + i].Opacity = 0;
-                    buttons[index + i].IsEnabled = false;
-
-                    ship.location.Add(index + i);
-                }
-            }
-
-            // Set image
-            setImage(index, ship, orientation);
-            setImage(index, ship, orientation);
-
-            ship.location.Sort();
-            ship.orientation = orientation;
-            update(ship, false);
-        }
-
-        /// <summary>
-        /// Chooses a random orientation
-        /// </summary>
-        /// <param name="number">The seed</param>
-        /// <returns>A randomly chosen orientation</returns>
-        private Orientation randomOrientation(int number)
-        {
-            // Choose random number
-            Random random = new Random();
-            int index;
-
-            do
-            {
-                index = random.Next(10);
-                number--;
-            } while (number != 0);
-
-            if (index % 2 == 0)
-            {
-                return Orientation.HORIZONTAL;
-            }
-            else
-            {
-                return Orientation.VERTICAL;
-            }
-        }
-
-        /// <summary>
         /// Resets the screen
         /// </summary>
         private void reset()
@@ -403,29 +275,20 @@ namespace BattleShip
             Undo.Visibility = Visibility.Hidden;
             actions.Clear();
 
-            // Enable list box items
-            Aircraft_Carrier.IsEnabled = true;
-            Battleship.IsEnabled = true;
-            Submarine.IsEnabled = true;
-            Cruiser.IsEnabled = true;
-            Destroyer.IsEnabled = true;
+            // Image array
+            Image[] images = { aircraft_carrierImage, battleshipImage, submarineImage, cruiserImage, destroyerImage };
 
-            // Unset placed ships
-            aircraft_carrier.placed = false;
-            battleship.placed = false;
-            submarine.placed = false;
-            cruiser.placed = false;
-            destroyer.placed = false;
+            // Enable list box items, unset placed ships, reset ship images
+            for (int i = 0; i < ships.Length; i++)
+            {
+                ships[i].item.IsEnabled = true;
+                ships[i].placed = false;
+                ships[i].image = images[i];
+                ships[i].location = new List<int>();
+            }
 
             // Remove images from field
             gameField.Children.RemoveRange(100, gameField.Children.Count - 100);
-
-            // Reset ship images
-            aircraft_carrier.image = aircraft_carrierImage;
-            battleship.image = battleshipImage;
-            submarine.image = submarineImage;
-            cruiser.image = cruiserImage;
-            destroyer.image = destroyerImage;
 
             // Enable all buttons
             foreach (Button b in buttons)
@@ -433,254 +296,6 @@ namespace BattleShip
                 b.Tag = null;
                 b.Opacity = 100;
                 b.IsEnabled = true;
-            }
-        }
-
-        /// <summary>
-        /// Sets image of placed ship on button field
-        /// </summary>
-        /// <param name="index">The index of the first button chosen, where the front of the image will be placed</param>
-        /// <param name="ship">The ship to be placed</param>
-        /// <param name="orientation">The orientation of the ship</param>
-        private void setImage(int index, Ship ship, Orientation orientation)
-        {
-            // Copy image
-            Image image = new Image();
-            image.Source = ship.image.Source;
-            image.Stretch = ship.image.Stretch;
-
-            // Set properties
-            int span = ship.size;
-            int row = Grid.GetRow(buttons[index]);
-            int column = Grid.GetColumn(buttons[index]);
-            Grid.SetRow(image, row);
-            Grid.SetColumn(image, column);
-
-            if (orientation.Equals(Orientation.VERTICAL))
-            {
-                // Rotate image
-                image.LayoutTransform = new RotateTransform(90.0, 0, 0);
-                Grid.SetRowSpan(image, span);
-                image.Height = ship.image.Width;
-                image.Width = ship.image.Height;
-            }
-            else
-            {
-                Grid.SetColumnSpan(image, span);
-                image.Height = ship.image.Height;
-                image.Width = ship.image.Width;
-            }
-
-            // Add image to location
-            gameField.Children.Add(image);
-
-            ship.image = new Image();
-            ship.image.Stretch = image.Stretch;
-            ship.image.Source = image.Source;
-            ship.image.Height = image.Height;
-            ship.image.Width = image.Width;
-            ship.image.LayoutTransform = image.LayoutTransform;
-            Grid.SetRow(ship.image, row);
-            Grid.SetColumn(ship.image, column);
-            Grid.SetRowSpan(ship.image, Grid.GetRowSpan(image));
-            Grid.SetColumnSpan(ship.image, Grid.GetColumnSpan(image));
-        }
-
-        /// <summary>
-        /// Sets the chosen ship based on the button selected, if the ship cannot legally be placed on chosen button, an error message is shown
-        /// </summary>
-        /// <param name="ship">The ship to be placed</param>
-        /// <param name="index">The index of the button chosen in the button field</param>
-        private void setShip(Ship ship, int index)
-        {
-            bool placed = false;
-            bool isChosen = false;
-
-            int size = ship.size;
-
-            // Invalid placement check
-            // Orientation is horizontal
-            if (orientation.Equals(Orientation.HORIZONTAL))
-            {
-                // Go through every button that will be chosen to see if it has already been chosen or not
-                int counter = 1;
-                for (int i = 0; i < size; i++)
-                {
-                    if (index + i <= 99)
-                    {
-                        if (buttons[index + i].Tag != null)
-                        {
-                            isChosen = true;
-                        }
-                    }
-                    else
-                    {
-                        if (buttons[index - counter].Tag != null)
-                        {
-                            isChosen = true;
-                        }
-                        counter++;
-                    }
-                }
-
-                if (isChosen)
-                {
-                    MessageBox.Show("Invalid placement", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                else
-                {
-                    placed = true;
-                }
-            }
-            // Orientation is vertical
-            else
-            {
-                // Go through every button that will be chosen to see if it has already been chosen or not
-                int counter = 10;
-                for (int i = 0; i < size * 10; i += 10)
-                {
-                    if (index + i <= 99)
-                    {
-                        if (buttons[index + i].Tag != null)
-                        {
-                            isChosen = true;
-                        }
-                    }
-                    else
-                    {
-                        if (buttons[index - counter].Tag != null)
-                        {
-                            isChosen = true;
-                        }
-                        counter += 10;
-                    }
-                }
-                if (isChosen)
-                {
-                    MessageBox.Show("Invalid placement", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                else
-                {
-                    placed = true;
-                }
-            }
-
-            // Choose buttons to select
-            int[] chosenButtonIndexes = new int[size];
-            if (placed)
-            {
-                // Orientation is horizontal
-                if (orientation.Equals(Orientation.HORIZONTAL))
-                {
-                    // If placed in two rows
-                    if (((index + (size - 1)) % 10 < size - 1))
-                    {
-                        int counter = 0, reverseCounter = 1;
-
-                        while ((index + counter) % 10 > 1)
-                        {
-                            chosenButtonIndexes[counter] = index + counter;
-                            counter++;
-                        }
-                        for (int i = counter; i < size; i++)
-                        {
-                            chosenButtonIndexes[i] = index - reverseCounter;
-                            reverseCounter++;
-                        }
-                    }
-                    // If placed in one row
-                    else
-                    {
-                        for (int i = 0; i < size; i++)
-                        {
-                            chosenButtonIndexes[i] = index + i;
-                        }
-                    }
-                }
-                // Orientation is vertical
-                else
-                {
-                    // If placed in two columns
-                    if (index + (size * 10) > 100)
-                    {
-                        int counter = 0, reverseCounter = 10;
-                        while ((index / 10 + counter) % 100 < 10)
-                        {
-                            chosenButtonIndexes[counter] = index + counter * 10;
-                            counter++;
-                        }
-                        for (int i = counter; i < size; i++)
-                        {
-                            chosenButtonIndexes[i] = index - reverseCounter;
-                            reverseCounter += 10;
-                        }
-                    }
-                    // If placed in one column
-                    else
-                    {
-                        int counter = 0;
-                        for (int i = 0; i < size * 10; i += 10)
-                        {
-                            chosenButtonIndexes[counter] = index + i;
-                            counter++;
-                        }
-                    }
-                }
-
-                // Sort array
-                Array.Sort(chosenButtonIndexes);
-
-                // Set image
-                setImage(chosenButtonIndexes[0], ship, orientation);
-                setImage(chosenButtonIndexes[0], ship, orientation);
-
-                // Select buttons
-                ship.location = new List<int>(chosenButtonIndexes);
-                for (int i = 0; i < size; i++)
-                {
-                    buttons[chosenButtonIndexes[i]].Tag = ship;
-                    buttons[chosenButtonIndexes[i]].Opacity = 0;
-                    buttons[chosenButtonIndexes[i]].IsEnabled = false;
-                }
-
-                ship.orientation = orientation;
-                ship.location.Sort();
-                update(ship, true);
-            }
-        }
-
-        /// <summary>
-        /// Updates the listbox, and private fields
-        /// </summary>
-        /// <param name="ship">The ship to be updated</param>
-        /// <param name="human">Whether or not to update one listbox and field, or all depending on if the player chose the button, or if the placement was randomized</param>
-        private void update(Ship ship, bool human)
-        {
-            if (human)
-            {
-                // Reset variables
-                item.IsEnabled = false;
-
-                // Placed ship
-                ship.placed = true;
-
-                actions.Add(ship);
-                Undo.Visibility = Visibility.Visible;
-            }
-            // Randomized
-            else
-            {
-                Aircraft_Carrier.IsEnabled = false;
-                Battleship.IsEnabled = false;
-                Submarine.IsEnabled = false;
-                Cruiser.IsEnabled = false;
-                Destroyer.IsEnabled = false;
-
-                aircraft_carrier.placed = true;
-                battleship.placed = true;
-                submarine.placed = true;
-                cruiser.placed = true;
-                destroyer.placed = true;
             }
         }
     }
