@@ -5,6 +5,9 @@ using System.Windows.Media;
 
 namespace BattleShip
 {
+    /// <summary>
+    /// Common methods shared between partial classes
+    /// </summary>
     public partial class Common
     {
         private Grid gameField;

@@ -5,4 +5,4 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleShip"
         mc:Ignorable="d"
-        Title="Battle Ship" Height="350" Width="250" WindowStartupLocation="CenterScreen" Background="#FF112E2C" WindowState="Maximized" Icon="icon.ico" Cursor="Cross" ResizeMode="CanResizeWithGrip"/>
+        Title="Battle Ship" Height="350" Width="250" WindowStartupLocation="CenterScreen" Background="#FF112E2C" WindowState="Maximized" Icon="icon.ico" ResizeMode="CanResizeWithGrip"/>
