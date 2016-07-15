@@ -52,6 +52,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,13 +73,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ComputerAI.cs" />
+    <Compile Include="Enums\Difficulty.cs" />
     <Compile Include="HighScoreWindow.xaml.cs">
       <DependentUpon>HighScoreWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Enums\Orientation.cs" />
     <Compile Include="PlayGame.xaml.cs">
       <DependentUpon>PlayGame.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common.cs" />
+    <Compile Include="Ship.cs" />
+    <Compile Include="Enums\ShipName.cs" />
     <Compile Include="StartGame.xaml.cs">
       <DependentUpon>StartGame.xaml</DependentUpon>
     </Compile>
@@ -131,6 +136,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -154,29 +160,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="aircraft_carrier.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="battleship.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="cruiser.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="destroyer.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="submarine.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="hit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="miss.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\aircraft_carrier.png" />
+    <Resource Include="Resources\battleship.png" />
+    <Resource Include="Resources\cruiser.png" />
+    <Resource Include="Resources\destroyer.png" />
+    <Resource Include="Resources\hit.png" />
+    <Resource Include="Resources\miss.png" />
+    <Resource Include="Resources\submarine.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

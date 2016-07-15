@@ -56,7 +56,13 @@ namespace BattleShip
 
             // Set player and computer's ships
             shipsPlayer = ships;
-            shipsComputer = new Ship[] { new Ship(ShipName.AIRCRAFT_CARRIER, 5), new Ship(ShipName.BATTLESHIP, 4), new Ship(ShipName.SUBMARINE, 3), new Ship(ShipName.CRUISER, 3), new Ship(ShipName.DESTROYER, 2) };
+            shipsComputer = new Ship[] {
+                                        new Ship(ShipName.AIRCRAFT_CARRIER, 5),
+                                        new Ship(ShipName.BATTLESHIP, 4),
+                                        new Ship(ShipName.SUBMARINE, 3),
+                                        new Ship(ShipName.CRUISER, 3),
+                                        new Ship(ShipName.DESTROYER, 2)
+            };
 
             // Set button field arrays
             buttonsPlayer = new Button[100];
@@ -212,10 +218,7 @@ namespace BattleShip
         /// <param name="e">The Event</param>
         private void buttonRestart_Clicked(object sender, EventArgs e)
         {
-            if (done != null)
-            {
-                done(this, e);
-            }
+            done?.Invoke(this, e);
         }
 
         /// <summary>
@@ -336,7 +339,7 @@ namespace BattleShip
             // Shot missed
             if (ship == null)
             {
-                Uri src = new Uri(@"miss.png", UriKind.Relative);
+                Uri src = new Uri(@"Resources\miss.png", UriKind.Relative);
                 BitmapImage img = new BitmapImage(src);
                 image.Source = img;
 
@@ -346,7 +349,7 @@ namespace BattleShip
             // Shot hit
             else
             {
-                Uri src = new Uri(@"hit.png", UriKind.Relative);
+                Uri src = new Uri(@"Resources\hit.png", UriKind.Relative);
                 BitmapImage img = new BitmapImage(src);
                 image.Source = img;
 

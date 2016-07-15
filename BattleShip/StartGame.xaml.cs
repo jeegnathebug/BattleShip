@@ -5,11 +5,6 @@ using System.Windows.Controls;
 
 namespace BattleShip
 {
-    public enum Difficulty
-    {
-        Easy, Medium, Hard, Legendary
-    }
-
     /// <summary>
     /// Interaction logic for StartGame.xaml
     /// </summary>

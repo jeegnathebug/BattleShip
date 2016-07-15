@@ -7,7 +7,7 @@ namespace BattleShip
     /// <summary>
     /// Computer AI logic
     /// </summary>
-    public partial class ComputerAI
+    public class ComputerAI
     {
         private PlayGame playGame;
 

@@ -38,19 +38,19 @@
 
         <ListBox Margin="55,149,598,300" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="{x:Null}">
             <ListBoxItem x:Name="Aircraft_Carrier" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image x:Name="aircraft_carrierImage" Source="aircraft_carrier.png" Width="220" Height="69"/>
+                <Image x:Name="aircraft_carrierImage" Source="Resources\aircraft_carrier.png" Width="220" Height="69"/>
             </ListBoxItem>
             <ListBoxItem x:Name="Battleship" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image x:Name="battleshipImage" Source="battleship.png" Width="175" Height="69"/>
+                <Image x:Name="battleshipImage" Source="Resources\battleship.png" Width="175" Height="69"/>
             </ListBoxItem>
             <ListBoxItem x:Name="Submarine" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image x:Name="submarineImage" Source="submarine.png" Width="130" Height="69"/>
+                <Image x:Name="submarineImage" Source="Resources\submarine.png" Width="130" Height="69"/>
             </ListBoxItem>
             <ListBoxItem x:Name="Cruiser" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image x:Name="cruiserImage" Source="cruiser.png" Width="130" Height="69"/>
+                <Image x:Name="cruiserImage" Source="Resources\cruiser.png" Width="130" Height="69"/>
             </ListBoxItem>
             <ListBoxItem x:Name="Destroyer" Width="225" HorizontalAlignment="Left" Selected="ListBoxItem_Selected">
-                <Image x:Name="destroyerImage" Source="destroyer.png" Width="85" Height="69"/>
+                <Image x:Name="destroyerImage" Source="Resources\destroyer.png" Width="85" Height="69"/>
             </ListBoxItem>
         </ListBox>
         <Grid x:Name="Undo" Margin="532,592,0,164" Style="{StaticResource grid}" Visibility="Hidden">

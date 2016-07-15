@@ -6,9 +6,9 @@ using System.Windows.Media;
 namespace BattleShip
 {
     /// <summary>
-    /// Common methods shared between partial classes
+    /// Common methods shared between classes
     /// </summary>
-    public partial class Common
+    public class Common
     {
         private Grid gameField;
         private Button[] buttons;
@@ -206,7 +206,6 @@ namespace BattleShip
                     }
                 }
             }
-
             // Error if illegally placed
             else if (!isRandomized)
             {

@@ -5,42 +5,6 @@ using System.Windows.Controls;
 
 namespace BattleShip
 {
-
-    /// <summary>
-    /// Defines a ship type
-    /// </summary>
-    public partial class Ship
-    {
-        public readonly ShipName name;
-        public readonly int size;
-        public Orientation orientation;
-        public int hits = 0;
-        public bool sunk = false;
-        public Image image;
-        public ListBoxItem item;
-
-        public List<int> location;
-        public bool placed = false;
-
-        public Ship(ShipName name, int size)
-        {
-            this.name = name;
-            this.size = size;
-
-            location = new List<int>(size);
-        }
-    }
-
-    public enum ShipName
-    {
-        AIRCRAFT_CARRIER, BATTLESHIP, SUBMARINE, CRUISER, DESTROYER
-    }
-
-    public enum Orientation
-    {
-        HORIZONTAL, VERTICAL
-    }
-
     /// <summary>
     /// Interaction logic for Shipyard.xaml
     /// </summary>
@@ -177,10 +141,7 @@ namespace BattleShip
             }
             else
             {
-                if (play != null)
-                {
-                    play(this, e);
-                }
+                play?.Invoke(this, e);
             }
         }
 
